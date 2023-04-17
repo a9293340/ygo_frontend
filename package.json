@@ -16,6 +16,7 @@
     "vue": "^3.2.37",
     "vue-carousel": "^0.18.0",
     "vue-chart-3": "^3.1.8",
+    "vue-client-recaptcha": "^1.1.1",
     "vue-i18n": "^9.2.2",
     "vue-router": "^4.1.2"
   },
