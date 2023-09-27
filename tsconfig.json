@@ -10,9 +10,9 @@
     "lib": ["ES2017", "DOM"]
   },
 
-  "references": [
-    {
-      "path": "./tsconfig.config.json"
-    }
-  ]
+	"references": [
+		{
+			"path": "./tsconfig.config.json"
+		}
+	]
 }
