@@ -1,4 +1,37 @@
-declare module 'module-types' {
+type DeckContent = {
+	card_id: 0;
+	card_rarity: string;
+};
+
+type CardsPriceType = {
+	time: string;
+	price_lowest: number;
+	price_avg: number;
+	rarity: string;
+};
+
+type CardsPriceYuYuType = {
+	time: string;
+	price: number;
+	rarity: string;
+};
+
+type FindCardsInfoType = {
+	id?: string;
+	number?: string;
+	name?: string;
+	type?: string;
+	star?: string;
+	attribute?: string;
+	rarity?: string;
+	atk_t?: number;
+	atk_l?: number;
+	def_t?: number;
+	def_l?: number;
+	product_information_type?: string;
+};
+
+declare module "module-types" {
 	interface CardsImage {
 		_id?: string;
 		photo: string;
@@ -17,17 +50,8 @@ declare module 'module-types' {
 		product_information_type: string;
 		number: string;
 		effect: string;
-		price_info: {
-			time: string;
-			price_lowest: number;
-			price_avg: number;
-			ratity: string;
-		}[];
-		price_yuyu: {
-			time: string;
-			price: number;
-			ratity: string;
-		}[];
+		price_info: CardsPriceType[];
+		price_yuyu: CardsPriceYuYuType[];
 	}
 
 	interface ProductInformationType {
@@ -77,10 +101,6 @@ declare module 'module-types' {
 		type: number;
 	}
 
-	interface ProductInformation extends NormalArticle {
-		product_information_type_id: string;
-	}
-
 	interface Calendar {
 		_id?: string;
 		title: string;
@@ -118,22 +138,117 @@ declare module 'module-types' {
 		date: string;
 	}
 
-	type DeckContent = {
-		card_id: 0;
-		card_rarity: string;
-	};
-
 	type CardsImageList = CardsImage[];
 	type CardsList = Cards[];
 	type DeckList = Deck[];
 	type CalendarList = Calendar[];
 	type AdminList = Admin[];
 	type NormalArticleList = NormalArticle[];
-	type ProductInformationList = ProductInformation[];
 	type BaseArticleList = BaseArticle[];
 	type BannerList = Banner[];
 	type ProductInformationTypeList = ProductInformationType[];
 	type TagList = Tag[];
 	type PermitList = Permit[];
 	type TokenList = Token[];
+}
+
+declare module "request-data-types" {
+	type LoginType = {
+		account: string;
+		password: string;
+	};
+
+	type ResetPWDType = {
+		old_password: string;
+		new_password: string;
+	};
+
+	type VerifyType = {
+		verify_code: string;
+	};
+
+	type MemberAddType = {
+		name: string;
+		email: string;
+		create_date: string;
+		account: string;
+		password: string;
+	};
+
+	type MemberEditType = {
+		_id: string;
+		name: string;
+		photo: string;
+		email: string;
+	};
+
+	type ArticleListType = {
+		page: number;
+		limit: number;
+		filter: {
+			_id: string;
+		};
+	};
+
+	type CalendarListType = {
+		filter: {
+			date?: string;
+			type?: number;
+		};
+	};
+
+	type SearchArticleType = {
+		title?: string;
+		article_type: number;
+		article_subtype: number | null;
+	};
+
+	type CardListType = {
+		page: number;
+		limit: number;
+		filter: FindCardsInfoType;
+	};
+
+	type CardEditType = {
+		number?: string;
+		name?: string;
+		type?: string;
+		star?: string;
+		attribute?: string;
+		rarity?: string[];
+		atk?: number;
+		def?: number;
+		product_information_type?: string;
+		id?: number;
+		effect?: string;
+		time?: string;
+		price_info?: CardsPriceType[];
+		price_yuyu?: CardsPriceYuYuType[];
+	};
+
+	type DeckListType = {
+		page: number;
+		limit: number;
+		filter: {
+			_id?: string;
+			admin_id?: string;
+			title?: string;
+			create_date?: string;
+		};
+	};
+
+	type DeckAddAndEditType = {
+		_id?: string;
+		title: string;
+		create_date: string;
+		last_edit_date: string;
+		admin_id: string;
+		main_deck: DeckContent[];
+		extra_deck: DeckContent[];
+		side_deck: DeckContent[];
+	};
+
+	type DeckDeleteType = {
+		_id: string;
+	};
 }
