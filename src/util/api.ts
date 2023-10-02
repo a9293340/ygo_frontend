@@ -17,7 +17,7 @@ export const callApi = async <DataRequestType>(
 		token: hasToken ? token : "frontend",
 	};
 
-	if (token !== "frontend") requestObject.tokenReq = tokenReq;
+	if (requestObject.token !== "frontend") requestObject.tokenReq = tokenReq;
 
 	return (
 		await axios.post<AxiosType>(`/api/${database}/${method}`, requestObject)
