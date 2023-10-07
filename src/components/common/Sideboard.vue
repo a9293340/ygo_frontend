@@ -32,7 +32,12 @@ import i18n from '/src/i18n/index'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 
-const menu:object[] = ref([
+interface MenuItem {
+  title: string
+  link: string
+  children?: MenuItem[]
+}
+const menu = ref<MenuItem[]>([
   { title: i18n.global.t('menu.home'), link: '/' },
   {
     title: i18n.global.t('menu.member'),
@@ -79,7 +84,7 @@ const menu:object[] = ref([
   { title: i18n.global.t('menu.calendar'), link: '/calendar' },
 ])
 
-const routerGo:void = (routerLink:string) => {
+const routerGo = (routerLink: string) => {
   router.push(routerLink)
 }
 </script>
