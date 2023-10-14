@@ -17,6 +17,7 @@
 
 <script setup lang="ts">
 import Sideboard from './Sideboard.vue'
+import { ref } from 'vue'
 
 const isExpand:boolean = ref(false)
 </script>

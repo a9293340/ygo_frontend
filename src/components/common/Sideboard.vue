@@ -1,5 +1,5 @@
 <template>
-  <div class="sideboard-wrapper">
+  <div class="sideboard-wrapper scroll">
     <el-menu
         active-text-color="#ffffff"
         background-color="#1F2C5D"
@@ -28,60 +28,62 @@
 </template>
 
 <script setup lang="ts">
-import i18n from '/src/i18n/index'
+// import i18n from '@/i18n/index'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 import { useRouter } from 'vue-router'
 const router = useRouter()
 
 interface MenuItem {
   title: string
-  link: string
+  link?: string
   children?: MenuItem[]
 }
 const menu = ref<MenuItem[]>([
-  { title: i18n.global.t('menu.home'), link: '/' },
+  { title: t('menu.home'), link: '/' },
   {
-    title: i18n.global.t('menu.member'),
+    title: t('menu.member'),
     children: [
-      { title: i18n.global.t('menu.info'), link: '/member/info' },
-      { title: i18n.global.t('menu.deck_list'), link: '/member/deck_list' },
+      { title: t('menu.info'), link: '/member/info' },
+      { title: t('menu.deck_list'), link: '/member/deck_list' },
     ]
   },
-  { title: i18n.global.t('menu.meta_deck'), link: '/meta_deck' },
+  { title: t('menu.meta_deck'), link: '/meta_deck' },
   {
-    title: i18n.global.t('menu.series_introduction'),
+    title: t('menu.series_introduction'),
     children: [
-      { title: i18n.global.t('menu.theme_deck'), link: '/series_introduction/theme_deck' },
-      { title: i18n.global.t('menu.plugin'), link: '/series_introduction/plugin' },
-    ]
-  },
-  {
-    title: i18n.global.t('menu.useful_card_introduction'),
-    children: [
-      { title: i18n.global.t('menu.single_card'), link: '/useful_card_introduction/single_card' },
-      { title: i18n.global.t('menu.strategy'), link: '/useful_card_introduction/strategy' },
+      { title: t('menu.theme_deck'), link: '/series_introduction/theme_deck' },
+      { title: t('menu.plugin'), link: '/series_introduction/plugin' },
     ]
   },
   {
-    title: i18n.global.t('menu.production_information'),
+    title: t('menu.useful_card_introduction'),
     children: [
-      { title: i18n.global.t('menu.p_pack'), link: '/production_information/pack' },
-      { title: i18n.global.t('menu.p_deck'), link: '/production_information/deck' },
-      { title: i18n.global.t('menu.p_rd'), link: '/production_information/rd' },
-      { title: i18n.global.t('menu.p_box'), link: '/production_information/box' },
-      { title: i18n.global.t('menu.p_other'), link: '/production_information/other' },
+      { title: t('menu.single_card'), link: '/useful_card_introduction/single_card' },
+      { title: t('menu.strategy'), link: '/useful_card_introduction/strategy' },
     ]
   },
   {
-    title: i18n.global.t('menu.rules'),
+    title: t('menu.production_information'),
     children: [
-      { title: i18n.global.t('menu.judgment'), link: '/rules/judgment' },
-      { title: i18n.global.t('menu.ban_list'), link: '/rules/ban_list' },
+      { title: t('menu.p_pack'), link: '/production_information/pack' },
+      { title: t('menu.p_deck'), link: '/production_information/deck' },
+      { title: t('menu.p_rd'), link: '/production_information/rd' },
+      { title: t('menu.p_box'), link: '/production_information/box' },
+      { title: t('menu.p_other'), link: '/production_information/other' },
     ]
   },
-  { title: i18n.global.t('menu.series_story'), link: '/series_story' },
-  { title: i18n.global.t('menu.cards'), link: '/cards' },
-  { title: i18n.global.t('menu.deck'), link: '/deck' },
-  { title: i18n.global.t('menu.calendar'), link: '/calendar' },
+  {
+    title: t('menu.rules'),
+    children: [
+      { title: t('menu.judgment'), link: '/rules/judgment' },
+      { title: t('menu.ban_list'), link: '/rules/ban_list' },
+    ]
+  },
+  { title: t('menu.series_story'), link: '/series_story' },
+  { title: t('menu.cards'), link: '/cards' },
+  { title: t('menu.deck'), link: '/deck' },
+  { title: t('menu.calendar'), link: '/calendar' },
 ])
 
 const routerGo = (routerLink: string) => {
