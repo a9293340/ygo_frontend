@@ -28,18 +28,13 @@
 </template>
 
 <script setup lang="ts">
-// import i18n from '@/i18n/index'
+import type { MenuItemList } from "component-types"
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 import { useRouter } from 'vue-router'
 const router = useRouter()
 
-interface MenuItem {
-  title: string
-  link?: string
-  children?: MenuItem[]
-}
-const menu = ref<MenuItem[]>([
+const menu = ref<MenuItemList>([
   { title: t('menu.home'), link: '/' },
   {
     title: t('menu.member'),
