@@ -23,3 +23,13 @@ declare module "axios-types" {
 		| "delete"
 		| "yuyuPrice";
 }
+
+declare module "component-types" {
+	interface MenuItem {
+		title: string
+		link?: string
+		children?: MenuItemList
+	}
+
+	type MenuItemList = MenuItem[]
+}
