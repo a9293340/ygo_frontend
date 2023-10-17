@@ -20,7 +20,7 @@ const a = async (cards: CardsImageList): Promise<CardsImage> => {
     <h1 class="green">{{ msg }}</h1>
     <h3 class="text-6xl text-green-600 font-bold underline">
       You’ve successfully created a project with Vite+ Vue 3.
-      {{ $t('test.title') }}
+      {{ $t('menu.ban_list') }}
     </h3>
     <div>
       切換語言：

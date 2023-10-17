@@ -1,8 +1,8 @@
 import { createI18n } from 'vue-i18n';
-import zh from './zh-TW.json';
-import en from './en-US.json';
+import * as zh from './zh-TW.json';
+import * as en from './en-US.json';
 
-type MessageSchema = typeof zh;
+type MessageSchema = typeof en;
 
 const i18n = createI18n<[MessageSchema], 'zh-TW' | 'en-US'>({
   legacy: false,

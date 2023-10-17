@@ -1,10 +1,37 @@
 {
+  "site_name": "ygo卡壇",
+  "menu": {
+    "home": "首頁",
+    "member": "會員中心",
+    "info": "會員資料",
+    "deck_list": "牌組列表",
+    "meta_deck": "上位卡表",
+    "series_introduction": "系列介紹",
+    "theme_deck": "主題牌組",
+    "plugin": "外掛系列",
+    "useful_card_introduction": "泛用卡介紹",
+    "single_card": "單卡介紹",
+    "strategy": "戰術分析",
+    "production_information": "卡表介紹",
+    "p_pack": "補充包",
+    "p_deck": "預組",
+    "p_rd": "Rus Duel",
+    "p_box": "禮盒",
+    "p_other": "其他",
+    "rules": "規則相關",
+    "judgment": "判例",
+    "ban_list": "禁卡表",
+    "series_story": "卡片故事",
+    "cards": "卡片查詢",
+    "deck": "組牌",
+    "calendar": "日曆"
+  },
   "test": {
-    "title": "MIS footmark",
-    "description": "IT learn"
+    "title": "MIS 腳印",
+    "description": "記錄 IT 學習的軌跡"
   },
   "test2": {
-    "title": "Card Master",
-    "description": "sale cards"
+    "title": "卡片大師",
+    "description": "賣卡商"
   }
 }
