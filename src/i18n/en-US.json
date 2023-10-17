@@ -1,5 +1,12 @@
 {
-  "site_name": "ygo卡壇",
+  "test": {
+    "title": "MIS footmark",
+    "description": "IT learn"
+  },
+  "test2": {
+    "title": "Card Master",
+    "description": "sale cards"
+  },
   "menu": {
     "home": "首頁",
     "member": "會員中心",
@@ -15,7 +22,7 @@
     "production_information": "卡表介紹",
     "p_pack": "補充包",
     "p_deck": "預組",
-    "p_rd": "Rus Duel",
+    "p_rd": "Rush Duel",
     "p_box": "禮盒",
     "p_other": "其他",
     "rules": "規則相關",
@@ -26,12 +33,7 @@
     "deck": "組牌",
     "calendar": "日曆"
   },
-  "test": {
-    "title": "MIS 腳印",
-    "description": "記錄 IT 學習的軌跡"
-  },
-  "test2": {
-    "title": "卡片大師",
-    "description": "賣卡商"
+  "site_name": {
+    "site_name": "ygo卡壇"
   }
 }
