@@ -151,7 +151,6 @@ declare module "module-types" {
 	type PermitList = Permit[];
 	type TokenList = Token[];
 }
-
 declare module "request-data-types" {
 	type LoginType = {
 		account: string;
@@ -254,12 +253,11 @@ declare module "request-data-types" {
 }
 
 declare module "response-data-types" {
-	interface HasTotalRes<T> {
-		total: number;
+	interface NotHasTotalRes<T> {
 		list: T;
 	}
 
-	interface NotHasTotalRes<T> {
-		list: T;
+	interface HasTotalRes<T> extends NotHasTotalRes<T> {
+		total: number;
 	}
 }
