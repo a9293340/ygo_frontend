@@ -252,3 +252,14 @@ declare module "request-data-types" {
 		_id: string;
 	};
 }
+
+declare module "response-data-types" {
+	interface HasTotalRes<T> {
+		total: number;
+		list: T;
+	}
+
+	interface NotHasTotalRes<T> {
+		list: T;
+	}
+}

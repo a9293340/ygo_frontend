@@ -10,8 +10,10 @@ export const encode = <T extends object>(encodeValue: T) =>
 	).toString();
 
 export const decode = <T>(decodeValue: string): T =>
-	CryptoJS.AES.decrypt(decodeValue, import.meta.env.VITE_ENCODEKEY).toString(
-		CryptoJS.enc.Utf8
+	JSON.parse(
+		CryptoJS.AES.decrypt(decodeValue, import.meta.env.VITE_ENCODEKEY).toString(
+			CryptoJS.enc.Utf8
+		)
 	) as T;
 
 export const getToken = () =>

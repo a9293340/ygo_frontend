@@ -1,26 +1,28 @@
 import type { AxiosType, RequestObject, RequestMethodType } from "axios-types";
 import type { ResetPWDType, LoginType, VerifyType } from "request-data-types";
 import axios from "axios";
-import { getAccount, getToken } from ".";
+import { getAccount, getToken, encode } from ".";
 
 export const callApi = async <DataRequestType>(
 	data: DataRequestType,
 	database: string,
-	method: RequestMethodType,
+	method: RequestMethodType | null,
 	hasToken?: boolean
-): Promise<AxiosType | false> => {
+): Promise<AxiosType> => {
 	const tokenReq = getAccount();
 	const token = getToken();
 
 	let requestObject: RequestObject<DataRequestType> = {
-		data,
+		...data,
 		token: hasToken ? token : "frontend",
 	};
 
 	if (requestObject.token !== "frontend") requestObject.tokenReq = tokenReq;
 
 	return (
-		await axios.post<AxiosType>(`/api/${database}/${method}`, requestObject)
+		await axios.post<AxiosType>(`/api/${database}/${method}`, {
+			data: encode(requestObject),
+		})
 	).data;
 };
 
