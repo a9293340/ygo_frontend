@@ -1,11 +1,7 @@
 {
-  "test": {
-    "title": "MIS footmark",
-    "description": "IT learn"
-  },
-  "test2": {
-    "title": "Card Master",
-    "description": "sale cards"
+  "article": {
+    "author": "作者",
+    "date": "日期"
   },
   "menu": {
     "home": "首頁",

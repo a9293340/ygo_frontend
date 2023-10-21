@@ -1,11 +1,7 @@
 {
-  "test": {
-    "title": "MIS 腳印",
-    "description": "記錄 IT 學習的軌跡"
-  },
-  "test2": {
-    "title": "卡片大師",
-    "description": "賣卡商"
+  "article": {
+    "author": "作者",
+    "date": "日期"
   },
   "menu": {
     "home": "首頁",

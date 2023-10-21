@@ -4,7 +4,7 @@ const flat = require('flat');
 const { extractSheets } = require('spreadsheet-to-json');
 const path = require('path');
 const unflatten = flat.unflatten;
-const googleSheetTable = ['test', 'test2', 'menu', 'site_name'];
+const googleSheetTable = ['article', 'menu', 'site_name'];
 
 const makeFile = file => {
   const fileName = file.key;
@@ -21,7 +21,7 @@ const makeFile = file => {
 extractSheets(
   {
     spreadsheetKey: '1YWv7cbCRK6LoT9kXycKqf2vvOiNW1vUzJaiwDW-CN8I',
-    credentials: require('./i18n/ygo-i18n-a01a698e3b7f.json'),
+    credentials: require('./i18n/ygo-i18n-5f88fbf2d03a.json'),
     sheetsToExtract: googleSheetTable,
   },
   (err, data) => {
