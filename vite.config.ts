@@ -42,6 +42,8 @@ export default defineConfig({
   },
   base: './',
   server: {
+    port: 8080,
+    host: '0.0.0.0',
     hmr: true,
     cors: true,
     proxy: {
