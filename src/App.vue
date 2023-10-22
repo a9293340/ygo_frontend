@@ -33,6 +33,6 @@ onMounted(async () => {
 
 <style lang="scss" scoped>
 .app {
-	//@apply bg-black;
+	@apply bg-black;
 }
 </style>

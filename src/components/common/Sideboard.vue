@@ -100,7 +100,6 @@ const closeSideboard = () => {
   padding: 70px 0 30px;
   background-color: #1f2c5d;
   color: #cecece;
-  border: 1px solid #000000;
   & .paper-clip {
     font-size: 14px;
   }

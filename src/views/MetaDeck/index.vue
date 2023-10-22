@@ -60,7 +60,6 @@ const list = ref<BaseArticleList>([
 
 <style lang="scss" scoped>
 .meta-deck-list {
-  @apply bg-black;
   & .article-container {
     width: 1000px;
     margin: 0 auto;
@@ -119,7 +118,6 @@ const list = ref<BaseArticleList>([
 
 @media (max-width: 1050px) {
   .meta-deck-list {
-    @apply bg-black;
     & .article-container {
       width: 740px;
       & .list-container {
@@ -144,7 +142,7 @@ const list = ref<BaseArticleList>([
   .meta-deck-list {
     & .article-container {
       @apply w-full;
-      padding: 4vw 2.6vw;
+      padding: 4vw;
       & .list-title {
         font-size: 20px;
       }
@@ -152,7 +150,7 @@ const list = ref<BaseArticleList>([
         margin: 4vw 0;
         & .list-item {
           @apply flex flex-col justify-between items-center w-full;
-          padding: 4vw;
+          padding: 3vw 2.6vw;
           margin: 0 0 4vw 0;
           & .img {
             width: 86vw;
