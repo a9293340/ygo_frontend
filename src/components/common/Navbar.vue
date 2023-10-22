@@ -7,11 +7,14 @@
     <router-link to="/">
       <img src="/src/assets/img/logo.png" alt="" />
     </router-link>
-    <div></div>
+    <div style="width:30px;"></div>
   </div>
   <div class="nav-height"></div>
   <transition name="slide">
-    <Sideboard v-if="isExpand" />
+    <Sideboard
+      v-if="isExpand"
+      @closeSideboard="isExpand=false"
+    />
   </transition>
 </template>
 
