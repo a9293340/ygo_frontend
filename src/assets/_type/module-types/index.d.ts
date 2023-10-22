@@ -94,6 +94,7 @@ declare module "module-types" {
 		status: number;
 		to_top: boolean;
 		admin_id: string;
+		admin_name: string;
 		tag: [];
 	}
 
