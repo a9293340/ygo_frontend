@@ -1,5 +1,5 @@
 <template>
-  <div class="sideboard-wrapper">
+  <div class="sideboard-wrapper scroll">
     <el-menu
       active-text-color="#ffffff"
       background-color="#1F2C5D"
@@ -27,6 +27,7 @@
 </template>
 
 <script setup lang="ts">
+import { defineEmits } from 'vue';
 import i18n from '@/i18n/index';
 import { useRouter } from 'vue-router';
 import type { MenuItem } from 'component-types';
@@ -83,16 +84,23 @@ const menu = ref<MenuItem[]>([
 
 const routerGo = (routerLink: string | undefined) => {
   if (typeof routerLink === 'string') router.push(routerLink);
+  closeSideboard()
 };
+const emit = defineEmits(['closeSideboard'])
+const closeSideboard = () => {
+  emit('closeSideboard')
+}
 </script>
 
 <style lang="scss" scoped>
 .sideboard-wrapper {
-  @apply fixed top-0 left-0 h-screen;
+  @apply fixed top-0 left-0;
   width: 220px;
-  padding: 70px 0 0 0;
+  height: 100svh;
+  padding: 70px 0 30px;
   background-color: #1f2c5d;
   color: #cecece;
+  border: 1px solid #000000;
   & .paper-clip {
     font-size: 14px;
   }
@@ -108,6 +116,12 @@ const routerGo = (routerLink: string | undefined) => {
   }
   :deep(.el-menu--inline) {
     padding: 0 0 0 25px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sideboard-wrapper {
+    @apply w-full;
   }
 }
 </style>

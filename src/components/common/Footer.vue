@@ -15,4 +15,13 @@
     font-size: 16px;
   }
 }
+
+@media (max-width: 768px) {
+  .footer-wrapper {
+    padding: 10px;
+    & .text {
+      font-size: 14px;
+    }
+  }
+}
 </style>
