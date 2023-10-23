@@ -23,5 +23,6 @@
 
 <style lang="scss" scoped>
 .index-wrapper {
+  padding: 0 0 30px;
 }
 </style>

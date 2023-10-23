@@ -93,7 +93,7 @@ onMounted(() => {
 .top-article {
 	width: 1000px;
 	margin: 0 auto;
-	padding: 0 0 24px;
+	padding: 24px 0 0;
 	& .list-title {
 		@apply text-white inline-block;
 		font-size: 24px;
@@ -111,7 +111,7 @@ onMounted(() => {
 				background-color: rgba(255, 255, 255, 0.9);
 			}
 			& .img {
-				@apply w-full bg-no-repeat bg-cover;
+				@apply w-full bg-no-repeat bg-cover bg-center;
 				height: 201.48px;
 			}
 			& .content {
