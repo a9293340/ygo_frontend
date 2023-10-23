@@ -95,7 +95,7 @@ declare module "module-types" {
 		to_top: boolean;
 		admin_id: string;
 		admin_name: string;
-		tag: [];
+		tag: string[];
 	}
 
 	interface NormalArticle extends BaseArticle {
