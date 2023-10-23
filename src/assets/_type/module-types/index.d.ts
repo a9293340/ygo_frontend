@@ -198,6 +198,8 @@ declare module "request-data-types" {
 	};
 
 	type SearchArticleType = {
+		page: number;
+		limit: number;
 		title?: string;
 		article_type: number;
 		article_subtype: number | null;

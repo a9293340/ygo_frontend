@@ -19,6 +19,8 @@ onMounted(async () => {
 			{
 				article_type: 0,
 				article_subtype: null,
+				page: 0,
+				limit: 2,
 			},
 			"search",
 			"list",
