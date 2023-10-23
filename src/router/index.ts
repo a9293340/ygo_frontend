@@ -47,6 +47,17 @@ const router = createRouter({
       name: 'meta_deck_detail',
       component: () => import('../views/MetaDeck/Detail.vue')
     },
+    // 戰報
+    {
+      path: '/battle_paper',
+      name: 'battle_paper',
+      component: () => import('../views/BattlePaper/index.vue')
+    },
+    {
+      path: '/battle_paper/:id',
+      name: 'battle_paper_detail',
+      component: () => import('../views/BattlePaper/Detail.vue')
+    },
     // 系列介紹
     {
       path: '/series_introduction',
