@@ -95,7 +95,7 @@ const closeSideboard = () => {
 
 <style lang="scss" scoped>
 .sideboard-wrapper {
-  @apply fixed top-0 left-0;
+  @apply fixed top-0 left-0 z-20;
   width: 220px;
   height: 100svh;
   padding: 70px 0 30px;

@@ -42,7 +42,7 @@ const isExpand = ref<boolean>(false);
 }
 
 .nav-wrapper {
-  @apply flex justify-between items-center fixed top-0 left-0 w-full z-10;
+  @apply flex justify-between items-center fixed top-0 left-0 w-full z-30;
   height: 60px;
   background-color: #2b2b2b;
   padding: 0 20px;
