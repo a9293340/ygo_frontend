@@ -9,12 +9,12 @@
 		<TopArticle
 			:title="$t('menu.series_introduction')"
 			:type="1"
-			:router="'/series_introduction'"
+			:router="'/series_introduction/theme_deck'"
 		/>
 		<TopArticle
 			:title="$t('menu.useful_card_introduction')"
 			:type="2"
-			:router="'/useful_card_introduction'"
+			:router="'/useful_card_introduction/single_card'"
 		/>
 	</div>
 </template>
@@ -23,5 +23,6 @@
 
 <style lang="scss" scoped>
 .index-wrapper {
+  padding: 0 0 30px;
 }
 </style>

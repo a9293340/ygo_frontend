@@ -45,6 +45,7 @@ const menu = ref<MenuItem[]>([
     ],
   },
   { title: t('menu.meta_deck'), link: '/meta_deck' },
+  { title: t('menu.battle_paper'), link: '/battle_paper' },
   {
     title: t('menu.series_introduction'),
     children: [

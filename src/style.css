@@ -17,3 +17,16 @@
     border-radius: 4px;
     background: transparent;
 }
+
+.mobile {
+    display: none !important;
+}
+
+@media (max-width: 768px) {
+    .mobile {
+        display: block !important;
+    }
+    .pc {
+        display: none !important;
+    }
+}
