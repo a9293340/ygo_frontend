@@ -38,6 +38,10 @@ const currentPage = computed({
 })
 const handleCurrentChange = (val) => {
   emit('pagination', { page: val, limit: 10 })
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
 }
 </script>
 
