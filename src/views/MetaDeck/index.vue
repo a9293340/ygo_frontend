@@ -1,7 +1,13 @@
 <template>
 	<div class="meta-deck-list">
 		<div class="article-container">
-			<h1 class="list-title">{{ $t("menu.meta_deck") }}</h1>
+      <div class="title-box">
+        <h1 class="list-title">{{ $t("menu.meta_deck") }}</h1>
+        <div class="search">
+          <input v-model="listQuery.title" type="text" placeholder="Search...">
+          <el-icon class="search-icon" @click="getList"><Search /></el-icon>
+        </div>
+      </div>
 			<div class="list-container">
 				<router-link
 					:to="`/meta_deck/${item._id}`"
@@ -92,12 +98,34 @@ const getList = (val) => {
 		width: 1000px;
 		margin: 0 auto;
 		padding: 24px 0;
-		& .list-title {
-			@apply text-white inline-block;
-			font-size: 24px;
-			border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-			padding: 0 5px;
-		}
+    & .title-box {
+      @apply flex justify-between items-end;
+      & .list-title {
+        @apply text-white inline-block;
+        font-size: 24px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+        padding: 0 5px;
+      }
+      & .search {
+        @apply flex items-center;
+        border-bottom: 1px solid #707070;
+        & input {
+          @apply border-none outline-none text-white bg-transparent;
+          width: 130px;
+          padding: 5px 5px 2px;
+          font-size: 18px;
+        }
+        & .search-icon {
+          @apply text-white cursor-pointer;
+          color: lightgray;
+          font-size: 20px;
+          transition-duration: 0.2s;
+          &:hover {
+            @apply text-white;
+          }
+        }
+      }
+    }
 		& .list-container {
 			margin: 20px 0;
 			& .list-item {
@@ -110,12 +138,10 @@ const getList = (val) => {
 					background-color: rgba(255, 255, 255, 0.9);
 				}
 				& .img {
+          @apply bg-no-repeat bg-cover bg-center overflow-hidden;
 					width: 270px;
 					height: 170px;
-					background-repeat: no-repeat;
-					background-position: center;
-					background-size: cover;
-					overflow: hidden;
+          border-radius: 5px;
 				}
 				& .content {
 					@apply flex flex-col justify-between;
@@ -149,6 +175,7 @@ const getList = (val) => {
 	.meta-deck-list {
 		& .article-container {
 			width: 740px;
+
 			& .list-container {
 				margin: 15px 0;
 				& .list-item {
@@ -189,6 +216,7 @@ const getList = (val) => {
 						width: 86vw;
 						& .title {
 							font-size: 18px;
+              margin: 5px 0 0;
 						}
 						& .detail {
 							@apply flex flex-col-reverse justify-between items-start;
