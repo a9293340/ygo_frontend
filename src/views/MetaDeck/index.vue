@@ -29,6 +29,13 @@
 					</div>
 				</router-link>
 			</div>
+
+      <Pagination
+          :hidden="total <= 0"
+          :total="total"
+          :page.sync="listQuery.page"
+          @pagination="getList"
+      />
 		</div>
 	</div>
 </template>
@@ -36,10 +43,16 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import type { BaseArticleList } from "module-types";
+import type { SearchArticleType } from "request-data-types";
 
-// const currentPage = ref<number>(0)
-// const total = ref<number>(0)
-
+// 搜尋
+const listQuery = ref<SearchArticleType>({
+  page: 2,
+  limit: 10,
+  title: '',
+  article_type: 0,
+  article_subtype: null
+})
 const list = ref<BaseArticleList>([
 	{
 		_id: "abc1234567",
@@ -66,6 +79,11 @@ const list = ref<BaseArticleList>([
 		tag: ["主流2", "閃刀姬"],
 	},
 ]);
+const total = ref<Number>(2)
+const getList = (val) => {
+  listQuery.value.page = val.page
+  console.log(listQuery.value)
+}
 </script>
 
 <style lang="scss" scoped>
@@ -105,6 +123,7 @@ const list = ref<BaseArticleList>([
 					& .title {
 						@apply font-bold;
 						font-size: 20px;
+            color: #333333;
 					}
 					& .detail {
 						@apply flex justify-between items-end;
