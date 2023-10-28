@@ -239,7 +239,11 @@ const router = createRouter({
       name: 'calendar',
       component: () => import('../views/Calendar/index.vue')
     },
-  ]
+  ],
+  scrollBehavior(to, from, savedPosition) {
+    // always scroll to top
+    return { top: 0 }
+  }
 })
 
 export default router
