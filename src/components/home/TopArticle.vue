@@ -118,6 +118,7 @@ onMounted(() => {
 				padding: 10px 15px;
 				& .title {
 					@apply font-bold;
+          color: #333333;
 					font-size: 20px;
 					height: 62px;
 					overflow: hidden;

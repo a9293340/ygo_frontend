@@ -8,10 +8,11 @@
 
 <style lang="scss" scoped>
 .footer-wrapper {
-  @apply w-full text-center text-white;
+  @apply w-full text-center;
   background-color: #2B2B2B;
   padding: 10px 0;
   & .text {
+    color: lightgray;
     font-size: 16px;
   }
 }

@@ -8,12 +8,16 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     Banner: typeof import('./components/home/Banner.vue')['default']
+    ElButton: typeof import('element-plus/es')['ElButton']
     ElIcon: typeof import('element-plus/es')['ElIcon']
+    ElInput: typeof import('element-plus/es')['ElInput']
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
+    ElPagination: typeof import('element-plus/es')['ElPagination']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
     Footer: typeof import('./components/common/Footer.vue')['default']
     Navbar: typeof import('./components/common/Navbar.vue')['default']
+    Pagination: typeof import('./components/Pagination.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Sideboard: typeof import('./components/common/Sideboard.vue')['default']
