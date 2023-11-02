@@ -1,6 +1,8 @@
 {
-  "i18n-ally.localesPaths": ["src/i18n"],
-  "i18n-ally.displayLanguage": "zh-TW",
-  "i18n-ally.sourceLanguage": "zh-TW",
-  "nuxt.isNuxtApp": false
+	"i18n-ally.localesPaths": ["src/i18n"],
+	"i18n-ally.displayLanguage": "zh-TW",
+	"i18n-ally.sourceLanguage": "zh-TW",
+	"nuxt.isNuxtApp": false,
+	"cSpell.words": ["maintype"],
+	"i18n-ally.keystyle": "nested"
 }

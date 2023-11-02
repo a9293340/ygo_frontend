@@ -1,14 +1,18 @@
 <template>
 	<div class="top-article">
 		<h2 class="list-title">{{ props.title }}</h2>
-		<div class="list-container">
+		<div class="list-container" v-if="list.length">
 			<router-link
 				:to="`${props.router}/${item._id}`"
 				class="list-item"
 				v-for="item in list"
 				:key="item._id"
 			>
-				<div class="img" :style="`background-image: url(${item.photo})`"></div>
+				<div
+					v-if="item.photo"
+					class="img"
+					:style="`background-image: url(/api/card-image/article/${item.photo})`"
+				></div>
 				<div class="content">
 					<div class="title">{{ item.title }}</div>
 					<div class="article-info">
@@ -27,7 +31,12 @@
 
 <script setup lang="ts">
 import { onMounted, ref, defineProps } from "vue";
-import type { BaseArticleList } from "module-types";
+import type { BaseArticleList, NormalArticleList } from "module-types";
+import type { SearchArticleType } from "request-data-types";
+import type { NotHasTotalRes } from "response-data-types";
+
+import { callApi } from "@/util/api";
+import { decode } from "@/util/index";
 
 const props = defineProps({
 	title: {
@@ -44,48 +53,27 @@ const props = defineProps({
 	},
 });
 
-const list = ref<BaseArticleList>([
-	{
-		_id: "abc1234567",
-		title: "[基礎介紹] 閃刀姬牌組介紹 (閃刀/閃刀姫/Sky Striker)",
-		publish_date: "2023/10/18",
-		photo: "https://picsum.photos/300/200",
-		content: "11111內容內容內容內容內容內容內容內容",
-		status: 0,
-		to_top: true,
-		admin_name: "寶可夢大師-康哥",
-		admin_id: "admin_id12345",
-		tag: ["主流"],
-	},
-	{
-		_id: "abc1234568",
-		title: "文章標題2222",
-		publish_date: "2023/10/22",
-		photo: "https://picsum.photos/600/400",
-		content: "222222內容內容內容內容內容內容內容內容",
-		status: 0,
-		to_top: false,
-		admin_name: "有錢倫",
-		admin_id: "admin_id12346",
-		tag: ["主流2", "閃刀姬"],
-	},
-	{
-		_id: "abc1234569",
-		title: "文章標題3333",
-		publish_date: "2023/10/30",
-		photo: "https://picsum.photos/450/300",
-		content: "33333內容內容內容內容內容內容內容內容",
-		status: 0,
-		to_top: false,
-		admin_name: "有錢倫2",
-		admin_id: "admin_id12347",
-		tag: ["主流3", "龍女僕"],
-	},
-]);
+const list = ref<[] | BaseArticleList | NormalArticleList>([]);
 
-onMounted(() => {
-	console.log(props.title);
-	console.log(props.type);
+onMounted(async () => {
+	const article = (
+		await callApi<SearchArticleType>(
+			{
+				article_type: props.type,
+				article_subtype: null,
+				page: 0,
+				limit: 3,
+				status: 0,
+			},
+			"search",
+			"list",
+			false
+		)
+	).data;
+	list.value =
+		props.type === 0
+			? decode<NotHasTotalRes<BaseArticleList>>(article).list
+			: decode<NotHasTotalRes<NormalArticleList>>(article).list;
 });
 </script>
 
@@ -118,7 +106,7 @@ onMounted(() => {
 				padding: 10px 15px;
 				& .title {
 					@apply font-bold;
-          color: #333333;
+					color: #333333;
 					font-size: 20px;
 					height: 62px;
 					overflow: hidden;

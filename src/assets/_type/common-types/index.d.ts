@@ -1,5 +1,10 @@
 declare module "common-types" {
 	type CallBack<Params = any[], Res = any> = (...params: Params) => Res;
+
+	type PaginationGetList = {
+		limit: number;
+		page: number;
+	};
 }
 
 declare module "axios-types" {
@@ -26,10 +31,10 @@ declare module "axios-types" {
 
 declare module "component-types" {
 	interface MenuItem {
-		title: string
-		link?: string
-		children?: MenuItemList
+		title: string;
+		link?: string;
+		children?: MenuItemList;
 	}
 
-	type MenuItemList = MenuItem[]
+	type MenuItemList = MenuItem[];
 }

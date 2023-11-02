@@ -68,6 +68,7 @@ declare module "module-types" {
 		admin_id: 0;
 		title: string;
 		create_date: string;
+		last_edit_date: string;
 		main_deck: DeckContent[];
 		extra_deck: DeckContent[];
 		side_deck: DeckContent[];
@@ -94,7 +95,7 @@ declare module "module-types" {
 		status: number;
 		to_top: boolean;
 		admin_id: string;
-		admin_name: string;
+		author_name: string;
 		tag: string[];
 	}
 
@@ -203,6 +204,8 @@ declare module "request-data-types" {
 		title?: string;
 		article_type: number;
 		article_subtype: number | null;
+		status: 0;
+		to_top?: boolean;
 	};
 
 	type CardListType = {
@@ -235,7 +238,8 @@ declare module "request-data-types" {
 			_id?: string;
 			admin_id?: string;
 			title?: string;
-			create_date?: string;
+			begin_date?: string;
+			end_date?: string;
 		};
 	};
 
