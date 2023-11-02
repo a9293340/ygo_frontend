@@ -75,7 +75,7 @@ const props = defineProps({
 		default: 0,
 	},
 	subType: {
-		type: Number | null,
+		type: Number,
 		default: null,
 	},
 	title: {
