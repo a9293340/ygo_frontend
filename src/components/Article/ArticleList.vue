@@ -139,6 +139,7 @@ onMounted(async () => {
 
 <style scoped lang="scss">
 .article-list {
+  min-height: calc(100vh - 104px);
 	& .article-container {
 		width: 1000px;
 		margin: 0 auto;
@@ -241,6 +242,7 @@ onMounted(async () => {
 
 @media (max-width: 768px) {
 	.article-list {
+    min-height: calc(100vh - 101px);
 		& .article-container {
 			@apply w-full;
 			padding: 4vw;
