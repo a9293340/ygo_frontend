@@ -83,11 +83,11 @@ onMounted(async () => {
 		}
 		& .carousel-container {
 			width: 75vw;
-			padding: 4vw 0;
+			padding: 2vw 0 4vw;
 			& .img {
 				@apply bg-no-repeat bg-cover bg-center;
 				width: 75vw;
-				height: 25vw;
+				height: 35vw;
 			}
 			& .has-link {
 				@apply cursor-pointer;
@@ -128,7 +128,7 @@ onMounted(async () => {
 				width: 84vw;
 				& .img {
 					width: 84vw;
-					height: 28vw;
+					height: 39.2vw;
 				}
 				:deep(.carousel__pagination) {
 					.carousel__pagination-item {
