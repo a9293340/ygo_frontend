@@ -37,7 +37,7 @@ import type { list } from 'postcss';
 						<div class="detail">
 							<div class="tag-list">
 								<span v-for="(tagItem, tagIndex) in item.tag" :key="tagIndex">{{
-									`#${tagItem}`
+									`#${tagItem.tag}`
 								}}</span>
 							</div>
 							<div class="article-info">
