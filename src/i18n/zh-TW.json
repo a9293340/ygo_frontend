@@ -2,7 +2,27 @@
   "article": {
     "author": "作者",
     "date": "日期",
-    "more": "更多文章"
+    "more": "更多文章",
+    "id": "卡號",
+    "name": "卡片名稱",
+    "type": "種類",
+    "star": "星數",
+    "attribute": "屬性",
+    "race": "種族",
+    "atk": "攻擊力",
+    "def": "守備力",
+    "number": "卡片密碼",
+    "effect": "效果",
+    "product_information_type": "包裝分類",
+    "rarity": "稀有度",
+    "image": "卡圖",
+    "input_id": "請輸入卡號",
+    "input_name": "請輸入卡片名稱",
+    "choose_type": "請選擇種類",
+    "choose_attribute": "請選擇屬性",
+    "choose_rarity": "請選擇稀有度",
+    "choose_product_type": "請選擇包裝分類",
+    "input_number": "請輸入卡片密碼"
   },
   "menu": {
     "home": "首頁",
@@ -33,5 +53,27 @@
   },
   "site_name": {
     "site_name": "ygo卡壇"
+  },
+  "cards": {
+    "id": "卡號",
+    "name": "卡片名稱",
+    "type": "種類",
+    "star": "星數",
+    "attribute": "屬性",
+    "race": "種族",
+    "atk": "攻擊力",
+    "def": "守備力",
+    "number": "卡片密碼",
+    "effect": "效果",
+    "product_information_type": "包裝分類",
+    "rarity": "稀有度",
+    "image": "卡圖",
+    "input_id": "請輸入卡號",
+    "input_name": "請輸入卡片名稱",
+    "choose_type": "請選擇種類",
+    "choose_attribute": "請選擇屬性",
+    "choose_rarity": "請選擇稀有度",
+    "choose_product_type": "請選擇包裝分類",
+    "input_number": "請輸入卡片密碼"
   }
 }
