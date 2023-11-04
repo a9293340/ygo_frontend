@@ -42,7 +42,7 @@ import type { list } from 'postcss';
 							</div>
 							<div class="article-info">
 								<div>{{ `${$t("article.author")}：${item.author_name}` }}</div>
-								<div>{{ `${$t("article.date")}：${item.publish_date}` }}</div>
+								<div>{{ `${$t("article.date")}：${formatDateString(item.publish_date)}` }}</div>
 							</div>
 						</div>
 					</div>
@@ -67,7 +67,8 @@ import type { HasTotalRes } from "response-data-types";
 import type { PaginationGetList } from "common-types";
 
 import { callApi } from "@/util/api";
-import { decode } from "@/util/index";
+import { formatDateString } from "@/util/parseDate";
+import { decode } from "@/util";
 
 const props = defineProps({
 	type: {

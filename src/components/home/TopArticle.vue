@@ -16,8 +16,8 @@
 				<div class="content">
 					<div class="title">{{ item.title }}</div>
 					<div class="article-info">
-						<div>{{ `${$t("article.author")}：${item.admin_name}` }}</div>
-						<div>{{ `${$t("article.date")}：${item.publish_date}` }}</div>
+						<div>{{ `${$t("article.author")}：${item.author_name}` }}</div>
+						<div>{{ `${$t("article.date")}：${formatDateString(item.publish_date)}` }}</div>
 					</div>
 				</div>
 			</router-link>
@@ -36,7 +36,8 @@ import type { SearchArticleType } from "request-data-types";
 import type { NotHasTotalRes } from "response-data-types";
 
 import { callApi } from "@/util/api";
-import { decode } from "@/util/index";
+import { formatDateString } from "@/util/parseDate";
+import { decode } from "@/util";
 
 const props = defineProps({
 	title: {
