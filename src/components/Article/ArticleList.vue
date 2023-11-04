@@ -37,12 +37,12 @@ import type { list } from 'postcss';
 						<div class="detail">
 							<div class="tag-list">
 								<span v-for="(tagItem, tagIndex) in item.tag" :key="tagIndex">{{
-									`#${tagItem}`
+									`#${tagItem.tag}`
 								}}</span>
 							</div>
 							<div class="article-info">
 								<div>{{ `${$t("article.author")}：${item.author_name}` }}</div>
-								<div>{{ `${$t("article.date")}：${item.publish_date}` }}</div>
+								<div>{{ `${$t("article.date")}：${formatDateString(item.publish_date)}` }}</div>
 							</div>
 						</div>
 					</div>
@@ -67,7 +67,8 @@ import type { HasTotalRes } from "response-data-types";
 import type { PaginationGetList } from "common-types";
 
 import { callApi } from "@/util/api";
-import { decode } from "@/util/index";
+import { formatDateString } from "@/util/parseDate";
+import { decode } from "@/util";
 
 const props = defineProps({
 	type: {
@@ -139,6 +140,7 @@ onMounted(async () => {
 
 <style scoped lang="scss">
 .article-list {
+  min-height: calc(100vh - 104px);
 	& .article-container {
 		width: 1000px;
 		margin: 0 auto;
@@ -241,6 +243,7 @@ onMounted(async () => {
 
 @media (max-width: 768px) {
 	.article-list {
+    min-height: calc(100vh - 101px);
 		& .article-container {
 			@apply w-full;
 			padding: 4vw;
