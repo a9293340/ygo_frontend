@@ -79,7 +79,7 @@ const props = defineProps({
 // 搜尋
 const listQuery = ref<SearchArticleType>({
   page: 0,
-  limit: 2,
+  limit: 5,
   title: '',
   article_type: 0,
   article_subtype: null,
