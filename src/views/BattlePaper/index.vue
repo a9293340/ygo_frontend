@@ -1,9 +1,5 @@
 <template>
-	<ArticleList
-		:type="5"
-		:sub-type="null"
-		:title="`${$t('menu.battle_paper')}`"
-	/>
+  <ArticleList :type="5" :title="`${$t('menu.battle_paper')}`" />
 </template>
 
 <script setup lang="ts"></script>
