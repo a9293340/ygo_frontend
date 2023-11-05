@@ -35,3 +35,25 @@ export const setAccount = (account: string) =>
 	localStorage.setItem(AccountKey, account);
 
 export const removeAccount = () => localStorage.removeItem(AccountKey);
+
+// 移除多層物件內的null及空字串項目
+export const removeNullAndEmptyString = (obj: any): any => {
+	if (typeof obj !== 'object' || obj === null) {
+		// 如果傳入的不是物件或是 null，直接返回該值
+		return obj
+	}
+	// 建立一個新物件或陣列來存放過濾後的項目
+	const filteredObj = Array.isArray(obj) ? [] : {}
+
+	for (const key in obj) {
+		const value = obj[key]
+		// 使用遞迴處理多層物件
+		const filteredValue = removeNullAndEmptyString(value)
+		// 檢查處理後的值是否為 null 或 ''，如果不是就加入新的物件或陣列中
+		if (filteredValue !== null && filteredValue !== '') {
+			// @ts-ignore
+			filteredObj[key] = filteredValue
+		}
+	}
+	return filteredObj
+}
