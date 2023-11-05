@@ -2,18 +2,18 @@
   <div :class="{ 'page-hidden': props.hidden }" class="pagination-container">
     <el-pagination
       :page-count="Math.ceil(props.total / props.limit)"
+      :pager-count="5"
       :page-size="props.limit"
       layout="total, prev, pager, next"
       :total="props.total"
       @current-change="handleCurrentChange"
       :current-page="props.page+1"
+      :small="browserWidth < 450"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-// import { defineProps, defineEmits, computed } from "vue";
-
 const props = defineProps({
   hidden: {
     type: Boolean,
@@ -40,6 +40,8 @@ const handleCurrentChange = (val: number) => {
     behavior: 'smooth',
   });
 };
+
+const browserWidth = window.innerWidth
 </script>
 
 <style lang="scss" scoped>
@@ -53,7 +55,10 @@ const handleCurrentChange = (val: number) => {
     .number,
     .more {
       @apply bg-transparent;
-      color: lightgray;
+      color: rgba(211, 211, 211, 0.8);
+    }
+    & .is-active {
+      @apply text-white;
     }
   }
 }
