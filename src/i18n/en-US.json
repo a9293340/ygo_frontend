@@ -52,6 +52,7 @@
     "input_name": "請輸入卡片名稱",
     "input_number": "請輸入卡片密碼",
     "search": "搜尋",
-    "show_form": "點擊箭頭顯示篩選列"
+    "show_form": "點擊箭頭顯示篩選列",
+    "detail": "詳情"
   }
 }
