@@ -23,6 +23,7 @@ type FindCardsInfoType = {
 	type?: string;
 	star?: string;
 	attribute?: string;
+	race?: string;
 	rarity?: string;
 	atk_t?: number;
 	atk_l?: number;
