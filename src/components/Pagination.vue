@@ -6,7 +6,7 @@
       layout="total, prev, pager, next"
       :total="props.total"
       @current-change="handleCurrentChange"
-      :current-page="props.page"
+      :current-page="props.page+1"
     />
   </div>
 </template>
