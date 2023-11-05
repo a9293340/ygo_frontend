@@ -1,37 +1,57 @@
 {
-	"article": {
-		"author": "作者",
-		"date": "日期",
-		"more": "更多文章"
-	},
-	"menu": {
-		"home": "首頁",
-		"member": "會員中心",
-		"info": "會員資料",
-		"deck_list": "牌組列表",
-		"meta_deck": "Meta Deck",
-		"battle_paper": "戰報",
-		"series_introduction": "系列介紹",
-		"theme_deck": "主題牌組",
-		"plugin": "外掛系列",
-		"useful_card_introduction": "泛用卡介紹",
-		"single_card": "單卡介紹",
-		"strategy": "戰術分析",
-		"production_information": "卡表介紹",
-		"p_pack": "補充包",
-		"p_deck": "預組",
-		"p_rd": "Rush Duel",
-		"p_box": "禮盒",
-		"p_other": "其他",
-		"rules": "規則相關",
-		"judgment": "判例",
-		"ban_list": "禁卡表",
-		"series_story": "卡片故事",
-		"cards": "卡片查詢",
-		"deck": "組牌",
-		"calendar": "日曆"
-	},
-	"site_name": {
-		"site_name": "ygo卡壇"
-	}
+  "article": {
+    "author": "作者",
+    "date": "日期",
+    "more": "更多文章"
+  },
+  "menu": {
+    "home": "首頁",
+    "member": "會員中心",
+    "info": "會員資料",
+    "deck_list": "牌組列表",
+    "meta_deck": "上位卡表",
+    "battle_paper": "戰報",
+    "series_introduction": "系列介紹",
+    "theme_deck": "主題牌組",
+    "plugin": "外掛系列",
+    "useful_card_introduction": "泛用卡介紹",
+    "single_card": "單卡介紹",
+    "strategy": "戰術分析",
+    "production_information": "卡表介紹",
+    "p_pack": "補充包",
+    "p_deck": "預組",
+    "p_rd": "Rush Duel",
+    "p_box": "禮盒",
+    "p_other": "其他",
+    "rules": "規則相關",
+    "judgment": "判例",
+    "ban_list": "禁卡表",
+    "series_story": "卡片故事",
+    "cards": "卡片查詢",
+    "deck": "組牌",
+    "calendar": "日曆"
+  },
+  "site_name": {
+    "site_name": "ygo卡壇"
+  },
+  "card": {
+    "id": "卡號",
+    "name": "卡片名稱",
+    "type": "種類",
+    "star": "星數",
+    "attribute": "屬性",
+    "race": "種族",
+    "atk": "攻擊力",
+    "def": "守備力",
+    "number": "卡片密碼",
+    "effect": "效果",
+    "product_information_type": "包裝分類",
+    "rarity": "稀有度",
+    "image": "卡圖",
+    "input_id": "請輸入卡號",
+    "input_name": "請輸入卡片名稱",
+    "input_number": "請輸入卡片密碼",
+    "search": "搜尋",
+    "show_form": "點擊箭頭顯示篩選列"
+  }
 }
