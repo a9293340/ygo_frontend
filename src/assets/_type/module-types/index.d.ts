@@ -17,7 +17,7 @@ type CardsPriceYuYuType = {
 };
 
 type FindCardsInfoType = {
-	_id?: string;
+	id?: string;
 	number?: string;
 	name?: string;
 	type?: string;
@@ -40,7 +40,8 @@ declare module "module-types" {
 	}
 
 	interface Cards {
-		_id?: string;
+		_id: string;
+		id: string;
 		name: string;
 		type: string;
 		star: string;

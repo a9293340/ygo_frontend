@@ -8,9 +8,9 @@
 			<div class="item-box">
 				<div class="item-title">{{ $t("card.id") + "：" }}</div>
 				<inputs
-					v-model="listQuery.filter._id"
+					v-model="listQuery.filter.id"
 					type="text"
-					:placeholder="$t('card.input_id')"
+					:placeholder="$t('card.inputid')"
 				/>
 			</div>
 			<!-- 卡片名稱 -->
@@ -195,12 +195,12 @@
 				</div>
 				<div
 					class="card-info"
-					:class="{ 'chosen-card': chosenCard === item._id }"
+					:class="{ 'chosen-card': chosenCard === item.id }"
 					v-for="item in list"
-					:key="item._id"
-					@click.stop="chosenCard = item._id ? item._id : ''"
+					:key="item.id"
+					@click.stop="chosenCard = item.id ? item.id : ''"
 				>
-					<div>{{ item._id }}</div>
+					<div>{{ item.id }}</div>
 					<div class="lg-item">{{ item.name }}</div>
 					<div>{{ item.type }}</div>
 					<div class="sm-item">{{ item.star }}</div>
@@ -221,7 +221,7 @@
 					<div class="sm-item">{{ item.atk }}</div>
 					<div class="sm-item">{{ item.def }}</div>
 					<div>{{ item.number }}</div>
-					<router-link class="detail sm-item" :to="`/cards/${item._id}`">{{
+					<router-link class="detail sm-item" :to="`/cards/${item.id}`">{{
 						$t("card.detail")
 					}}</router-link>
 				</div>
@@ -252,7 +252,7 @@ const listQuery = ref<CardListType>({
 	page: 0,
 	limit: 20,
 	filter: {
-		_id: "",
+		id: "",
 		number: "",
 		name: "",
 		type: "",
