@@ -7,10 +7,10 @@
 			<!-- 卡號 -->
 			<div class="item-box">
 				<div class="item-title">{{ $t("card.id") + "：" }}</div>
-				<inputs
+				<input
 					v-model="listQuery.filter.id"
 					type="text"
-					:placeholder="$t('card.inputid')"
+					:placeholder="$t('card.input_id')"
 				/>
 			</div>
 			<!-- 卡片名稱 -->
