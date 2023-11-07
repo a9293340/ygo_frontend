@@ -1,5 +1,3 @@
 <template>
-  <div class="rd-detail">
-    rd-detail
-  </div>
+	<ArticleDetail path="productInformation" />
 </template>

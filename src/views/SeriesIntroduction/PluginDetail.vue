@@ -1,5 +1,3 @@
 <template>
-  <div class="plugin-detail">
-    plugin-detail
-  </div>
+	<ArticleDetail path="serialIntroduction" />
 </template>

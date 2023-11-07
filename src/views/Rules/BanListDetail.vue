@@ -1,5 +1,3 @@
 <template>
-  <div class="ban-detail">
-    ban-detail
-  </div>
+	<ArticleDetail path="rules" />
 </template>

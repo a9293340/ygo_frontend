@@ -1,5 +1,3 @@
 <template>
-  <div class="deck-detail">
-    deck-detail
-  </div>
+	<ArticleDetail path="productInformation" />
 </template>

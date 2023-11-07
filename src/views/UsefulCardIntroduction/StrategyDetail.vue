@@ -1,5 +1,3 @@
 <template>
-  <div class="strategy-detail">
-    strategy-detail
-  </div>
+	<ArticleDetail path="usefulCardIntroduction" />
 </template>

@@ -1,5 +1,3 @@
 <template>
-  <div class="judgement-detail">
-    judgement-detail
-  </div>
+	<ArticleDetail path="rules" />
 </template>

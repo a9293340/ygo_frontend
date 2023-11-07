@@ -1,5 +1,3 @@
 <template>
-  <div class="battle-paper-detail">
-    battle-paper-detail
-  </div>
+	<ArticleDetail path="battlePaper" />
 </template>
