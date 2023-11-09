@@ -10,6 +10,7 @@ declare module '@vue/runtime-core' {
     ArticleDetail: typeof import('./components/Article/ArticleDetail.vue')['default']
     ArticleList: typeof import('./components/Article/ArticleList.vue')['default']
     Banner: typeof import('./components/home/Banner.vue')['default']
+    Calendar: typeof import('./components/Calendar/index.vue')['default']
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']

@@ -36,5 +36,48 @@ declare module "component-types" {
 		children?: MenuItemList;
 	}
 
+	interface Page {
+		id: string;
+		day?: number;
+		week?: number;
+		month: number;
+		year: number;
+		view: PageView;
+		trimWeeks: boolean;
+		position: number;
+		row: number;
+		rowFromEnd: number;
+		column: number;
+		columnFromEnd: number;
+		showWeeknumbers: boolean;
+		showIsoWeeknumbers: boolean;
+		weeknumberPosition: string;
+		monthTitle: string;
+		weekTitle?: string;
+		dayTitle?: string;
+		title: string;
+		titlePosition: TitlePosition;
+		shortMonthLabel: string;
+		monthLabel: string;
+		shortYearLabel: string;
+		yearLabel: string;
+		monthComps: MonthParts;
+		prevMonthComps: MonthParts;
+		nextMonthComps: MonthParts;
+		days: CalendarDay[];
+		weeks: CalendarWeek[];
+		weekdays: CalendarWeekday[];
+		viewDays: CalendarDay[];
+		viewWeeks: CalendarWeek[];
+	}
+
+	interface Todo {
+		description?: string;
+		isComplete?: boolean;
+		dates?: Date[];
+		color?: string;
+	}
+
+	type PageList = Page[];
 	type MenuItemList = MenuItem[];
 }

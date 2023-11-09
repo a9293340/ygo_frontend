@@ -9,6 +9,9 @@ import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import "element-plus/dist/index.css";
 
 import i18n from "@/i18n";
+import VCalendar from "v-calendar";
+
+import "v-calendar/style.css";
 
 import "./style.css";
 
@@ -22,6 +25,7 @@ app.use(createPinia());
 app.use(router);
 app.use(i18n);
 app.use(ElementPlus);
+app.use(VCalendar, {});
 app.component("VueClientRecaptcha", VueClientRecaptcha);
 
 app.mount("#app");

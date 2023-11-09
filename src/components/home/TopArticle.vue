@@ -17,7 +17,11 @@
 					<div class="title">{{ item.title }}</div>
 					<div class="article-info">
 						<div>{{ `${$t("article.author")}：${item.author_name}` }}</div>
-						<div>{{ `${$t("article.date")}：${formatDateString(item.publish_date)}` }}</div>
+						<div>
+							{{
+								`${$t("article.date")}：${formatDateString(item.publish_date)}`
+							}}
+						</div>
 					</div>
 				</div>
 			</router-link>
@@ -30,7 +34,6 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, defineProps } from "vue";
 import type { BaseArticleList, NormalArticleList } from "module-types";
 import type { SearchArticleType } from "request-data-types";
 import type { NotHasTotalRes } from "response-data-types";

@@ -1,6 +1,7 @@
 <template>
 	<div class="index-wrapper">
 		<Banner />
+		<Calendar :is-dark="true" :expanded="false" @get:data="getTimeData" />
 		<TopArticle
 			:title="$t('menu.meta_deck')"
 			:type="0"
@@ -19,10 +20,16 @@
 	</div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import type { CalendarList } from "module-types";
+
+const getTimeData = (data: CalendarList | []) => {
+	console.log(data);
+};
+</script>
 
 <style lang="scss" scoped>
 .index-wrapper {
-  padding: 0 0 30px;
+	padding: 0 0 30px;
 }
 </style>
