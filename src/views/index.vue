@@ -1,7 +1,12 @@
 <template>
 	<div class="index-wrapper">
 		<Banner />
-		<Calendar :is-dark="true" :expanded="false" @get:data="getTimeData" />
+		<Calendar
+			:is-dark="true"
+			:type-color="['blue', 'red', 'green']"
+			:expanded="false"
+			@get:data="getTimeData"
+		/>
 		<TopArticle
 			:title="$t('menu.meta_deck')"
 			:type="0"

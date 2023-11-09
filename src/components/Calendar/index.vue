@@ -2,20 +2,16 @@
 import type { CalendarList } from "module-types";
 import type { CalendarListType } from "request-data-types";
 import type { HasTotalRes } from "response-data-types";
-import type { PageList, Todo } from "component-types";
+import type { PageList, Todo, CalendarProps } from "component-types";
 
 import { callApi } from "@/util/api";
 import { decode } from "@/util";
 const emits = defineEmits(["get:data"]);
-const props = defineProps({
-	isDark: {
-		type: Boolean,
-		default: true,
-	},
-	expanded: {
-		type: Boolean,
-		default: true,
-	},
+
+const props = withDefaults(defineProps<CalendarProps>(), {
+	isDark: true,
+	expanded: false,
+	typeColor: () => ["blue", "red", "green"],
 });
 
 const todo = ref<Todo[]>([]);
@@ -37,7 +33,6 @@ const attributes = computed(() => [
 ]);
 
 const getDateInfo = async (date: string) => {
-	const pickTypes = ["blue", "red", "green"];
 	originData.value = decode<HasTotalRes<CalendarList>>(
 		(
 			await callApi<CalendarListType>(
@@ -57,7 +52,7 @@ const getDateInfo = async (date: string) => {
 		description: `${el.title} ${el.content && ":"} ${el.content}`,
 		isComplete: new Date(el.date) < new Date(),
 		dates: [new Date(el.date)],
-		color: pickTypes[el.type],
+		color: props.typeColor[el.type] ? props.typeColor[el.type] : "black",
 	}));
 
 	emits("get:data", originData.value);

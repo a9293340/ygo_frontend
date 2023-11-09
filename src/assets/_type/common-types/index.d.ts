@@ -80,4 +80,46 @@ declare module "component-types" {
 
 	type PageList = Page[];
 	type MenuItemList = MenuItem[];
+
+	interface CalendarProps {
+		isDark: boolean;
+		expanded: boolean;
+		typeColor: string[];
+	}
+
+	type GridTickSet = {
+		color: string;
+		size: number;
+		weight: string;
+	};
+
+	type Legend = {
+		color: string;
+		size: number;
+		position: string;
+	};
+
+	type ToolTip = {
+		color: string;
+		titleSize: number;
+		contentSize: number;
+		bgc: string;
+	};
+
+	interface PriceChartProps {
+		price: CardsPriceType[];
+		colors: string[];
+		yAxisSetSize: number;
+		xAxisSetSize: number;
+		width: string;
+		height: string;
+		yGrid: boolean;
+		xGrid: boolean;
+		xGridColor: string;
+		yGridColor: string;
+		xTickSet: GridTickSet;
+		yTickSet: GridTickSet;
+		legend: Legend;
+		toolTip: ToolTip;
+	}
 }

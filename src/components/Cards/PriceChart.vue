@@ -13,114 +13,52 @@ import {
 	TimeScale,
 } from "chart.js";
 import type { ChartOptions, ChartData, ChartDataset } from "chart.js";
+import type { PriceChartProps } from "component-types";
+
 import "chartjs-adapter-date-fns";
 
-const props = defineProps({
-	price: {
-		type: Array,
-		default: () =>
-			[
-				{ time: "", price_avg: 0, price_lowest: 0, rarity: "" },
-			] as CardsPriceType[],
-	},
-	colors: {
-		type: Array,
-		default: () => [
-			"rgba(255, 99, 132, 1)",
-			"rgba(54, 162, 235, 1)",
-			"rgba(255, 206, 86, 1)",
-			"rgba(75, 192, 192, 1)",
-			"rgba(153, 102, 255, 1)",
-			"rgba(255, 159, 64, 1)",
-			"rgba(245, 74, 85, 1)",
-		],
-	},
-	yAxisSetSize: {
-		type: Number,
-		default: 5,
-	},
-	xAxisSetSize: {
-		type: Number,
-		default: 3,
-	},
-	width: {
-		type: String,
-		default: "80%",
-	},
-	height: {
-		type: String,
-		default: "500px",
-	},
-	yGrid: {
-		type: Boolean,
-		default: true,
-	},
-	xGrid: {
-		type: Boolean,
-		default: true,
-	},
-	xGridColor: {
-		type: String,
-		default: "rgba(255,255,255,0.3)",
-	},
-	yGridColor: {
-		type: String,
-		default: "rgba(255,255,255,0.3)",
-	},
-	xTickSet: {
-		type: Object,
-		default: {
-			color: "white",
-			size: 14,
-			weight: "700",
-		},
-	},
-	yTickSet: {
-		type: Object,
-		default: {
-			color: "white",
-			size: 14,
-			weight: "700",
-		},
-	},
-	legend: {
-		type: Object,
-		default: {
-			color: "white",
-			size: 14,
-			position: "right",
-		},
-	},
-	toolTip: {
-		type: Object,
-		default: {
-			color: "rgb(0,0,0)",
-			titleSize: 14,
-			contentSize: 14,
-			bgc: "rgba(255,255,255,0.7)",
-		},
-	},
+const props = withDefaults(defineProps<PriceChartProps>(), {
+	price: () => [{ time: "", price_avg: 0, price_lowest: 0, rarity: "" }],
+	colors: () => [
+		"rgba(255, 99, 132, 1)",
+		"rgba(54, 162, 235, 1)",
+		"rgba(255, 206, 86, 1)",
+		"rgba(75, 192, 192, 1)",
+		"rgba(153, 102, 255, 1)",
+		"rgba(255, 159, 64, 1)",
+		"rgba(245, 74, 85, 1)",
+	],
+	xAxisSetSize: 3,
+	yAxisSetSize: 5,
+	width: "80%",
+	height: "500px",
+	yGrid: true,
+	xGrid: true,
+	xGridColor: "rgba(255,255,255,0.3)",
+	yGridColor: "rgba(255,255,255,0.3)",
+	xTickSet: () => ({
+		color: "white",
+		size: 14,
+		weight: "700",
+	}),
+	yTickSet: () => ({
+		color: "white",
+		size: 14,
+		weight: "700",
+	}),
+	legend: () => ({
+		color: "white",
+		size: 14,
+		position: "right",
+	}),
+	toolTip: () => ({
+		color: "rgb(0,0,0)",
+		titleSize: 14,
+		contentSize: 14,
+		bgc: "rgba(255,255,255,0.7)",
+	}),
 });
-const price = computed(() => props.price as CardsPriceType[]);
-const colors = computed(() => props.colors as string[]);
-const xTickSet = computed(
-	() => props.xTickSet as { color: string; size: number; weight: string }
-);
-const yTickSet = computed(
-	() => props.yTickSet as { color: string; size: number; weight: string }
-);
-const legend = computed(
-	() => props.legend as { color: string; size: number; position: string }
-);
-const toolTip = computed(
-	() =>
-		props.legend as {
-			color: string;
-			titleSize: number;
-			contentSize: number;
-			bgc: string;
-		}
-);
+
 const priceX = ref<string[]>([]);
 const priceY = ref<ChartDataset<"line">[]>([]);
 const max = ref(0);
@@ -161,10 +99,10 @@ const chartOptions = computed(
 					},
 					ticks: {
 						font: {
-							size: xTickSet.value.size,
-							weight: xTickSet.value.weight,
+							size: props.xTickSet.size,
+							weight: props.xTickSet.weight,
 						},
-						color: xTickSet.value.color,
+						color: props.xTickSet.color,
 						stepSize: props.xAxisSetSize,
 					},
 					grid: {
@@ -177,10 +115,10 @@ const chartOptions = computed(
 					position: "left", // 顯示在左方的 y 軸
 					ticks: {
 						font: {
-							size: yTickSet.value.size,
-							weight: yTickSet.value.weight,
+							size: props.yTickSet.size,
+							weight: props.yTickSet.weight,
 						},
-						color: yTickSet.value.color,
+						color: props.yTickSet.color,
 						stepSize: Math.floor(
 							(max.value +
 								Math.floor(max.value * 0.1) -
@@ -198,13 +136,13 @@ const chartOptions = computed(
 			},
 			plugins: {
 				legend: {
-					position: legend.value.position, // 设置图例位置为右侧
+					position: props.legend.position, // 设置图例位置为右侧
 					labels: {
 						font: {
-							size: legend.value.size, // 调整字体大小
+							size: props.legend.size, // 调整字体大小
 							weight: "bold", // 字体粗细
 						},
-						color: legend.value.color, // 设置字体颜色
+						color: props.legend.color, // 设置字体颜色
 					},
 				},
 				tooltip: {
@@ -277,8 +215,8 @@ const externalTooltipHandler = (context: any) => {
 
 			const th = document.createElement("th");
 			th.style.borderWidth = "0";
-			th.style.color = toolTip.value.color;
-			th.style.fontSize = `${toolTip.value.titleSize}px`;
+			th.style.color = props.toolTip.color;
+			th.style.fontSize = `${props.toolTip.titleSize}px`;
 			const text = document.createTextNode(title);
 
 			th.appendChild(text);
@@ -305,8 +243,8 @@ const externalTooltipHandler = (context: any) => {
 
 			const td = document.createElement("td");
 			td.style.borderWidth = "0";
-			td.style.color = toolTip.value.color;
-			td.style.fontSize = `${toolTip.value.contentSize}px`;
+			td.style.color = props.toolTip.color;
+			td.style.fontSize = `${props.toolTip.contentSize}px`;
 
 			const text = document.createTextNode(body);
 
@@ -337,22 +275,22 @@ const externalTooltipHandler = (context: any) => {
 	tooltipEl.style.font = tooltip.options.bodyFont.string;
 	tooltipEl.style.padding =
 		tooltip.options.padding + "px " + tooltip.options.padding + "px";
-	tooltipEl.style.backgroundColor = toolTip.value.bgc;
+	tooltipEl.style.backgroundColor = props.toolTip.bgc;
 	tooltipEl.style.borderRadius = "10px";
 };
 
 onMounted(() => {
-	if (price.value.length) {
-		const rarity = [...new Set(price.value.map((el) => el.rarity))];
+	if (props.price.length) {
+		const rarity = [...new Set(props.price.map((el) => el.rarity))];
 		for (let i = 0; i < rarity.length; i++) {
 			const rar = rarity[i];
-			const date = price.value.filter((el) => el.rarity === rar);
+			const date = props.price.filter((el) => el.rarity === rar);
 			priceX.value = date.map((el) => el.time.split(" ")[0]);
 			priceY.value.push({
 				label: `${rar} 露天均價`,
 				data: date.map((el) => el.price_avg),
-				backgroundColor: colors.value[i % 7],
-				borderColor: colors.value[i % 7], // 设置线的颜色
+				backgroundColor: props.colors[i % 7],
+				borderColor: props.colors[i % 7], // 设置线的颜色
 				tension: 0.1,
 				borderWidth: 1,
 			});
