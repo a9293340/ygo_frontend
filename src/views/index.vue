@@ -20,7 +20,10 @@
         />
       </div>
       <div class="calendar">
-        <div class="calendar-title">{{ $t('calendar.title') }}</div>
+        <div class="calendar-title">
+          <el-icon class="guide-icon"><Guide /></el-icon>
+          <div class="label">{{ $t('calendar.title') }}</div>
+        </div>
         <Calendar
             :is-dark="true"
             :type-color="['blue', 'red', 'green']"
@@ -50,10 +53,16 @@ const getTimeData = (data: CalendarList | []) => {
       @apply text-center;
       margin: 70px 0 0 50px;
       & .calendar-title {
-        @apply font-bold;
+        @apply flex items-center justify-center font-bold;
         color: lightgray;
-        font-size: 20px;
         margin: 0 0 10px;
+        & .guide-icon {
+          font-size: 24px;
+        }
+        & .label {
+          font-size: 20px;
+          margin: 0 5px;
+        }
       }
     }
   }
