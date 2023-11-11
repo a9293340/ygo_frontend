@@ -1,40 +1,82 @@
 <template>
 	<div class="index-wrapper">
 		<Banner />
-		<Calendar
-			:is-dark="true"
-			:type-color="['blue', 'red', 'green']"
-			:expanded="false"
-			@get:data="getTimeData"
-		/>
-		<TopArticle
-			:title="$t('menu.meta_deck')"
-			:type="0"
-			:router="'/meta_deck'"
-		/>
-		<TopArticle
-			:title="$t('menu.series_introduction')"
-			:type="1"
-			:router="'/series_introduction/theme_deck'"
-		/>
-		<TopArticle
-			:title="$t('menu.useful_card_introduction')"
-			:type="2"
-			:router="'/useful_card_introduction/single_card'"
-		/>
+    <div class="content-container">
+      <div class="top-article">
+        <TopArticle
+            :title="$t('menu.meta_deck')"
+            :type="0"
+            :router="'/meta_deck'"
+        />
+        <TopArticle
+            :title="$t('menu.series_introduction')"
+            :type="1"
+            :router="'/series_introduction/theme_deck'"
+        />
+        <TopArticle
+            :title="$t('menu.useful_card_introduction')"
+            :type="2"
+            :router="'/useful_card_introduction/single_card'"
+        />
+      </div>
+      <div class="calendar">
+        <div class="calendar-title">{{ $t('calendar.title') }}</div>
+        <Calendar
+            :is-dark="true"
+            :type-color="['blue', 'red', 'green']"
+            :expanded="false"
+            @get:data="getTimeData"
+        />
+      </div>
+    </div>
 	</div>
 </template>
 
 <script setup lang="ts">
 import type { CalendarList } from "module-types";
 
+const originData = ref<CalendarList | []>([]);
 const getTimeData = (data: CalendarList | []) => {
-	console.log(data);
+  originData.value = data.reverse()
 };
 </script>
 
 <style lang="scss" scoped>
 .index-wrapper {
 	padding: 0 0 30px;
+  & .content-container {
+    @apply flex justify-center;
+    & .calendar {
+      @apply text-center;
+      margin: 70px 0 0 50px;
+      & .calendar-title {
+        @apply font-bold;
+        color: lightgray;
+        font-size: 20px;
+        margin: 0 0 10px;
+      }
+    }
+  }
+}
+
+@media (max-width: 1350px) {
+  .index-wrapper {
+    & .content-container {
+      & .calendar {
+        margin: 40px 0 0 30px;
+      }
+    }
+  }
+}
+
+@media (max-width: 1050px) {
+  .index-wrapper {
+    & .content-container {
+      @apply flex flex-col justify-center;
+      & .calendar {
+        margin: 20px 0 0 0;
+      }
+    }
+  }
 }
 </style>
