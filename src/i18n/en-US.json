@@ -54,5 +54,8 @@
     "search": "搜尋",
     "show_form": "點擊箭頭顯示篩選列",
     "detail": "詳情"
+  },
+  "calendar": {
+    "title": "活動行事曆"
   }
 }

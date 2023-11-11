@@ -138,7 +138,7 @@ onMounted(async () => {
 	}
 }
 
-@media (max-width: 1050px) {
+@media (max-width: 1350px) {
 	.top-article {
 		width: 740px;
 		& .list-container {

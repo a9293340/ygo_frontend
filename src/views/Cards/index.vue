@@ -247,6 +247,9 @@ import { ygoOptions } from "@/config/ygo";
 import { onMounted } from "vue";
 import { callApi } from "@/util/api";
 import { decode, removeNullAndEmptyString } from "@/util";
+import { useRoute, useRouter } from "vue-router";
+const route = useRoute();
+const router = useRouter();
 
 const listQuery = ref<CardListType>({
 	page: 0,
@@ -312,11 +315,15 @@ const getCards = async () => {
 	);
 	list.value = cards.list;
 	total.value = cards.total;
+  await router.replace({
+    query: removeNullAndEmptyString(listQuery.value.filter)
+  })
 };
 
 const chosenCard = ref<string>("");
 
 onMounted(async () => {
+  listQuery.value.filter = { ...listQuery.value.filter, ...route.query };
 	await getCards();
 });
 </script>

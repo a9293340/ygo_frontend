@@ -1,9 +1,9 @@
 <template>
 	<div class="banner-wrapper">
 		<div class="carousel">
-			<el-icon class="arrow arrow-left" @click="myCarousel.prev()"
-				><ArrowLeftBold
-			/></el-icon>
+			<el-icon class="arrow arrow-left" @click="myCarousel.prev()">
+        <ArrowLeftBold/>
+      </el-icon>
 			<Carousel
 				class="carousel-container"
 				:itemsToShow="1"
@@ -83,11 +83,14 @@ onMounted(async () => {
 		}
 		& .carousel-container {
 			width: 75vw;
+      max-width: 1000px;
 			padding: 2vw 0 4vw;
 			& .img {
 				@apply bg-no-repeat bg-cover bg-center;
 				width: 75vw;
 				height: 35vw;
+        max-width: 1000px;
+        max-height: 466.67px;
 			}
 			& .has-link {
 				@apply cursor-pointer;
