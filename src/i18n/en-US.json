@@ -56,6 +56,10 @@
     "detail": "詳情"
   },
   "calendar": {
-    "title": "活動行事曆"
+    "title": "活動行事曆",
+    "race": "賽事",
+    "release_date": "新發售",
+    "other_activity": "其他活動",
+    "no_activity": "目前尚無活動"
   }
 }
