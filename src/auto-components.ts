@@ -23,6 +23,7 @@ declare module '@vue/runtime-core' {
     PriceChart: typeof import('./components/Cards/PriceChart.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SearchCards: typeof import('./components/Cards/SearchCards.vue')['default']
     Sideboard: typeof import('./components/common/Sideboard.vue')['default']
     TopArticle: typeof import('./components/home/TopArticle.vue')['default']
   }

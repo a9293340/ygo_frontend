@@ -254,7 +254,7 @@ const router = createRouter({
 					component: () => import("../views/Deck/Detail.vue"),
 				},
 				{
-					path: "/add",
+					path: "/deck/add",
 					name: "deck_add",
 					component: () => import("../views/Deck/Add.vue"),
 				},
