@@ -9,33 +9,33 @@ const router = createRouter({
 			component: () => import("../views/index.vue"),
 		},
 		// 會員中心
-		{
-			path: "/member",
-			name: "member",
-			redirect: "/member/info",
-			children: [
-				{
-					path: "info",
-					name: "info",
-					component: () => import("../views/Member/Info.vue"),
-				},
-				{
-					path: "deck_list",
-					name: "deck_list",
-					component: () => import("../views/Member/DeckList.vue"),
-				},
-				{
-					path: "deck_list/add",
-					name: "deck_add",
-					component: () => import("../views/Member/DeckAdd.vue"),
-				},
-				{
-					path: "deck_list/:id",
-					name: "deck_detail",
-					component: () => import("../views/Member/DeckDetail.vue"),
-				},
-			],
-		},
+		// {
+		// 	path: "/member",
+		// 	name: "member",
+		// 	redirect: "/member/info",
+		// 	children: [
+		// 		{
+		// 			path: "info",
+		// 			name: "info",
+		// 			component: () => import("../views/Member/Info.vue"),
+		// 		},
+		// 		{
+		// 			path: "deck_list",
+		// 			name: "deck_list",
+		// 			component: () => import("../views/Member/DeckList.vue"),
+		// 		},
+		// 		{
+		// 			path: "deck_list/add",
+		// 			name: "deck_add",
+		// 			component: () => import("../views/Member/DeckAdd.vue"),
+		// 		},
+		// 		{
+		// 			path: "deck_list/:id",
+		// 			name: "deck_detail",
+		// 			component: () => import("../views/Member/DeckDetail.vue"),
+		// 		},
+		// 	],
+		// },
 		// 上位卡表
 		{
 			path: "/meta_deck",
@@ -241,7 +241,24 @@ const router = createRouter({
 		{
 			path: "/deck",
 			name: "deck",
-			component: () => import("../views/Deck/index.vue"),
+			redirect: "/deck",
+			children: [
+				{
+					path: "/deck",
+					name: "deck_list",
+					component: () => import("../views/Deck/index.vue"),
+				},
+				{
+					path: "/:id",
+					name: "deck_detail",
+					component: () => import("../views/Deck/Detail.vue"),
+				},
+				{
+					path: "/deck/add",
+					name: "deck_add",
+					component: () => import("../views/Deck/Add.vue"),
+				},
+			],
 		},
 		{
 			path: "/deck/:id",

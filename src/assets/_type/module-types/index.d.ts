@@ -148,6 +148,15 @@ declare module "module-types" {
 		date: string;
 	}
 
+	interface PackType {
+		_id?: string;
+		packType: string;
+		subtype?: string;
+		maintype?: string;
+		status?: number;
+		name: string;
+	}
+
 	type CardsImageList = CardsImage[];
 	type CardsList = Cards[];
 	type DeckList = Deck[];
@@ -160,8 +169,18 @@ declare module "module-types" {
 	type TagList = Tag[];
 	type PermitList = Permit[];
 	type TokenList = Token[];
+	type PackTypeList = PackType[];
 }
 declare module "request-data-types" {
+	type PackTypeListType = {
+		page: number;
+		limit: number;
+		filter: {
+			name?: string;
+			status: number;
+		};
+	};
+
 	type LoginType = {
 		account: string;
 		password: string;
