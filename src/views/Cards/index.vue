@@ -71,7 +71,7 @@ import type { CardsList } from "module-types";
 import type { PaginationGetList } from "common-types";
 import type { HasTotalRes } from "response-data-types";
 import { onMounted } from "vue";
-import { decode, removeNullAndEmptyString } from "@/util";
+import { removeNullAndEmptyString } from "@/util";
 import { useRoute, useRouter } from "vue-router";
 const route = useRoute();
 const router = useRouter();

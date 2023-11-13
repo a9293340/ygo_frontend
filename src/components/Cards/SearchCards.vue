@@ -405,4 +405,80 @@ onMounted(async () => {
 		}
 	}
 }
+
+@media (max-width: 1200px) {
+	.search-cards {
+		& .form-container {
+			width: 900px;
+		}
+		& .list-container {
+			width: 95vw;
+			min-width: unset;
+			overflow-y: scroll;
+			& .card-info-box {
+				min-width: 1100px;
+			}
+		}
+	}
+}
+
+@media (max-width: 900px) {
+	.search-cards {
+		& .form-container {
+			width: 760px;
+			& .item-box {
+				& input,
+				& select {
+					width: 140px;
+				}
+			}
+		}
+	}
+}
+
+@media (max-width: 768px) {
+	.search-cards {
+		min-height: calc(100vh - 101px);
+		& .close-form {
+			height: 55px;
+		}
+		& .form-container {
+			@apply w-full;
+			& .item-box {
+				font-size: 16px;
+				margin: 0 5px 10px;
+				& .item-title {
+					color: lightgray;
+					margin: 0 0 3px;
+				}
+				& input,
+				& select {
+					padding: 5px 8px;
+					border-radius: 5px;
+					width: 45vw;
+					background-color: rgba(255, 255, 255, 0.9);
+				}
+				& span {
+					color: lightgray;
+					margin: 0 0.25px;
+				}
+			}
+			& .search-btn {
+				@apply self-end;
+				color: lightgray;
+				border: 1px solid lightgray;
+				padding: 5px 8px;
+				border-radius: 5px;
+				width: 150px;
+				height: 36px;
+				margin: 10px 5px 10px;
+				transition-duration: 0.2s;
+				&:hover {
+					@apply text-white;
+					border: 1px solid white;
+				}
+			}
+		}
+	}
+}
 </style>
