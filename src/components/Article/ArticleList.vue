@@ -40,10 +40,10 @@
 								}}</span>
 							</div>
 							<div class="article-info">
-								<div>{{ `${$t("article.author")}：${item.author_name}` }}</div>
+								<div>{{ `${t("article.author")}：${item.author_name}` }}</div>
 								<div>
 									{{
-										`${$t("article.date")}：${formatDateString(
+										`${t("article.date")}：${formatDateString(
 											item.publish_date
 										)}`
 									}}
@@ -74,7 +74,9 @@ import type { PaginationGetList } from "common-types";
 import { callApi } from "@/util/api";
 import { formatDateString } from "@/util/parseDate";
 import { decode } from "@/util";
+import i18n from "@/i18n/index";
 
+const { t } = i18n.global;
 const props = defineProps({
 	type: {
 		type: Number,

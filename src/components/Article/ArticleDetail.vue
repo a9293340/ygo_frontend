@@ -8,10 +8,10 @@
 			/>
 			<h1>{{ article.title }}</h1>
 			<div class="info">
-				<div>{{ `${$t("article.author")}：${article.author_name}` }}</div>
+				<div>{{ `${t("article.author")}：${article.author_name}` }}</div>
 				<div>
 					{{
-						`${$t("article.date")}：${formatDateString(article.publish_date)}`
+						`${t("article.date")}：${formatDateString(article.publish_date)}`
 					}}
 				</div>
 			</div>
@@ -31,6 +31,9 @@ import { onMounted } from "vue";
 import { useRoute } from "vue-router";
 
 import { formatDateString } from "@/util/parseDate";
+import i18n from "@/i18n/index";
+
+const { t } = i18n.global;
 
 const props = defineProps({
 	path: {

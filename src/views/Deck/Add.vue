@@ -6,14 +6,24 @@ import type { HasTotalRes } from "response-data-types";
 const cardsList = ref<[] | CardsList>([]);
 const limit = ref(20);
 const page = ref(0);
+const trigger = ref(0)
 
 const getCardsList = (cards: {
 	cards: HasTotalRes<CardsList>;
 	listQuery: CardListType;
 }) => {
-	cardsList.value = cards.cards.list;
-	console.log(cardsList.value);
+	if(!cards.listQuery.page){
+		cardsList.value = []
+		trigger.value ++
+	}
+	cardsList.value = [...cardsList.value,...cards.cards.list];
+	page.value = cards.listQuery.page;
 };
+
+const callApi = () => {
+	page.value = page.value + 1
+}
+
 </script>
 
 <template>
@@ -24,7 +34,7 @@ const getCardsList = (cards: {
 			v-model:limit="limit"
 		/>
 		<div class="main-win">
-			<DeckWin :cards-list.sync="cardsList" />
+			<DeckWin :cards-list.sync="cardsList" @call:api="callApi" :trigger="trigger" />
 		</div>
 	</div>
 </template>

@@ -1,7 +1,11 @@
 <template>
-	<ArticleList :type="1" :sub-type="1" :title="`${$t('menu.plugin')}`" />
+	<ArticleList :type="1" :sub-type="1" :title="`${t('menu.plugin')}`" />
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import i18n from "@/i18n/index";
+
+const { t } = i18n.global;
+</script>
 
 <style lang="scss" scoped></style>

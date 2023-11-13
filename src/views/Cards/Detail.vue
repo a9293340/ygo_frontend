@@ -6,9 +6,9 @@
 				<div class="effect">{{ cardInfo?.effect }}</div>
 				<div class="info-box">
 					<div class="info-title">
-						<div>{{ $t("card.id") }}</div>
-						<div>{{ $t("card.type") }}</div>
-						<div>{{ $t("card.attribute") }}</div>
+						<div>{{ t("card.id") }}</div>
+						<div>{{ t("card.type") }}</div>
+						<div>{{ t("card.attribute") }}</div>
 					</div>
 					<div class="info-content">
 						<div>{{ cardInfo?.id }}</div>
@@ -16,9 +16,9 @@
 						<div>{{ cardInfo?.attribute }}</div>
 					</div>
 					<div class="info-title">
-						<div>{{ $t("card.star") }}</div>
-						<div>{{ $t("card.atk") }}</div>
-						<div>{{ $t("card.def") }}</div>
+						<div>{{ t("card.star") }}</div>
+						<div>{{ t("card.atk") }}</div>
+						<div>{{ t("card.def") }}</div>
 					</div>
 					<div class="info-content">
 						<div>{{ cardInfo?.star ? cardInfo.star : "-" }}</div>
@@ -26,9 +26,9 @@
 						<div>{{ cardInfo?.def ? cardInfo.def : "-" }}</div>
 					</div>
 					<div class="info-title">
-						<div>{{ $t("card.race") }}</div>
-						<div>{{ $t("card.rarity") }}</div>
-						<div>{{ $t("card.number") }}</div>
+						<div>{{ t("card.race") }}</div>
+						<div>{{ t("card.rarity") }}</div>
+						<div>{{ t("card.number") }}</div>
 					</div>
 					<div class="info-content">
 						<div>{{ cardInfo?.race ? cardInfo.race : "-" }}</div>
@@ -97,6 +97,9 @@ import type { HasTotalRes } from "response-data-types";
 import { callApi } from "@/util/api";
 import { decode } from "@/util";
 import "chartjs-adapter-date-fns";
+import i18n from "@/i18n/index";
+
+const { t } = i18n.global;
 
 const route = useRoute();
 const cardInfo = ref<Cards | undefined>();

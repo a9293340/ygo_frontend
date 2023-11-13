@@ -2,29 +2,29 @@
 	<div class="search-cards">
 		<div class="form-container" :class="{ 'close-form': !isShowForm }">
 			<div v-if="!isShowForm" class="mask mobile">
-				{{ $t("card.show_form") }}
+				{{ t("card.show_form") }}
 			</div>
 			<!-- 卡號 -->
 			<div class="item-box">
-				<div class="item-title">{{ $t("card.id") + "：" }}</div>
+				<div class="item-title">{{ t("card.id") + "：" }}</div>
 				<input
 					v-model="listQuery.filter.id"
 					type="text"
-					:placeholder="$t('card.input_id')"
+					:placeholder="t('card.input_id')"
 				/>
 			</div>
 			<!-- 卡片名稱 -->
 			<div class="item-box">
-				<div class="item-title">{{ $t("card.name") + "：" }}</div>
+				<div class="item-title">{{ t("card.name") + "：" }}</div>
 				<input
 					v-model="listQuery.filter.name"
 					type="text"
-					:placeholder="$t('card.input_name')"
+					:placeholder="t('card.input_name')"
 				/>
 			</div>
 			<!-- 卡片密碼 -->
 			<div class="item-box">
-				<div class="item-title">{{ $t("card.number") + "：" }}</div>
+				<div class="item-title">{{ t("card.number") + "：" }}</div>
 				<input
 					v-model="listQuery.filter.number"
 					type="text"
@@ -34,12 +34,12 @@
 							''
 						)
 					"
-					:placeholder="$t('card.input_number')"
+					:placeholder="t('card.input_number')"
 				/>
 			</div>
 			<!-- 種類 -->
 			<div class="item-box">
-				<div class="item-title">{{ $t("card.type") + "：" }}</div>
+				<div class="item-title">{{ t("card.type") + "：" }}</div>
 				<select v-model="listQuery.filter.type">
 					<option value=""></option>
 					<option
@@ -53,7 +53,7 @@
 			</div>
 			<!-- 星數 -->
 			<div class="item-box">
-				<div class="item-title">{{ $t("card.star") + "：" }}</div>
+				<div class="item-title">{{ t("card.star") + "：" }}</div>
 				<select v-model="listQuery.filter.star">
 					<option value=""></option>
 					<option
@@ -67,7 +67,7 @@
 			</div>
 			<!-- 屬性 -->
 			<div class="item-box">
-				<div class="item-title">{{ $t("card.attribute") + "：" }}</div>
+				<div class="item-title">{{ t("card.attribute") + "：" }}</div>
 				<select v-model="listQuery.filter.attribute">
 					<option value=""></option>
 					<option
@@ -81,7 +81,7 @@
 			</div>
 			<!-- 種族 -->
 			<div class="item-box">
-				<div class="item-title">{{ $t("card.race") + "：" }}</div>
+				<div class="item-title">{{ t("card.race") + "：" }}</div>
 				<select v-model="listQuery.filter.race">
 					<option value=""></option>
 					<option
@@ -95,7 +95,7 @@
 			</div>
 			<!-- 稀有度 -->
 			<div class="item-box">
-				<div class="item-title">{{ $t("card.rarity") + "：" }}</div>
+				<div class="item-title">{{ t("card.rarity") + "：" }}</div>
 				<select v-model="listQuery.filter.rarity">
 					<option value=""></option>
 					<option
@@ -110,7 +110,7 @@
 			<!-- 包裝分類 -->
 			<div class="item-box">
 				<div class="item-title">
-					{{ $t("card.product_information_type") + "：" }}
+					{{ t("card.product_information_type") + "：" }}
 				</div>
 				<select v-model="listQuery.filter.product_information_type">
 					<option value=""></option>
@@ -125,7 +125,7 @@
 			</div>
 			<!-- 攻擊力 -->
 			<div class="item-box">
-				<div class="item-title">{{ $t("card.atk") + "：" }}</div>
+				<div class="item-title">{{ t("card.atk") + "：" }}</div>
 				<input
 					v-model="listQuery.filter.atk_l"
 					type="text"
@@ -150,7 +150,7 @@
 			</div>
 			<!-- 守備力 -->
 			<div class="item-box">
-				<div class="item-title">{{ $t("card.def") + "：" }}</div>
+				<div class="item-title">{{ t("card.def") + "：" }}</div>
 				<input
 					v-model="listQuery.filter.def_l"
 					type="text"
@@ -175,9 +175,9 @@
 			</div>
 			<button
 				class="search-btn"
-				@click="getList({ page: 0, limit: listQuery.limit })"
+				@click="searchNewData"
 			>
-				{{ $t("card.search") }}
+				{{ t("card.search") }}
 			</button>
 		</div>
 		<div class="toggle-btn mobile" @click="isShowForm = !isShowForm">
@@ -195,19 +195,21 @@ import type { CardsList, PackTypeList } from "module-types";
 import type { HasTotalRes } from "response-data-types";
 import { decode, removeNullAndEmptyString } from "@/util";
 import { callApi } from "@/util/api";
+import i18n from "@/i18n/index";
 
+const { t } = i18n.global;
+interface SearchCardsProps {
+	page: number;
+	limit: number;
+}
+
+const route = useRoute();
 const emit = defineEmits(["get:data"]);
 
-const props = defineProps({
-	page: {
-		type: Number,
-		default: 0,
-	},
-	limit: {
-		type: Number,
-		default: 20,
-	},
-});
+const props = withDefaults(defineProps<SearchCardsProps>(), {
+	limit:20,
+	page:1
+})
 
 const listQuery = ref<CardListType>({
 	page: 0,
@@ -230,21 +232,31 @@ const listQuery = ref<CardListType>({
 });
 const isShowForm = ref<Boolean>(true);
 const packTypeList = ref<PackTypeList | []>([]);
-const page = computed(() => props.page);
+const page = computed(() => props.page)
+const pages = ref<number[]>([])
 
-watch(page, () => {
+watch(page, (newVal) => {
+	if(pages.value.findIndex(page => page === newVal) !== -1) return;
+	// console.log(pages.value);
+	
 	getList({
 		limit: props.limit,
 		page: props.page,
 	});
 });
 
+const searchNewData = () => {
+	pages.value = []
+	getList({ page: 0, limit: listQuery.value.limit })
+}
+
+
 const getList = async (val: PaginationGetList) => {
 	isShowForm.value = false;
-	listQuery.value.page = val.page;
-	await getCards();
+	// listQuery.value.page = val.page;
+	await getCards(val.page);
 };
-const getCards = async () => {
+const getCards = async (page: number) => {
 	if (
 		listQuery.value.filter.atk_l &&
 		typeof listQuery.value.filter.atk_l === "string"
@@ -269,8 +281,11 @@ const getCards = async () => {
 	) {
 		listQuery.value.filter.def_t = parseInt(listQuery.value.filter.def_t);
 	}
-	listQuery.value.page = props.page;
+	listQuery.value.page = page;
 	listQuery.value.limit = props.limit;
+	if(pages.value.findIndex(page => page === listQuery.value.page) === -1)
+		pages.value.push(listQuery.value.page)
+	
 	const cards = decode<HasTotalRes<CardsList>>(
 		(
 			await callApi<CardListType>(
@@ -281,7 +296,6 @@ const getCards = async () => {
 			)
 		).data
 	);
-	// console.log(cards);
 	emit("get:data", {
 		cards,
 		listQuery: listQuery.value,
@@ -336,8 +350,8 @@ onMounted(async () => {
 			else packTypeList.value = pack.list;
 		} else await getPackType();
 	}
-
-	await getCards();
+	listQuery.value.filter = { ...listQuery.value.filter, ...route.query };
+	await getCards(0);
 });
 </script>
 

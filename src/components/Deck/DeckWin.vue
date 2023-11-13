@@ -1,14 +1,37 @@
 <script setup lang="ts">
 import type { CardsList } from "module-types";
+import { useIntersection } from '../../composables/useIntersection';
+import type { ComponentPublicInstance } from "vue";
 
 interface DeckCardsListProps {
 	cardsList: CardsList | [];
+	trigger: number
 }
 
+const emit = defineEmits(['call:api'])
+
+const {intersectionObserver,isIntersection} = useIntersection()
+const loadingRef = ref<ComponentPublicInstance<HTMLElement>>()
 const props = withDefaults(defineProps<DeckCardsListProps>(), {
 	cardsList: () => [],
+	trigger: 0
 });
 const cardsList = computed(() => props.cardsList);
+const trigger = computed(() => props.trigger)
+
+watch(trigger,() => {
+	const cardListElement = document.querySelector('.card-list') as HTMLElement;
+	cardListElement.scrollTop = 0
+})
+
+watch(isIntersection,(newVal) => {
+	if(newVal)
+		emit('call:api')
+})
+
+onMounted(() => {
+	intersectionObserver(loadingRef.value?.$el)
+})
 </script>
 
 <template>
@@ -34,6 +57,7 @@ const cardsList = computed(() => props.cardsList);
 					</div>
 				</div>
 			</div>
+			<Loading ref="loadingRef"/>
 		</div>
 	</div>
 </template>
@@ -42,27 +66,27 @@ const cardsList = computed(() => props.cardsList);
 .deck-win-component {
 	@apply w-full h-full flex flex-row;
 	.card-list {
-		@apply w-1/4 h-full overflow-y-auto scrollbar-thin scrollbar-track-rounded-xl scrollbar-thumb-rounded-xl scrollbar-thumb-blue-700 scrollbar-track-slate-200 text-white;
+		@apply w-1/4 h-full overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-track-rounded-xl scrollbar-thumb-rounded-xl scrollbar-thumb-blue-700 scrollbar-track-slate-200 text-white;
 		.card-info-list {
 			@apply w-full flex flex-row mb-4;
 			img {
-				@apply w-36;
+				@apply h-36 w-auto;
 			}
 			.card-info {
-				@apply flex flex-col p-2;
+				@apply flex flex-col pl-3;
 				width: calc(100% - 9rem);
 				.name {
-					@apply text-2xl font-extrabold mb-2;
+					@apply text-lg font-extrabold mb-1 overflow-hidden text-ellipsis whitespace-nowrap;
 				}
 				.number,
 				.star-att-type {
-					@apply text-lg font-semibold mb-3;
+					@apply text-base font-semibold mb-1;
 				}
 				.star-att-type {
-					@apply mb-10;
+					@apply mb-3;
 				}
 				.atk {
-					@apply text-lg flex justify-between flex-row;
+					@apply text-base flex justify-between flex-row;
 				}
 			}
 		}

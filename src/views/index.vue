@@ -4,17 +4,17 @@
     <div class="content-container">
       <div class="top-article">
         <TopArticle
-            :title="$t('menu.meta_deck')"
+            :title="t('menu.meta_deck')"
             :type="0"
             :router="'/meta_deck'"
         />
         <TopArticle
-            :title="$t('menu.series_introduction')"
+            :title="t('menu.series_introduction')"
             :type="1"
             :router="'/series_introduction/theme_deck'"
         />
         <TopArticle
-            :title="$t('menu.useful_card_introduction')"
+            :title="t('menu.useful_card_introduction')"
             :type="2"
             :router="'/useful_card_introduction/single_card'"
         />
@@ -22,7 +22,7 @@
       <div class="calendar">
         <div class="calendar-title">
           <el-icon class="guide-icon"><Guide /></el-icon>
-          <div class="label">{{ $t('calendar.title') }}</div>
+          <div class="label">{{ t('calendar.title') }}</div>
         </div>
         <Calendar
             :is-dark="true"
@@ -37,6 +37,9 @@
 
 <script setup lang="ts">
 import type { CalendarList } from "module-types";
+import i18n from "@/i18n/index";
+
+const { t } = i18n.global;
 
 const originData = ref<CalendarList | []>([]);
 const getTimeData = (data: CalendarList | []) => {

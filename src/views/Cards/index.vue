@@ -8,16 +8,16 @@
 		<div class="list-container">
 			<div class="card-info-box">
 				<div class="card-info-title">
-					<div>{{ $t("card.id") }}</div>
-					<div class="lg-item">{{ $t("card.name") }}</div>
-					<div>{{ $t("card.type") }}</div>
-					<div class="sm-item">{{ $t("card.star") }}</div>
-					<div class="sm-item">{{ $t("card.attribute") }}</div>
-					<div class="sm-item">{{ $t("card.race") }}</div>
-					<div class="lg-item">{{ $t("card.rarity") }}</div>
-					<div class="sm-item">{{ $t("card.atk") }}</div>
-					<div class="sm-item">{{ $t("card.def") }}</div>
-					<div>{{ $t("card.number") }}</div>
+					<div>{{ t("card.id") }}</div>
+					<div class="lg-item">{{ t("card.name") }}</div>
+					<div>{{ t("card.type") }}</div>
+					<div class="sm-item">{{ t("card.star") }}</div>
+					<div class="sm-item">{{ t("card.attribute") }}</div>
+					<div class="sm-item">{{ t("card.race") }}</div>
+					<div class="lg-item">{{ t("card.rarity") }}</div>
+					<div class="sm-item">{{ t("card.atk") }}</div>
+					<div class="sm-item">{{ t("card.def") }}</div>
+					<div>{{ t("card.number") }}</div>
 					<div class="sm-item"></div>
 				</div>
 				<div
@@ -49,7 +49,7 @@
 					<div class="sm-item">{{ item.def }}</div>
 					<div>{{ item.number }}</div>
 					<router-link class="detail sm-item" :to="`/cards/${item.id}`">{{
-						$t("card.detail")
+						t("card.detail")
 					}}</router-link>
 				</div>
 			</div>
@@ -73,6 +73,9 @@ import type { HasTotalRes } from "response-data-types";
 import { onMounted } from "vue";
 import { removeNullAndEmptyString } from "@/util";
 import { useRoute, useRouter } from "vue-router";
+import i18n from "@/i18n/index";
+
+const { t } = i18n.global;
 const route = useRoute();
 const router = useRouter();
 const list = ref<[] | CardsList>([]);
@@ -117,6 +120,7 @@ const chosenCard = ref<string>("");
 
 onMounted(async () => {
 	listQuery.value.filter = { ...listQuery.value.filter, ...route.query };
+	
 });
 </script>
 

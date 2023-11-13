@@ -2,7 +2,7 @@
   <div class="calendar">
     <div class="calendar-title">
       <el-icon class="guide-icon"><Guide /></el-icon>
-      <div class="label">{{ $t('calendar.title') }}</div>
+      <div class="label">{{ t('calendar.title') }}</div>
     </div>
     <Calendar
         :is-dark="true"
@@ -13,12 +13,12 @@
     <div class="list-container">
       <div v-if="originData.length > 0" class="list-item" v-for="item in originData" :key="item._id">
         <el-tag :type="item.type === 0 ? '' : (item.type === 1 ? 'danger' : 'warning')" style="font-size: 14px">
-          {{ item.type === 0 ? $t('calendar.race') : (item.type === 1 ? $t('calendar.release_date') : $t('calendar.other_activity')) }}
+          {{ item.type === 0 ? t('calendar.race') : (item.type === 1 ? t('calendar.release_date') : t('calendar.other_activity')) }}
         </el-tag>
         <div class="title">{{ `${item.title} (${formatMD(item.date)})` }}</div>
         <div class="content">{{ item.content }}</div>
       </div>
-      <div v-else class="no-activity">{{ $t('calendar.no_activity') }}</div>
+      <div v-else class="no-activity">{{ t('calendar.no_activity') }}</div>
     </div>
   </div>
 </template>
@@ -26,6 +26,9 @@
 <script setup lang="ts">
 import type { CalendarList } from "module-types";
 import { formatMD } from "@/util/parseDate";
+import i18n from "@/i18n/index";
+
+const { t } = i18n.global;
 
 const originData = ref<CalendarList | []>([]);
 const getTimeData = (data: CalendarList | []) => {

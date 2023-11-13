@@ -16,10 +16,10 @@
 				<div class="content">
 					<div class="title">{{ item.title }}</div>
 					<div class="article-info">
-						<div>{{ `${$t("article.author")}：${item.author_name}` }}</div>
+						<div>{{ `${t("article.author")}：${item.author_name}` }}</div>
 						<div>
 							{{
-								`${$t("article.date")}：${formatDateString(item.publish_date)}`
+								`${t("article.date")}：${formatDateString(item.publish_date)}`
 							}}
 						</div>
 					</div>
@@ -27,7 +27,7 @@
 			</router-link>
 		</div>
 		<router-link :to="props.router" class="more">
-			<div>{{ $t("article.more") }}</div>
+			<div>{{ t("article.more") }}</div>
 			<el-icon><ArrowRightBold /></el-icon>
 		</router-link>
 	</div>
@@ -41,6 +41,9 @@ import type { NotHasTotalRes } from "response-data-types";
 import { callApi } from "@/util/api";
 import { formatDateString } from "@/util/parseDate";
 import { decode } from "@/util";
+import i18n from "@/i18n/index";
+
+const { t } = i18n.global;
 
 const props = defineProps({
 	title: {
