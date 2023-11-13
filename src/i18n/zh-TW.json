@@ -29,7 +29,8 @@
     "series_story": "卡片故事",
     "cards": "卡片查詢",
     "deck": "組牌",
-    "calendar": "日曆"
+    "calendar": "日曆",
+    "deck_add": "新增牌組"
   },
   "site_name": {
     "site_name": "ygo卡壇"

@@ -37,13 +37,13 @@ const router = useRouter();
 
 const menu = ref<MenuItem[]>([
 	{ title: t("menu.home"), link: "/" },
-	{
-		title: t("menu.member"),
-		children: [
-			{ title: t("menu.info"), link: "/member/info" },
-			{ title: t("menu.deck_list"), link: "/member/deck_list" },
-		],
-	},
+	// {
+	// 	title: t("menu.member"),
+	// 	children: [
+	// 		{ title: t("menu.info"), link: "/member/info" },
+	// 		{ title: t("menu.deck_list"), link: "/member/deck_list" },
+	// 	],
+	// },
 	{ title: t("menu.meta_deck"), link: "/meta_deck" },
 	{ title: t("menu.battle_paper"), link: "/battle_paper" },
 	{
@@ -82,7 +82,13 @@ const menu = ref<MenuItem[]>([
 	},
 	{ title: t("menu.series_story"), link: "/series_story" },
 	{ title: t("menu.cards"), link: "/cards" },
-	{ title: t("menu.deck"), link: "/deck" },
+	{
+		title: t("menu.deck"),
+		children: [
+			{ title: t("menu.deck_add"), link: "/deck/add" },
+			{ title: t("menu.deck_list"), link: "/deck" },
+		],
+	},
 	{ title: t("menu.calendar"), link: "/calendar" },
 ]);
 
