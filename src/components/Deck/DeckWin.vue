@@ -9,6 +9,7 @@ import {
 	type UseDraggableReturn,
 	type SortableEvent,
 } from "vue-draggable-plus";
+import { auto } from "@popperjs/core";
 
 interface DeckCardsListProps {
 	cardsList: CardsList | [];
@@ -72,6 +73,7 @@ const removeDeck = (type: string, idx: number) => {
 };
 
 const deckEnd = (evt: SortableEvent) => {
+	evt.item.style.height = "calc(45% - 2px)";
 	const fromClass = evt.from.classList[0] as string;
 	const toClass = evt.to.classList[0] as string;
 	const targetCardIndex = evt.oldIndex as number;
@@ -81,6 +83,9 @@ const deckEnd = (evt: SortableEvent) => {
 			: fromClass === "extra-drag"
 			  ? extraDeck.value[targetCardIndex]
 			  : sideDeck.value[targetCardIndex];
+
+	// 防自體增長
+	if (fromClass === toClass) return;
 
 	// 長度防呆
 	if (
@@ -93,31 +98,46 @@ const deckEnd = (evt: SortableEvent) => {
 
 	// main to extra
 	if (fromClass === "main-drag" && toClass === "extra-drag") {
-		mainDeck.value.push(targetCard);
+		extraDeck.value.splice(evt.newIndex, 1);
 		return;
 	}
 
 	// extra to main
 	if (fromClass === "extra-drag" && toClass === "main-drag") {
-		extraDeck.value.push(targetCard);
+		mainDeck.value.splice(evt.newIndex, 1);
 		return;
 	}
 
 	// 其他
-	switch (toClass) {
+
+	switch (fromClass) {
 		case "main-drag":
-			mainDeck.value.push(targetCard);
+			mainDeck.value.splice(evt.oldIndex, 1);
 			break;
 		case "extra-drag":
-			extraDeck.value.push(targetCard);
+			extraDeck.value.splice(evt.oldIndex, 1);
 			break;
 		case "side-drag":
-			sideDeck.value.push(targetCard);
+			sideDeck.value.splice(evt.oldIndex, 1);
+			break;
+	}
+
+	switch (toClass) {
+		case "main-drag":
+			mainDeck.value.splice(evt.newIndex, 0, targetCard);
+			break;
+		case "extra-drag":
+			extraDeck.value.splice(evt.newIndex, 0, targetCard);
+			break;
+		case "side-drag":
+			sideDeck.value.splice(evt.newIndex, 0, targetCard);
 			break;
 	}
 };
 
 const onEnd = (evt: SortableEvent) => {
+	evt.item.style.width = "100%";
+	evt.item.children[1].style.display = "flex";
 	const toClass = evt.to.classList[0] as string;
 	pickIndex.value = evt.item.dataset.idx as number;
 	const cardItem = cardsList.value[pickIndex.value] as Cards;
@@ -188,6 +208,15 @@ const onEnd = (evt: SortableEvent) => {
 	}
 };
 
+const onDeckStart = (evt: SortableEvent) => {
+	evt.dragged.style.height = "120px";
+};
+
+const onStart = (evt: SortableEvent) => {
+	evt.dragged.style.width = "80px";
+	evt.dragged.children[1].style.display = "none";
+};
+
 onMounted(() => {
 	intersectionObserver(loadingRef.value?.$el);
 });
@@ -204,6 +233,7 @@ onMounted(() => {
 				:sort="false"
 				ghostClass="ghost"
 				@end="onEnd"
+				@move="onStart"
 			>
 				<div
 					class="card-info-list"
@@ -261,11 +291,12 @@ onMounted(() => {
 				<VueDraggable
 					ref="drag"
 					v-model="mainDeckOrigin"
-					group="cards"
+					:group="{ name: 'cards', pull: 'clone' }"
 					:animation="150"
 					ghostClass="ghost"
 					class="main-drag"
 					@end="deckEnd"
+					@move="onDeckStart"
 					data-type="m"
 				>
 					<div
@@ -302,11 +333,12 @@ onMounted(() => {
 				<VueDraggable
 					ref="drag"
 					v-model="extraDeckOrigin"
-					group="cards"
+					:group="{ name: 'cards', pull: 'clone' }"
 					:animation="150"
 					ghostClass="ghost"
 					class="extra-drag"
 					@end="deckEnd"
+					@move="onDeckStart"
 					data-type="e"
 				>
 					<div
@@ -343,11 +375,12 @@ onMounted(() => {
 				<VueDraggable
 					ref="drag"
 					v-model="sideDeckOrigin"
-					group="cards"
+					:group="{ name: 'cards', pull: 'clone' }"
 					:animation="150"
 					ghostClass="ghost"
 					class="side-drag"
 					@end="deckEnd"
+					@move="onDeckStart"
 					data-type="s"
 				>
 					<div
