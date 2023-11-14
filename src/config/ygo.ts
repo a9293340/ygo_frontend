@@ -159,3 +159,10 @@ export const ygoOptions: {
 		"隱普方鑽",
 	],
 };
+
+export const extraType: string[] = [
+	"連結怪獸",
+	"同步怪獸",
+	"超量怪獸",
+	"融合怪獸",
+];

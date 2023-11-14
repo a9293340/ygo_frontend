@@ -1,5 +1,5 @@
 type DeckContent = {
-	card_id: 0;
+	card_id: string;
 	card_rarity: string;
 };
 
