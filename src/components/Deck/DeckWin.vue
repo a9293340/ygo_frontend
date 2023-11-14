@@ -4,12 +4,7 @@ import type { CardsList, Cards } from "module-types";
 import { useIntersection } from "../../composables/useIntersection";
 import type { ComponentPublicInstance } from "vue";
 import { extraType } from "../../config/ygo";
-import {
-	VueDraggable,
-	type UseDraggableReturn,
-	type SortableEvent,
-} from "vue-draggable-plus";
-import { auto } from "@popperjs/core";
+import { VueDraggable, type UseDraggableReturn } from "vue-draggable-plus";
 
 interface DeckCardsListProps {
 	cardsList: CardsList | [];
@@ -72,7 +67,7 @@ const removeDeck = (type: string, idx: number) => {
 	}
 };
 
-const deckEnd = (evt: SortableEvent) => {
+const deckEnd = (evt: any) => {
 	evt.item.style.height = "calc(45% - 2px)";
 	const fromClass = evt.from.classList[0] as string;
 	const toClass = evt.to.classList[0] as string;
@@ -135,7 +130,7 @@ const deckEnd = (evt: SortableEvent) => {
 	}
 };
 
-const onEnd = (evt: SortableEvent) => {
+const onEnd = (evt: any) => {
 	evt.item.style.width = "100%";
 	evt.item.children[1].style.display = "flex";
 	const toClass = evt.to.classList[0] as string;
@@ -208,11 +203,11 @@ const onEnd = (evt: SortableEvent) => {
 	}
 };
 
-const onDeckStart = (evt: SortableEvent) => {
+const onDeckStart = (evt: any) => {
 	evt.dragged.style.height = "120px";
 };
 
-const onStart = (evt: SortableEvent) => {
+const onStart = (evt: any) => {
 	evt.dragged.style.width = "80px";
 	evt.dragged.children[1].style.display = "none";
 };
