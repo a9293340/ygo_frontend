@@ -12,7 +12,6 @@ declare module '@vue/runtime-core' {
     Banner: typeof import('./components/home/Banner.vue')['default']
     Calendar: typeof import('./components/Calendar/index.vue')['default']
     DeckWin: typeof import('./components/Deck/DeckWin.vue')['default']
-    ElButton: typeof import('element-plus/es')['ElButton']
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
