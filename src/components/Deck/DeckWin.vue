@@ -1,10 +1,16 @@
 <script setup lang="ts">
 // @ts-ignore
 import type { CardsList, Cards } from 'module-types';
-import { useIntersection } from '../../composables/useIntersection';
+import { useIntersection } from '@/composables/useIntersection';
 import type { ComponentPublicInstance } from 'vue';
-import { extraType } from '../../config/ygo';
+import { extraType } from '@/config/ygo';
 import { VueDraggable, type UseDraggableReturn } from 'vue-draggable-plus';
+import { useDeckStore } from '@/stores/deck';
+import i18n from '@/i18n/index';
+import { generateRandomString } from '@/util/index';
+
+const { t } = i18n.global;
+const { admin_id } = storeToRefs(useDeckStore());
 
 interface DeckCardsListProps {
   cardsList: CardsList | [];
@@ -22,6 +28,9 @@ const emit = defineEmits(['call:api']);
 const drag = ref<UseDraggableReturn>();
 const mainDeckLens = ref(60);
 const pickIndex = ref(0);
+const dialogDisable = ref(false);
+const imageDisable = ref(false);
+const onLargeTarget = ref<Cards>();
 
 const { intersectionObserver, isIntersection } = useIntersection();
 const loadingRef = ref<ComponentPublicInstance<HTMLElement>>();
@@ -43,6 +52,10 @@ const extraDeck = ref<DeckType[]>([]);
 
 const sideDeckOrigin = ref<CardsList>([]);
 const sideDeck = ref<DeckType[]>([]);
+
+// save
+const deck_name = ref('');
+const deck_id = ref('');
 
 watch(trigger, () => {
   const cardListElement = document.querySelector('.card-list') as HTMLElement;
@@ -68,7 +81,8 @@ const removeDeck = (type: string, idx: number) => {
 };
 
 const deckEnd = (evt: any) => {
-  evt.item.style.height = 'calc(45% - 2px)';
+  // if (evt.to.classList[0] === 'main-drag') evt.item.style.height = 'calc(45% - 2px)';
+  // else evt.item.style.height = 'calc(90% - 2px)';
   const fromClass = evt.from.classList[0] as string;
   const toClass = evt.to.classList[0] as string;
   const targetCardIndex = evt.oldIndex as number;
@@ -78,12 +92,6 @@ const deckEnd = (evt: any) => {
       : fromClass === 'extra-drag'
         ? extraDeck.value[targetCardIndex]
         : sideDeck.value[targetCardIndex];
-
-  // // 防自體增長
-  // if (fromClass === toClass){
-
-  //   return;
-  // }
 
   // 長度防呆
   if (toClass === 'main-drag' && mainDeckOrigin.value.length >= mainDeckLens.value) return;
@@ -175,9 +183,10 @@ const onEnd = (evt: any) => {
   // Main 移動到 Extra 防呆
   if (!isExtra && toClass === 'extra-drag') {
     extraDeckOrigin.value.splice(evt.newIndex, 1);
-
     if (mainDeck.value.length < mainDeckLens.value) mainDeck.value.push(cardDeckItem);
     else if (sideDeck.value.length < 15) sideDeck.value.push(cardDeckItem);
+
+    return;
   }
 
   // 其他
@@ -195,14 +204,42 @@ const onEnd = (evt: any) => {
 };
 
 const onDeckStart = (evt: any) => {
-  if (evt.to.classList[0] === 'main-drag') evt.dragged.style.height = 'calc(45% - 2px)';
-  else evt.dragged.style.height = 'calc(90% - 2px)';
+  // evt.dragged.style.height = 'calc(45% - 2px)';
 };
 
 const onStart = (evt: any) => {
   evt.dragged.style.width = '120px';
   evt.dragged.children[1].style.display = 'none';
   evt.dragged.style.display = 'inline-block';
+};
+
+// tool
+const triggerImage = (i: number) => {
+  onLargeTarget.value = cardsList.value[i];
+  imageDisable.value = true;
+};
+
+const reset = () => {
+  mainDeckOrigin.value = [];
+  mainDeck.value = [];
+  extraDeckOrigin.value = [];
+  extraDeck.value = [];
+  sideDeck.value = [];
+  sideDeckOrigin.value = [];
+};
+
+const saveDeck = () => {
+  // if (mainDeck.value.length + extraDeck.value.length + sideDeck.value.length < 15) return;
+
+  // 新增
+  if (admin_id.value === '') {
+    dialogDisable.value = true;
+    deck_id.value = generateRandomString(14);
+  }
+};
+
+const addDeck = () => {
+  if (deck_name.value === '' || deck_id.value === '') return;
 };
 
 onMounted(() => {
@@ -224,14 +261,19 @@ onMounted(() => {
         @move="onStart"
       >
         <div class="card-info-list" :data-idx="i" v-for="(item, i) in cardsList">
-          <el-tooltip effect="dark" placement="right-start">
-            <template #content>
-              <img :src="`/api/card-image/cards/${item?.number}.webp`" alt="" class="img" />
-            </template>
-            <img :src="`/api/card-image/cards/${item?.number}.webp`" alt="" />
-          </el-tooltip>
+          <img :src="`/api/card-image/cards/${item?.number}.webp`" alt="" />
           <div class="card-info">
-            <div class="name">{{ item.name }}</div>
+            <div class="name">
+              {{ item.name }}
+              <el-icon
+                :size="20"
+                class="ml-4 cursor-pointer"
+                color="#1A56DB"
+                @click="triggerImage(i)"
+              >
+                <i-icomoon-free:enlarge />
+              </el-icon>
+            </div>
             <div class="number">
               {{ item.id }}
             </div>
@@ -260,7 +302,7 @@ onMounted(() => {
     </div>
     <div class="deck-contents">
       <!-- main -->
-      <div class="title">Main Deck({{ mainDeck.length }}/{{ mainDeckLens }})</div>
+      <div class="title">{{ t('deck.main_deck') }}({{ mainDeck.length }}/{{ mainDeckLens }})</div>
       <div class="main-deck">
         <VueDraggable
           ref="drag"
@@ -287,7 +329,7 @@ onMounted(() => {
         </VueDraggable>
       </div>
       <!-- extra -->
-      <div class="title">Extra Deck({{ extraDeck.length }}/15)</div>
+      <div class="title">{{ t('deck.extra_deck') }}({{ extraDeck.length }}/15)</div>
       <div class="main-deck extra-deck">
         <VueDraggable
           ref="drag"
@@ -318,7 +360,7 @@ onMounted(() => {
         </VueDraggable>
       </div>
       <!-- side -->
-      <div class="title">Side Deck({{ sideDeck.length }}/15)</div>
+      <div class="title">{{ t('deck.side_deck') }}({{ sideDeck.length }}/15)</div>
       <div class="main-deck side-deck">
         <VueDraggable
           ref="drag"
@@ -344,11 +386,85 @@ onMounted(() => {
           </div>
         </VueDraggable>
       </div>
+      <!-- tool button -->
+      <div class="tool-list">
+        <el-button type="primary" @click="reset">{{ t('deck.reset') }}</el-button>
+        <el-button type="primary" @click="saveDeck">{{ t('deck.save') }}</el-button>
+      </div>
     </div>
   </div>
+
+  <el-dialog v-model="imageDisable" :title="onLargeTarget?.name">
+    <div class="image-dialog">
+      <img :src="`/api/card-image/cards/${onLargeTarget?.number}.webp`" alt="" />
+      <div class="info">
+        <div class="large">{{ onLargeTarget?.name }} ({{ onLargeTarget?.id }})</div>
+        <div class="large">{{ t('card.rarity') }} : {{ onLargeTarget?.rarity.join('、') }}</div>
+        <div class="large">
+          {{ t('card.attribute') }} : {{ onLargeTarget?.attribute }} / {{ t('card.type') }} :
+          {{ onLargeTarget?.type }}
+        </div>
+        <div class="large" v-if="onLargeTarget?.race">
+          {{ t('card.race') }} : {{ onLargeTarget?.race }} / {{ t('card.star') }} :
+          {{ onLargeTarget?.star }}
+        </div>
+        <div class="large" v-if="onLargeTarget?.atk">
+          {{ t('card.atk') }} : {{ onLargeTarget?.atk }} / {{ t('card.def') }} :
+          {{ onLargeTarget?.def }}
+        </div>
+        <div class="normal">{{ t('card.effect') }} : {{ onLargeTarget?.effect }}</div>
+      </div>
+    </div>
+  </el-dialog>
+
+  <el-dialog v-model="dialogDisable" title="請輸入資訊" width="600px">
+    <div class="deck-dialog">
+      <el-form-item class="deck-form" :label="t('deck.set_name')">
+        <el-input class="deck-input" v-model="deck_name" />
+      </el-form-item>
+      <el-form-item class="deck-form" :label="t('deck.set_id')">
+        <el-input class="deck-input" v-model="deck_id" :readonly="true" />
+      </el-form-item>
+      <el-button style="width: 100px" type="success" @click="addDeck">{{
+        t('deck.save')
+      }}</el-button>
+    </div>
+  </el-dialog>
 </template>
 
+<style lang="scss">
+.deck-input.el-input {
+  @apply w-48;
+  .el-input__inner {
+    @apply w-48;
+  }
+}
+.deck-form.el-form-item {
+  label {
+    @apply w-72 flex flex-row justify-start;
+  }
+}
+</style>
+
 <style lang="scss" scoped>
+.image-dialog {
+  @apply w-full flex flex-row;
+  img {
+    @apply w-1/3;
+  }
+  .info {
+    @apply w-2/3 flex flex-col ml-9;
+    .large {
+      @apply text-2xl font-extrabold mb-4;
+    }
+    .normal {
+      @apply text-lg font-medium;
+    }
+  }
+}
+.deck-dialog {
+  @apply w-full flex flex-col justify-center;
+}
 .deck-win-component {
   @apply w-full h-full flex flex-row;
   .card-list {
@@ -372,7 +488,7 @@ onMounted(() => {
         @apply flex flex-col pl-3;
         width: calc(100% - 9rem);
         .name {
-          @apply text-lg font-extrabold mb-1 overflow-hidden text-ellipsis whitespace-nowrap;
+          @apply flex flex-row items-center text-lg font-extrabold mb-1 overflow-hidden text-ellipsis whitespace-nowrap;
         }
         .number,
         .star-att-type {
@@ -393,7 +509,7 @@ onMounted(() => {
       @apply text-white text-lg font-extrabold;
     }
     .main-deck {
-      @apply w-full h-[calc(50%-20px)] border-white border rounded-lg;
+      @apply w-full h-[calc(50%-100px)] border-white border rounded-lg;
       .main-drag,
       .extra-drag,
       .side-drag {
@@ -403,7 +519,7 @@ onMounted(() => {
         .extra-drag-item,
         .side-drag-item {
           @apply w-auto mr-2 mb-2 inline-block  box-border text-center align-top;
-          height: calc(45% - 2px);
+          height: 150px;
           .item-desc {
             @apply items-center text-base text-white flex flex-row justify-between;
             span {
@@ -422,7 +538,7 @@ onMounted(() => {
       @apply h-[calc(25%-20px)];
       .extra-drag {
         .extra-drag-item {
-          height: calc(90% - 2px);
+          height: 150px;
         }
       }
     }
@@ -431,9 +547,12 @@ onMounted(() => {
       @apply h-[calc(25%-20px)];
       .side-drag {
         .side-drag-item {
-          height: calc(90% - 2px);
+          height: 150px;
         }
       }
+    }
+    .tool-list {
+      @apply w-full h-14 flex flex-row pl-6 items-center;
     }
   }
 }

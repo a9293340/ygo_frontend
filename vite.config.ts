@@ -29,7 +29,12 @@ export default defineConfig({
       extensions: ['vue'],
       include: [/\.vue$/, /\.vue\?vue/],
       dts: 'src/auto-components.ts',
-      resolvers: [ElementPlusResolver()],
+      resolvers: [
+        ElementPlusResolver({
+          importStyle: 'sass',
+        }),
+        IconsResolver(),
+      ],
     }),
     ElementPlus({}),
     Icons({ autoInstall: true }),

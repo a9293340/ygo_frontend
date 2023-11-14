@@ -4,6 +4,15 @@
     "date": "日期",
     "more": "更多文章"
   },
+  "deck": {
+    "reset": "重置",
+    "save": "保存",
+    "main_deck": "主要牌組",
+    "extra_deck": "額外牌組",
+    "side_deck": "副牌組",
+    "set_name": "請為此牌組命名 :",
+    "set_id": "請記住此編號(後續修改使用) :"
+  },
   "menu": {
     "home": "首頁",
     "member": "會員中心",
