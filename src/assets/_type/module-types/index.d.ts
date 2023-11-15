@@ -68,7 +68,7 @@ declare module "module-types" {
 
 	interface Deck {
 		_id?: string;
-		admin_id: 0;
+		admin_id: string;
 		title: string;
 		create_date: string;
 		last_edit_date: string;
