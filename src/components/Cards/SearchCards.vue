@@ -11,6 +11,7 @@
 					v-model="listQuery.filter.id"
 					type="text"
 					:placeholder="t('card.input_id')"
+					@keyup.enter.native="searchNewData"
 				/>
 			</div>
 			<!-- 卡片名稱 -->
@@ -20,6 +21,7 @@
 					v-model="listQuery.filter.name"
 					type="text"
 					:placeholder="t('card.input_name')"
+					@keyup.enter.native="searchNewData"
 				/>
 			</div>
 			<!-- 卡片密碼 -->
@@ -35,93 +37,130 @@
 						)
 					"
 					:placeholder="t('card.input_number')"
+					@keyup.enter.native="searchNewData"
 				/>
 			</div>
 			<!-- 種類 -->
 			<div class="item-box">
 				<div class="item-title">{{ t("card.type") + "：" }}</div>
-				<select v-model="listQuery.filter.type">
-					<option value=""></option>
-					<option
+				<el-select
+					v-model="listQuery.filter.type"
+					filterable
+					clearable
+					class="search-cards-select"
+					placeholder="請選擇"
+					@keyup.enter.native="searchNewData"
+				>
+					<el-option
 						v-for="(item, index) in ygoOptions.type"
-						:value="item"
 						:key="index"
-					>
-						{{ item }}
-					</option>
-				</select>
+						:label="item"
+						:value="item"
+						style="font-size: 16px"
+					/>
+				</el-select>
 			</div>
 			<!-- 星數 -->
 			<div class="item-box">
 				<div class="item-title">{{ t("card.star") + "：" }}</div>
-				<select v-model="listQuery.filter.star">
-					<option value=""></option>
-					<option
+				<el-select
+					v-model="listQuery.filter.star"
+					filterable
+					clearable
+					class="search-cards-select"
+					placeholder="請選擇"
+					@keyup.enter.native="searchNewData"
+				>
+					<el-option
 						v-for="(item, index) in ygoOptions.star"
-						:value="item"
 						:key="index"
-					>
-						{{ item }}
-					</option>
-				</select>
+						:label="item"
+						:value="item"
+						style="font-size: 16px"
+					/>
+				</el-select>
 			</div>
 			<!-- 屬性 -->
 			<div class="item-box">
 				<div class="item-title">{{ t("card.attribute") + "：" }}</div>
-				<select v-model="listQuery.filter.attribute">
-					<option value=""></option>
-					<option
+				<el-select
+					v-model="listQuery.filter.attribute"
+					filterable
+					clearable
+					class="search-cards-select"
+					placeholder="請選擇"
+					@keyup.enter.native="searchNewData"
+				>
+					<el-option
 						v-for="(item, index) in ygoOptions.attribute"
-						:value="item"
 						:key="index"
-					>
-						{{ item }}
-					</option>
-				</select>
+						:label="item"
+						:value="item"
+						style="font-size: 16px"
+					/>
+				</el-select>
 			</div>
 			<!-- 種族 -->
 			<div class="item-box">
 				<div class="item-title">{{ t("card.race") + "：" }}</div>
-				<select v-model="listQuery.filter.race">
-					<option value=""></option>
-					<option
+				<el-select
+					v-model="listQuery.filter.race"
+					filterable
+					clearable
+					class="search-cards-select"
+					placeholder="請選擇"
+					@keyup.enter.native="searchNewData"
+				>
+					<el-option
 						v-for="(item, index) in ygoOptions.race"
-						:value="item"
 						:key="index"
-					>
-						{{ item }}
-					</option>
-				</select>
+						:label="item"
+						:value="item"
+						style="font-size: 16px"
+					/>
+				</el-select>
 			</div>
 			<!-- 稀有度 -->
 			<div class="item-box">
 				<div class="item-title">{{ t("card.rarity") + "：" }}</div>
-				<select v-model="listQuery.filter.rarity">
-					<option value=""></option>
-					<option
+				<el-select
+					v-model="listQuery.filter.rarity"
+					filterable
+					clearable
+					class="search-cards-select"
+					placeholder="請選擇"
+					@keyup.enter.native="searchNewData"
+				>
+					<el-option
 						v-for="(item, index) in ygoOptions.rare"
-						:value="item"
 						:key="index"
-					>
-						{{ item }}
-					</option>
-				</select>
+						:label="item"
+						:value="item"
+						style="font-size: 16px"
+					/>
+				</el-select>
 			</div>
 			<!-- 包裝分類 -->
 			<div class="item-box">
 				<div class="item-title">
 					{{ t("card.product_information_type") + "：" }}
 				</div>
-				<select v-model="listQuery.filter.product_information_type">
-					<option value=""></option>
-					<option
+				<el-select
+					v-model="listQuery.filter.product_information_type"
+					filterable
+					clearable
+					class="search-cards-select"
+					placeholder="請選擇"
+					@keyup.enter.native="searchNewData"
+				>
+					<el-option
 						v-for="(item, index) in packTypeList"
-						:value="item.packType"
 						:key="index"
-					>
-						{{ item.name }}
-					</option>
-				</select>
+						:label="item.name"
+						:value="item.packType"
+						style="font-size: 16px"
+					/>
+				</el-select>
 			</div>
 			<!-- 攻擊力 -->
 			<div class="item-box">
@@ -135,6 +174,7 @@
 								? listQuery.filter.atk_l.replace(/[^\d]/g, '')
 								: listQuery.filter.atk_l
 					"
+					@keyup.enter.native="searchNewData"
 				/>
 				<span>~</span>
 				<input
@@ -146,6 +186,7 @@
 								? listQuery.filter.atk_t.replace(/[^\d]/g, '')
 								: listQuery.filter.atk_t
 					"
+					@keyup.enter.native="searchNewData"
 				/>
 			</div>
 			<!-- 守備力 -->
@@ -160,6 +201,7 @@
 								? listQuery.filter.def_l.replace(/[^\d]/g, '')
 								: listQuery.filter.def_l
 					"
+					@keyup.enter.native="searchNewData"
 				/>
 				<span>~</span>
 				<input
@@ -171,12 +213,10 @@
 								? listQuery.filter.def_t.replace(/[^\d]/g, '')
 								: listQuery.filter.def_t
 					"
+					@keyup.enter.native="searchNewData"
 				/>
 			</div>
-			<button
-				class="search-btn"
-				@click="searchNewData"
-			>
+			<button class="search-btn" @click="searchNewData">
 				{{ t("card.search") }}
 			</button>
 		</div>
@@ -207,9 +247,9 @@ const route = useRoute();
 const emit = defineEmits(["get:data"]);
 
 const props = withDefaults(defineProps<SearchCardsProps>(), {
-	limit:20,
-	page:1
-})
+	limit: 20,
+	page: 1,
+});
 
 const listQuery = ref<CardListType>({
 	page: 0,
@@ -232,13 +272,13 @@ const listQuery = ref<CardListType>({
 });
 const isShowForm = ref<Boolean>(true);
 const packTypeList = ref<PackTypeList | []>([]);
-const page = computed(() => props.page)
-const pages = ref<number[]>([])
+const page = computed(() => props.page);
+const pages = ref<number[]>([]);
 
 watch(page, (newVal) => {
-	if(pages.value.findIndex(page => page === newVal) !== -1) return;
+	if (pages.value.findIndex((page) => page === newVal) !== -1) return;
 	// console.log(pages.value);
-	
+
 	getList({
 		limit: props.limit,
 		page: props.page,
@@ -246,10 +286,9 @@ watch(page, (newVal) => {
 });
 
 const searchNewData = () => {
-	pages.value = []
-	getList({ page: 0, limit: listQuery.value.limit })
-}
-
+	pages.value = [];
+	getList({ page: 0, limit: listQuery.value.limit });
+};
 
 const getList = async (val: PaginationGetList) => {
 	isShowForm.value = false;
@@ -283,9 +322,9 @@ const getCards = async (page: number) => {
 	}
 	listQuery.value.page = page;
 	listQuery.value.limit = props.limit;
-	if(pages.value.findIndex(page => page === listQuery.value.page) === -1)
-		pages.value.push(listQuery.value.page)
-	
+	if (pages.value.findIndex((page) => page === listQuery.value.page) === -1)
+		pages.value.push(listQuery.value.page);
+
 	const cards = decode<HasTotalRes<CardsList>>(
 		(
 			await callApi<CardListType>(
@@ -354,6 +393,46 @@ onMounted(async () => {
 	await getCards(0);
 });
 </script>
+
+<style lang="scss">
+.search-cards-select.el-select {
+	width: 150px;
+	.el-input__wrapper {
+		background-color: rgba(255, 255, 255, 0.9);
+		overflow: hidden;
+	}
+	.el-input__inner {
+		height: 35px;
+		border-color: transparent;
+		box-shadow: none;
+	}
+	.el-input {
+		background-color: rgba(255, 255, 255, 0.6);
+		border-radius: 5px;
+	}
+	.el-select-dropdown__item {
+		background-color: rgba(255, 255, 255, 0.9);
+	}
+	.el-input__placeholder {
+		@apply text-black;
+	}
+}
+:deep(.el-input) {
+	font-size: 16px;
+}
+
+@media (max-width: 900px) {
+	.search-cards-select.el-select {
+		width: 140px;
+	}
+}
+
+@media (max-width: 768px) {
+	.search-cards-select.el-select {
+		width: 45vw;
+	}
+}
+</style>
 
 <style lang="scss" scoped>
 .search-cards {
