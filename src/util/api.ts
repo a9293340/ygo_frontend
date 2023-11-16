@@ -16,7 +16,7 @@ export const callApi = async <DataRequestType>(
 		...data,
 		token: hasToken ? token : "frontend",
 	};
-	console.log(requestObject)
+	// console.log(requestObject)
 
 	if (requestObject.token !== "frontend") requestObject.tokenReq = tokenReq;
 

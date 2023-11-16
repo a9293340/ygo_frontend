@@ -18,6 +18,7 @@ const { admin_id } = storeToRefs(useDeckStore());
 interface DeckCardsListProps {
 	cardsList: CardsList | [];
 	trigger: number;
+	total: number;
 }
 
 type DeckType = {
@@ -38,12 +39,15 @@ const onLargeTarget = ref<Cards>();
 
 const { intersectionObserver, isIntersection } = useIntersection();
 const loadingRef = ref<ComponentPublicInstance<HTMLElement>>();
+const isShowLoading = computed(() => total.value !== cardsList.value.length);
 const props = withDefaults(defineProps<DeckCardsListProps>(), {
 	cardsList: () => [],
 	trigger: 0,
+	total: 0,
 });
 const cardsList = computed(() => props.cardsList);
 const trigger = computed(() => props.trigger);
+const total = computed(() => props.total);
 const cardsListRarity = computed(
 	() => cardsList.value.map((item: Cards) => item.rarity[0]) as string[]
 );
@@ -376,7 +380,7 @@ onMounted(() => {
 					</div>
 				</div>
 			</VueDraggable>
-			<Loading ref="loadingRef" />
+			<Loading ref="loadingRef" v-show="isShowLoading" />
 		</div>
 		<div class="deck-contents">
 			<!-- main -->
