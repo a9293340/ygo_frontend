@@ -11,7 +11,19 @@
     "extra_deck": "額外牌組",
     "side_deck": "副牌組",
     "set_name": "請為此牌組命名 :",
-    "set_id": "請記住此編號(後續修改使用) :"
+    "set_id": "請記住此編號(後續修改使用) :",
+    "deck_title": "搜尋名稱 :",
+    "deck_time": "時間範圍 :",
+    "deck_id": "牌組ID :",
+    "time_start": "開始時間",
+    "time_end": "結束時間",
+    "deck_name": "牌組名稱",
+    "deck_time_create": "創造時間",
+    "deck_time_edit": "最後編輯時間",
+    "remove": "刪除",
+    "edit": "修改",
+    "detail": "詳情",
+    "deck_check": "請輸入此牌組編號"
   },
   "menu": {
     "home": "首頁",

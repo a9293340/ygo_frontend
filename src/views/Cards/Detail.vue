@@ -1,192 +1,186 @@
 <template>
-	<div class="cards-detail">
-		<div class="card-container">
-			<div class="left-box">
-				<div class="name">{{ cardInfo?.name }}</div>
-				<div class="effect">{{ cardInfo?.effect }}</div>
-				<div class="info-box">
-					<div class="info-title">
-						<div>{{ t("card.id") }}</div>
-						<div>{{ t("card.type") }}</div>
-						<div>{{ t("card.attribute") }}</div>
-					</div>
-					<div class="info-content">
-						<div>{{ cardInfo?.id }}</div>
-						<div>{{ cardInfo?.type }}</div>
-						<div>{{ cardInfo?.attribute }}</div>
-					</div>
-					<div class="info-title">
-						<div>{{ t("card.star") }}</div>
-						<div>{{ t("card.atk") }}</div>
-						<div>{{ t("card.def") }}</div>
-					</div>
-					<div class="info-content">
-						<div>{{ cardInfo?.star ? cardInfo.star : "-" }}</div>
-						<div>{{ cardInfo?.atk ? cardInfo.atk : "-" }}</div>
-						<div>{{ cardInfo?.def ? cardInfo.def : "-" }}</div>
-					</div>
-					<div class="info-title">
-						<div>{{ t("card.race") }}</div>
-						<div>{{ t("card.rarity") }}</div>
-						<div>{{ t("card.number") }}</div>
-					</div>
-					<div class="info-content">
-						<div>{{ cardInfo?.race ? cardInfo.race : "-" }}</div>
-						<div v-if="cardInfo">
-							<span v-for="(item, index) in cardInfo?.rarity" :key="index">
-								{{
-									`${item}${cardInfo?.rarity.length - 1 === index ? "" : "、"} `
-								}}
-							</span>
-						</div>
-						<div>{{ cardInfo?.number }}</div>
-					</div>
-				</div>
-			</div>
-			<div class="right-box">
-				<img
-					v-if="cardInfo"
-					:src="`/api/card-image/cards/${cardInfo?.number}.webp`"
-					alt=""
-				/>
-			</div>
-		</div>
-		<div class="chart-box">
-			<PriceChart
-				v-if="cardInfo && Array.isArray(cardInfo?.price_info)"
-				:price="cardInfo?.price_info"
-				:colors="colors"
-				:y-axis-set-size="5"
-				:x-axis-set-size="4"
-				width="80vw"
-				height="500px"
-				:x-grid="true"
-				x-grid-color="rgba(255,255,255,0.3)"
-				:y-grid="true"
-				y-grid-color="rgba(255,255,255,0.3)"
-				:x-tick-set="{
-					color: 'white',
-					size: 14,
-					weight: '700',
-				}"
-				:y-tick-set="{
-					color: 'white',
-					size: 14,
-					weight: '700',
-				}"
-				:legend="{
-					color: 'white',
-					size: 14,
-					position: 'right',
-				}"
-				:tool-tip="{
-					color: 'rgb(0,0,0)',
-					titleSize: 16,
-					contentSize: 14,
-					bgc: 'rgba(255,255,255,0.7)',
-				}"
-			/>
-		</div>
-	</div>
+  <div class="cards-detail">
+    <div class="card-container">
+      <div class="left-box">
+        <div class="name">{{ cardInfo?.name }}</div>
+        <div class="effect">{{ cardInfo?.effect }}</div>
+        <div class="info-box">
+          <div class="info-title">
+            <div>{{ t('card.id') }}</div>
+            <div>{{ t('card.type') }}</div>
+            <div>{{ t('card.attribute') }}</div>
+          </div>
+          <div class="info-content">
+            <div>{{ cardInfo?.id }}</div>
+            <div>{{ cardInfo?.type }}</div>
+            <div>{{ cardInfo?.attribute }}</div>
+          </div>
+          <div class="info-title">
+            <div>{{ t('card.star') }}</div>
+            <div>{{ t('card.atk') }}</div>
+            <div>{{ t('card.def') }}</div>
+          </div>
+          <div class="info-content">
+            <div>{{ cardInfo?.star ? cardInfo.star : '-' }}</div>
+            <div>{{ cardInfo?.atk ? cardInfo.atk : '-' }}</div>
+            <div>{{ cardInfo?.def ? cardInfo.def : '-' }}</div>
+          </div>
+          <div class="info-title">
+            <div>{{ t('card.race') }}</div>
+            <div>{{ t('card.rarity') }}</div>
+            <div>{{ t('card.number') }}</div>
+          </div>
+          <div class="info-content">
+            <div>{{ cardInfo?.race ? cardInfo.race : '-' }}</div>
+            <div v-if="cardInfo">
+              <span v-for="(item, index) in cardInfo?.rarity" :key="index">
+                {{ `${item}${cardInfo?.rarity.length - 1 === index ? '' : '、'} ` }}
+              </span>
+            </div>
+            <div>{{ cardInfo?.number }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="right-box">
+        <img v-if="cardInfo" :src="`/api/card-image/cards/${cardInfo?.number}.webp`" alt="" />
+      </div>
+    </div>
+    <div class="chart-box">
+      <PriceChart
+        v-if="cardInfo && Array.isArray(cardInfo?.price_info)"
+        :price="cardInfo?.price_info"
+        :colors="colors"
+        :y-axis-set-size="5"
+        :x-axis-set-size="4"
+        width="80vw"
+        height="500px"
+        :x-grid="true"
+        x-grid-color="rgba(255,255,255,0.3)"
+        :y-grid="true"
+        y-grid-color="rgba(255,255,255,0.3)"
+        :x-tick-set="{
+          color: 'white',
+          size: 14,
+          weight: '700',
+        }"
+        :y-tick-set="{
+          color: 'white',
+          size: 14,
+          weight: '700',
+        }"
+        :legend="{
+          color: 'white',
+          size: 14,
+          position: 'right',
+        }"
+        :tool-tip="{
+          color: 'rgb(0,0,0)',
+          titleSize: 16,
+          contentSize: 14,
+          bgc: 'rgba(255,255,255,0.7)',
+        }"
+      />
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-import type { CardListType } from "request-data-types";
-import type { Cards, CardsList } from "module-types";
-import type { HasTotalRes } from "response-data-types";
-import { callApi } from "@/util/api";
-import { decode } from "@/util";
-import "chartjs-adapter-date-fns";
-import i18n from "@/i18n/index";
+import type { CardListType } from 'request-data-types';
+import type { Cards, CardsList } from 'module-types';
+import type { HasTotalRes } from 'response-data-types';
+import { callApi } from '@/util/api';
+import { decode } from '@/util';
+import 'chartjs-adapter-date-fns';
+import i18n from '@/i18n/index';
 
 const { t } = i18n.global;
 
 const route = useRoute();
 const cardInfo = ref<Cards | undefined>();
 const colors = ref([
-	"rgba(255, 99, 132, 1)",
-	"rgba(54, 162, 235, 1)",
-	"rgba(255, 206, 86, 1)",
-	"rgba(75, 192, 192, 1)",
-	"rgba(153, 102, 255, 1)",
-	"rgba(255, 159, 64, 1)",
-	"rgba(245, 74, 85, 1)",
+  'rgba(255, 99, 132, 1)',
+  'rgba(54, 162, 235, 1)',
+  'rgba(255, 206, 86, 1)',
+  'rgba(75, 192, 192, 1)',
+  'rgba(153, 102, 255, 1)',
+  'rgba(255, 159, 64, 1)',
+  'rgba(245, 74, 85, 1)',
 ]);
 
 onMounted(async () => {
-	cardInfo.value = decode<HasTotalRes<CardsList>>(
-		(
-			await callApi<CardListType>(
-				{ page: 0, limit: 1, filter: { id: route.params.id as string } },
-				"cards",
-				"list",
-				false
-			)
-		).data
-	).list[0];
-	console.log(cardInfo.value);
+  cardInfo.value = decode<HasTotalRes<CardsList>>(
+    (
+      await callApi<CardListType>(
+        { page: 0, limit: 1, filter: { id: route.params.id as string } },
+        'cards',
+        'list',
+        false,
+      )
+    ).data,
+  ).list[0];
+  console.log(cardInfo.value);
 });
 </script>
 
 <style lang="scss" scoped>
 .cards-detail {
-	min-height: calc(100vh - 104px);
-	padding: 50px 0;
-	& .card-container {
-		@apply flex justify-between;
-		width: 1200px;
-		margin: 0 auto 50px;
-		color: #333333;
-		background-color: rgba(255, 255, 255, 0.9);
-		padding: 30px;
-		border-radius: 10px;
-		& .left-box {
-			width: 800px;
-			& .name {
-				@apply font-bold;
-				font-size: 24px;
-				padding: 0 0 0 10px;
-			}
-			& .effect {
-				@apply whitespace-pre-wrap text-justify;
-				font-size: 18px;
-				padding: 10px;
-				margin: 10px 0 20px;
-			}
-			& .info-box {
-				@apply w-full;
-				font-size: 18px;
-				& .info-title {
-					@apply w-full flex;
-					& div {
-						@apply w-1/3 text-center text-white;
-						border: 1px solid lightgray;
-						background-color: #1f2c5d;
-						padding: 5px 0;
-					}
-				}
-				& .info-content {
-					@apply w-full flex;
-					margin: 0 0 10px 0;
-					& div {
-						@apply w-1/3 text-center;
-						border: 1px solid lightgray;
-						padding: 5px 0;
-					}
-				}
-			}
-		}
-		& .right-box {
-		}
-	}
-	& .chart-box {
-		@apply w-full h-auto flex justify-center;
-	}
+  min-height: calc(100vh - 104px);
+  padding: 50px 0;
+  & .card-container {
+    @apply flex justify-between;
+    width: 1200px;
+    margin: 0 auto 50px;
+    color: #333333;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 10px;
+    & .left-box {
+      width: 800px;
+      & .name {
+        @apply font-bold;
+        font-size: 24px;
+        padding: 0 0 0 10px;
+      }
+      & .effect {
+        @apply whitespace-pre-wrap text-justify;
+        font-size: 18px;
+        padding: 10px;
+        margin: 10px 0 20px;
+      }
+      & .info-box {
+        @apply w-full;
+        font-size: 18px;
+        & .info-title {
+          @apply w-full flex;
+          & div {
+            @apply w-1/3 text-center text-white;
+            border: 1px solid lightgray;
+            background-color: #1f2c5d;
+            padding: 5px 0;
+          }
+        }
+        & .info-content {
+          @apply w-full flex;
+          margin: 0 0 10px 0;
+          & div {
+            @apply w-1/3 text-center;
+            border: 1px solid lightgray;
+            padding: 5px 0;
+          }
+        }
+      }
+    }
+    & .right-box {
+    }
+  }
+  & .chart-box {
+    @apply w-full h-auto flex justify-center;
+  }
 }
 
 @media (max-width: 768px) {
-	.cards-detail {
-		min-height: calc(100vh - 101px);
-	}
+  .cards-detail {
+    min-height: calc(100vh - 101px);
+  }
 }
 </style>
