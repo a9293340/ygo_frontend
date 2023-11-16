@@ -9,7 +9,7 @@ import { VueDraggable, type UseDraggableReturn } from "vue-draggable-plus";
 import { useDeckStore } from "@/stores/deck";
 import i18n from "@/i18n/index";
 import { generateRandomString } from "@/util/index";
-import { decode } from "@/util";
+// import { decode } from "@/util";
 import { callApi } from "@/util/api";
 
 const { t } = i18n.global;
