@@ -389,7 +389,10 @@ onMounted(async () => {
 			else packTypeList.value = pack.list;
 		} else await getPackType();
 	}
-	listQuery.value.filter = { ...listQuery.value.filter, ...route.query };
+	// 避免吃到deck的query
+	let query = JSON.parse(JSON.stringify(route.query));
+	if (query.deck_admin_id) delete query.deck_admin_id;
+	listQuery.value.filter = { ...listQuery.value.filter, ...query };
 	await getCards(0);
 });
 </script>

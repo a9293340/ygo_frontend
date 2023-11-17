@@ -25,6 +25,7 @@
     "element-plus": "^2.3.14",
     "flowbite": "^1.6.0",
     "global": "^4.4.0",
+    "html-to-image": "^1.11.11",
     "js-cookie": "^3.0.5",
     "pinia": "^2.0.16",
     "unplugin-element-plus": "^0.8.0",
