@@ -1,10 +1,10 @@
 // import { defineStore } from "pinia";
 // import { computed, ref } from "vue";
 
-export const useDeckStore = defineStore('deck', () => {
-  const admin_id = ref('');
+export const useDeckStore = defineStore("deck", () => {
+	const pick_deck_id = ref("");
 
-  return {
-    admin_id,
-  };
+	return {
+		pick_deck_id,
+	};
 });
