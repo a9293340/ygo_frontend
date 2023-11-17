@@ -98,6 +98,10 @@ const editDeck = () => {
 	}
 };
 
+const goToDetail = (_id) => {
+	router.push(`/deck/${_id}`);
+};
+
 const openDialog = (type: string, idx: number) => {
 	if (type === "r") {
 		removeVisible.value = true;
@@ -175,7 +179,9 @@ onMounted(async () => {
 						}}</el-button>
 					</div>
 					<div class="sm-item">
-						<el-button type="primary">{{ t("deck.detail") }}</el-button>
+						<el-button type="primary" @click="goToDetail(item._id)">{{
+							t("deck.detail")
+						}}</el-button>
 					</div>
 				</div>
 			</div>

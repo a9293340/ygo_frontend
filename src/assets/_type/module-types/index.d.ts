@@ -3,6 +3,8 @@ type DeckContent = {
 	card_rarity: string;
 	card_number?: string;
 	card_num_id?: string;
+	card_price?: CardsPriceType[];
+	card_name?: string;
 };
 
 type CardsPriceType = {
