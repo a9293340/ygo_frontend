@@ -151,10 +151,115 @@ const loadToExcel = async () => {
 	}
 };
 
-const getImage = () => {
+const drawWaterMark = (
+	ctx: CanvasRenderingContext2D,
+	imgWidth: number,
+	imgHeight: number,
+	wmConfig: { font: string; textArray: string[]; density: number }
+) => {
+	let fontSize: number;
+	// 判斷圖檔與文字
+	if (imgWidth >= 3456) {
+		fontSize = 50;
+	} else if (imgWidth >= 2700) {
+		fontSize = 30;
+	} else if (imgWidth >= 2000) {
+		fontSize = 26;
+	} else if (imgWidth >= 1436) {
+		fontSize = 20;
+	} else if (imgWidth >= 800) {
+		fontSize = 12;
+	} else if (imgWidth >= 500) {
+		fontSize = 10;
+	} else {
+		fontSize = 8;
+	}
+	console.log(imgWidth, imgHeight, fontSize);
+	ctx.fillStyle = "white";
+
+	ctx.font = `${fontSize}px ${wmConfig.font}`;
+	ctx.lineWidth = 1;
+	ctx.fillStyle = "rgba(255,255,255,0.3)";
+	ctx.textAlign = "left";
+	ctx.textBaseline = "middle";
+
+	//座標
+	const maxPx = Math.max(imgWidth, imgHeight);
+	// 間距
+	const stepPx = Math.floor(maxPx / wmConfig.density);
+
+	let arrayX = [0]; //初始座標
+	while (arrayX[arrayX.length - 1] < maxPx / 2) {
+		arrayX.push(arrayX[arrayX.length - 1] + stepPx);
+	}
+	arrayX.push(
+		...arrayX.slice(1, arrayX.length).map((el) => {
+			return -el;
+		})
+	);
+
+	console.log(arrayX);
+
+	for (let i = 0; i < arrayX.length; i++) {
+		for (let j = 0; j < arrayX.length; j++) {
+			ctx.save();
+			ctx.translate(imgWidth / 2, imgHeight / 2); //旋轉
+			ctx.rotate(-Math.PI / 5);
+			if (wmConfig.textArray.length > 3) {
+				wmConfig.textArray = wmConfig.textArray.slice(0, 3);
+			}
+			wmConfig.textArray.forEach((el, index) => {
+				let offsetY = fontSize * index + 2;
+				ctx.fillText(el, arrayX[i], arrayX[j] + offsetY);
+			});
+			ctx.restore();
+		}
+	}
+};
+
+const base64AddWaterMaker = (
+	base64Img: string,
+	wmConfig: { font: string; textArray: string[]; density: number }
+) => {
+	if (wmConfig.textArray.length === 0) {
+		console.error("****No Content*****");
+		return base64Img;
+	}
+
+	return new Promise<string>(async (resolve, reject) => {
+		const canvas = document.createElement("canvas");
+		const ctx = canvas.getContext("2d");
+		const img = new Image();
+		let resultBase64 = "";
+
+		img.onload = async function () {
+			canvas.width = img.width;
+			canvas.height = img.height;
+
+			//canvas繪製
+			ctx.drawImage(img, 0, 0);
+			//浮水印
+			drawWaterMark(ctx, img.width, img.height, wmConfig);
+			resultBase64 = canvas.toDataURL("image/png");
+
+			if (!resultBase64) {
+				reject("Failed");
+			} else {
+				resolve(resultBase64);
+			}
+		};
+		img.src = base64Img;
+	});
+};
+
+const getImage = async () => {
 	toPng(document.getElementById("deck-list"))
-		.then(function (dataUrl) {
-			imgUrl.value = dataUrl;
+		.then(async function (dataUrl) {
+			imgUrl.value = await base64AddWaterMaker(dataUrl, {
+				font: "Ariel",
+				textArray: ["YGO", "CardTime", "卡壇"],
+				density: 3,
+			});
 			dialogVisible.value = true;
 		})
 		.catch(function (error) {
@@ -259,6 +364,10 @@ onMounted(async () => {
 					/>
 				</div>
 			</div>
+			<div class="copyright">
+				Copyright © 卡壇 YGO Info. All rights reserved. Resource :
+				https://ygo-cardtime.orp
+			</div>
 		</div>
 	</div>
 
@@ -280,15 +389,19 @@ onMounted(async () => {
 		@apply flex flex-col bg-black;
 		width: 70vw;
 		max-width: 1000px;
+		height: 100%;
 		.title {
 			@apply text-white text-lg font-extrabold;
+		}
+		.copyright {
+			@apply flex flex-row justify-center w-full text-white text-lg font-bold mb-4;
 		}
 		.main-deck,
 		.extra-deck,
 		.side-deck {
 			@apply p-3 rounded-2xl mb-3;
 			width: 100%;
-			height: auto;
+			min-height: 200px;
 			border: 1px solid white;
 			.cards-item {
 				@apply inline-block  box-border text-center align-top mr-2 mb-2;
