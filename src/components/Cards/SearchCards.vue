@@ -474,7 +474,6 @@ onMounted(async () => {
 			@apply self-end;
 			color: lightgray;
 			border: 1px solid lightgray;
-			padding: 5px 8px;
 			border-radius: 5px;
 			width: 150px;
 			height: 36px;
@@ -558,21 +557,6 @@ onMounted(async () => {
 				& span {
 					color: lightgray;
 					margin: 0 0.25px;
-				}
-			}
-			& .search-btn {
-				@apply self-end;
-				color: lightgray;
-				border: 1px solid lightgray;
-				padding: 5px 8px;
-				border-radius: 5px;
-				width: 150px;
-				height: 36px;
-				margin: 10px 5px 10px;
-				transition-duration: 0.2s;
-				&:hover {
-					@apply text-white;
-					border: 1px solid white;
 				}
 			}
 		}
