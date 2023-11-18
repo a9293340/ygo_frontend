@@ -401,20 +401,16 @@ onMounted(async () => {
 .search-cards-select.el-select {
 	width: 150px;
 	.el-input__wrapper {
-		background-color: rgba(255, 255, 255, 0.9);
 		overflow: hidden;
 	}
 	.el-input__inner {
 		height: 35px;
 		border-color: transparent;
 		box-shadow: none;
+    font-size: 16px;
 	}
 	.el-input {
-		background-color: rgba(255, 255, 255, 0.6);
 		border-radius: 5px;
-	}
-	.el-select-dropdown__item {
-		background-color: rgba(255, 255, 255, 0.9);
 	}
 	.el-input__placeholder {
 		@apply text-black;
@@ -459,10 +455,14 @@ onMounted(async () => {
 			}
 			& input,
 			& select {
-				padding: 5px 8px;
+        @apply bg-white;
+        color: #606266;
+        padding: 5px 11px;
 				border-radius: 5px;
 				width: 150px;
-				background-color: rgba(255, 255, 255, 0.9);
+        &::placeholder {
+          color: #aBabb2;
+        }
 			}
 			& span {
 				color: lightgray;
