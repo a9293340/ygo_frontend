@@ -402,6 +402,7 @@ onMounted(async () => {
 	width: 150px;
 	.el-input__wrapper {
 		overflow: hidden;
+    padding: 0 11px 1px;
 	}
 	.el-input__inner {
 		height: 35px;
