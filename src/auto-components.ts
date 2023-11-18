@@ -24,12 +24,9 @@ declare module '@vue/runtime-core' {
     ElPagination: typeof import('element-plus/es')['ElPagination']
     ElSelect: typeof import('element-plus/es')['ElSelect']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
-<<<<<<< HEAD
-    ElTag: typeof import('element-plus/es')['ElTag']
-=======
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
->>>>>>> eric
+    ElTag: typeof import('element-plus/es')['ElTag']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     Footer: typeof import('./components/common/Footer.vue')['default']
     'IIcomoonFree:enlarge': typeof import('~icons/icomoon-free/enlarge')['default']
