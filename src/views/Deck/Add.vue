@@ -48,10 +48,5 @@ const callApi = () => {
 <style lang="scss" scoped>
 .deck-add {
 	min-height: calc(100vh - 104px);
-	padding: 0;
-	.main-win {
-		@apply w-full hidden pl-20 pr-20 pb-5 pt-5 xl:block;
-		height: calc(100vh - 104px - 190px);
-	}
 }
 </style>
