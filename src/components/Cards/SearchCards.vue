@@ -401,20 +401,17 @@ onMounted(async () => {
 .search-cards-select.el-select {
 	width: 150px;
 	.el-input__wrapper {
-		background-color: rgba(255, 255, 255, 0.9);
 		overflow: hidden;
+    padding: 0 11px 1px;
 	}
 	.el-input__inner {
 		height: 35px;
 		border-color: transparent;
 		box-shadow: none;
+    font-size: 16px;
 	}
 	.el-input {
-		background-color: rgba(255, 255, 255, 0.6);
 		border-radius: 5px;
-	}
-	.el-select-dropdown__item {
-		background-color: rgba(255, 255, 255, 0.9);
 	}
 	.el-input__placeholder {
 		@apply text-black;
@@ -459,10 +456,14 @@ onMounted(async () => {
 			}
 			& input,
 			& select {
-				padding: 5px 8px;
+        @apply bg-white;
+        color: #606266;
+        padding: 5px 11px;
 				border-radius: 5px;
 				width: 150px;
-				background-color: rgba(255, 255, 255, 0.9);
+        &::placeholder {
+          color: #aBabb2;
+        }
 			}
 			& span {
 				color: lightgray;
@@ -473,7 +474,6 @@ onMounted(async () => {
 			@apply self-end;
 			color: lightgray;
 			border: 1px solid lightgray;
-			padding: 5px 8px;
 			border-radius: 5px;
 			width: 150px;
 			height: 36px;
@@ -557,21 +557,6 @@ onMounted(async () => {
 				& span {
 					color: lightgray;
 					margin: 0 0.25px;
-				}
-			}
-			& .search-btn {
-				@apply self-end;
-				color: lightgray;
-				border: 1px solid lightgray;
-				padding: 5px 8px;
-				border-radius: 5px;
-				width: 150px;
-				height: 36px;
-				margin: 10px 5px 10px;
-				transition-duration: 0.2s;
-				&:hover {
-					@apply text-white;
-					border: 1px solid white;
 				}
 			}
 		}

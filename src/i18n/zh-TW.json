@@ -10,6 +10,7 @@
     "main_deck": "主要牌組",
     "extra_deck": "額外牌組",
     "side_deck": "副牌組",
+    "input_info": "請輸入資訊",
     "set_name": "請為此牌組命名 :",
     "set_id": "請記住此編號(後續修改使用) :",
     "deck_title": "搜尋名稱 :",
@@ -23,7 +24,8 @@
     "remove": "刪除",
     "edit": "修改",
     "detail": "詳情",
-    "deck_check": "請輸入此牌組編號"
+    "deck_check": "請輸入此牌組編號",
+    "no_data": "查無資料"
   },
   "menu": {
     "home": "首頁",

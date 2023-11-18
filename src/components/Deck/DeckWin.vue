@@ -397,7 +397,7 @@ onMounted(async () => {
 
 <template>
 	<div class="deck-win-component">
-		<div class="card-list">
+		<div class="card-list scroll">
 			<VueDraggable
 				ref="drag"
 				v-model="cardsList"
@@ -408,35 +408,24 @@ onMounted(async () => {
 				@end="onEnd"
 				@move="onStart"
 			>
+        <div v-if="cardsList.length === 0" class="no-data">{{ $t('deck.no_data') }}</div>
 				<div
 					class="card-info-list"
 					:data-idx="i"
 					v-for="(item, i) in cardsList"
 					@dblclick="addCardToDeck(i)"
 				>
-					<img :src="`/api/card-image/cards/${item?.number}.webp`" alt="" />
+					<img class="card-img" :src="`/api/card-image/cards/${item?.number}.webp`" alt="" />
 					<div class="card-info">
-						<div class="name">
-							{{ item.name }}
-							<el-icon
-								:size="20"
-								class="ml-4 cursor-pointer"
-								color="#1A56DB"
-								@click.self="triggerImage(i)"
-							>
-								<i-icomoon-free:enlarge />
-							</el-icon>
-						</div>
-						<div class="number">
-							{{ item.id }}
-						</div>
-						<div class="star-att-type">
-							{{ item.star }}{{ item.star && "/" }}{{ item.attribute
-							}}{{ item.attribute && "/" }}{{ item.type }}
+						<div class="name">{{ item.name }}</div>
+						<div>{{ item.id }}</div>
+						<div>
+							{{ item.star }}{{ item.star && " / " }}{{ item.attribute
+							}}{{ item.attribute && " / " }}{{ item.type }}
 						</div>
 						<div class="atk" v-if="item.atk && item.def">
-							<span>ATK :{{ item.atk }}</span>
-							<span>DEF :{{ item.atk }}</span>
+							<span>ATK: {{ item.atk }}</span>
+							<span>DEF: {{ item.atk }}</span>
 						</div>
 						<div class="rarity">
 							<select v-model="cardsListRarity[i]">
@@ -453,11 +442,20 @@ onMounted(async () => {
 							<el-button type="primary">加入</el-button>
 						</div> -->
 					</div>
+          <el-icon
+              class="card-detail-btn"
+              @click.stop="triggerImage(i)"
+          ><InfoFilled /></el-icon>
 				</div>
 			</VueDraggable>
 			<Loading ref="loadingRef" v-show="isShowLoading" />
 		</div>
-		<div class="deck-contents">
+		<div class="deck-contents scroll">
+      <!-- tool button -->
+      <div class="btn-box">
+        <button @click="reset">{{ t("deck.reset") }}</button>
+        <button @click="saveDeck">{{ t("deck.save") }}</button>
+      </div>
 			<!-- main -->
 			<div class="title">
 				{{ t("deck.main_deck") }}({{ mainDeck.length }}/{{ mainDeckLens }})
@@ -488,7 +486,7 @@ onMounted(async () => {
 								<span>{{ item.card_rarity }}</span>
 							</el-tooltip>
 							<el-icon
-								size="20"
+								size="18"
 								class="cursor-pointer"
 								@click="removeDeck('m', i)"
 							>
@@ -590,53 +588,35 @@ onMounted(async () => {
 					</div>
 				</VueDraggable>
 			</div>
-			<!-- tool button -->
-			<div class="tool-list">
-				<el-button type="primary" @click="reset">{{
-					t("deck.reset")
-				}}</el-button>
-				<el-button type="primary" @click="saveDeck">{{
-					t("deck.save")
-				}}</el-button>
-			</div>
 		</div>
 	</div>
 
-	<el-dialog v-model="imageDisable" :title="onLargeTarget?.name">
+	<el-dialog v-model="imageDisable">
 		<div class="image-dialog">
-			<img
-				:src="`/api/card-image/cards/${onLargeTarget?.number}.webp`"
-				alt=""
-			/>
+			<img :src="`/api/card-image/cards/${onLargeTarget?.number}.webp`" alt=""/>
 			<div class="info">
-				<div class="large">
-					{{ onLargeTarget?.name }} ({{ onLargeTarget?.id }})
-				</div>
-				<div class="large">
-					{{ t("card.rarity") }} : {{ onLargeTarget?.rarity.join("、") }}
-				</div>
-				<div class="large">
+				<div class="name">{{ onLargeTarget?.name }} ({{ onLargeTarget?.id }})</div>
+				<div>{{ t("card.rarity") }} : {{ onLargeTarget?.rarity.join("、") }}</div>
+				<div>
 					{{ t("card.attribute") }} : {{ onLargeTarget?.attribute }} /
 					{{ t("card.type") }} :
 					{{ onLargeTarget?.type }}
 				</div>
-				<div class="large" v-if="onLargeTarget?.race">
+				<div v-if="onLargeTarget?.race">
 					{{ t("card.race") }} : {{ onLargeTarget?.race }} /
 					{{ t("card.star") }} :
 					{{ onLargeTarget?.star }}
 				</div>
-				<div class="large" v-if="onLargeTarget?.atk">
+				<div v-if="onLargeTarget?.atk">
 					{{ t("card.atk") }} : {{ onLargeTarget?.atk }} / {{ t("card.def") }} :
 					{{ onLargeTarget?.def }}
 				</div>
-				<div class="normal">
-					{{ t("card.effect") }} : {{ onLargeTarget?.effect }}
-				</div>
+				<div class="effect" v-html="onLargeTarget?.effect"></div>
 			</div>
 		</div>
 	</el-dialog>
 
-	<el-dialog v-model="dialogDisable" title="請輸入資訊" width="600px">
+	<el-dialog v-model="dialogDisable" :title="t('deck.input_info')" width="600px">
 		<div class="deck-dialog">
 			<el-form-item class="deck-form" :label="t('deck.set_name')">
 				<el-input class="deck-input" v-model="deck_name" />
@@ -644,7 +624,7 @@ onMounted(async () => {
 			<el-form-item class="deck-form" :label="t('deck.set_id')">
 				<el-input class="deck-input" v-model="deck_id" :readonly="true" />
 			</el-form-item>
-			<el-button style="width: 100px" type="success" @click="addDeck">{{
+			<el-button class="save-btn" type="success" @click="addDeck">{{
 				t("deck.save")
 			}}</el-button>
 		</div>
@@ -666,69 +646,103 @@ onMounted(async () => {
 </style>
 
 <style lang="scss" scoped>
-.image-dialog {
-	@apply w-full flex flex-row;
-	img {
-		@apply w-1/3;
-	}
-	.info {
-		@apply w-2/3 flex flex-col ml-9;
-		.large {
-			@apply text-2xl font-extrabold mb-4;
-		}
-		.normal {
-			@apply text-lg font-medium;
-		}
-	}
-}
-.deck-dialog {
-	@apply w-full flex flex-col justify-center;
-}
 .deck-win-component {
-	@apply w-full h-full flex flex-row;
+	@apply flex flex-row;
+  width: 1200px;
+  margin: 20px auto;
+  .no-data {
+    @apply text-center;
+    font-size: 16px;
+    margin: 10px 0 0;
+  }
 	.card-list {
-		@apply w-1/4 h-full overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-track-rounded-xl scrollbar-thumb-rounded-xl scrollbar-thumb-blue-700 scrollbar-track-slate-200 text-white;
-		.card-info-list {
-			@apply w-full flex box-border flex-row mb-4 cursor-move;
-			img {
-				@apply h-36 w-auto;
-			}
-			img.img {
-				@apply h-64 w-auto;
-			}
-			select {
-				padding: 5px 8px;
-				border-radius: 5px;
-				width: 8vw;
-				background-color: rgba(255, 255, 255, 0.9);
-				color: black;
-			}
-			.card-info {
-				@apply flex flex-col pl-3;
-				width: calc(100% - 9rem);
-				.name {
-					@apply flex flex-row items-center text-lg font-extrabold mb-1 overflow-hidden text-ellipsis whitespace-nowrap;
-				}
-				.number,
-				.star-att-type {
-					@apply text-base font-semibold mb-1;
-				}
-				.star-att-type {
-					@apply mb-1;
-				}
-				.atk {
-					@apply text-base flex justify-between flex-row;
-				}
-			}
+		@apply overflow-x-hidden;
+    color: #D3D3D3;
+    font-size: 16px;
+    width: 323px;
+    height: calc(100vh - 104px - 180px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 5px;
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.3);
+    }
+    .card-info-list {
+			@apply flex items-start box-border mb-4 cursor-move;
+      .card-img {
+        width: 100px;
+      }
+      .card-info {
+        @apply flex flex-col pl-2;
+        width: 190px;
+        .name {
+          @apply w-full font-bold;
+          font-size: 18px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+        }
+        .atk {
+          span {
+            &:first-child {
+              margin: 0 10px 0 0;
+            }
+          }
+        }
+        .rarity {
+          margin: 5px 0 0 -2px;
+          select {
+            padding: 3px 8px;
+            border-radius: 5px;
+            width: 8vw;
+            background-color: transparent;
+            color: lightgray;
+          }
+        }
+      }
+      .card-detail-btn {
+        @apply cursor-pointer;
+        font-size: 24px;
+        margin: 2px 0 0;
+        transition-duration: 0.2s;
+        &:hover {
+          @apply text-white;
+        }
+      }
 		}
 	}
 	.deck-contents {
-		@apply w-3/4 h-full pl-2 flex flex-col;
+		@apply w-3/4 h-full flex flex-col;
+    height: calc(100vh - 104px - 180px);
+    padding: 0 5px 5px;
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.3);
+    }
+    .btn-box {
+      @apply flex justify-end;
+      button {
+        background-color: #1f2c5d;
+        font-size: 16px;
+        color: lightgray;
+        border: 1px solid lightgray;
+        border-radius: 5px;
+        width: 90px;
+        height: 30px;
+        margin: 0 0 0 10px;
+        transition-duration: 0.2s;
+        &:hover {
+          @apply text-white;
+          border: 1px solid white;
+        }
+      }
+    }
 		.title {
 			@apply text-white text-lg font-extrabold;
 		}
 		.main-deck {
-			@apply w-full h-[calc(50%-100px)] border-white border rounded-lg;
+			@apply w-full border-white border rounded-lg;
+      min-height: 282.38px;
 			.main-drag,
 			.extra-drag,
 			.side-drag {
@@ -737,8 +751,9 @@ onMounted(async () => {
 				.main-drag-item,
 				.extra-drag-item,
 				.side-drag-item {
-					@apply w-auto mr-2 mb-2 inline-block  box-border text-center align-top;
-					height: 120px;
+					@apply inline-block box-border text-center align-top;
+          width: 74.5px;
+          margin: 2px 5px;
 					.item-desc {
 						@apply items-center text-xs text-white flex flex-row justify-between;
 						span {
@@ -746,33 +761,46 @@ onMounted(async () => {
 						}
 					}
 					img {
-						@apply w-auto cursor-move;
-						height: calc(100% - 23px);
+						@apply w-full cursor-move;
 					}
 				}
 			}
 		}
-
 		.extra-deck {
-			@apply h-[calc(25%-20px)];
-			.extra-drag {
-				.extra-drag-item {
-					height: 120px;
-				}
-			}
+      min-height: 152.19px;
 		}
-
 		.side-deck {
-			@apply h-[calc(25%-20px)];
-			.side-drag {
-				.side-drag-item {
-					height: 120px;
-				}
-			}
-		}
-		.tool-list {
-			@apply w-full h-14 flex flex-row pl-6 items-center;
+      min-height: 152.19px;
 		}
 	}
+}
+
+.image-dialog {
+  @apply flex items-start;
+  width: 90%;
+  margin: 0 auto 20px;
+  img {
+    @apply w-1/3;
+  }
+  .info {
+    @apply w-2/3 flex flex-col ml-4;
+    font-size: 16px;
+    .name {
+      @apply font-bold text-black mb-2;
+      font-size: 20px;
+    }
+    .effect {
+      @apply whitespace-pre-wrap text-justify mt-4;
+    }
+  }
+}
+.deck-dialog {
+  @apply flex flex-col justify-center;
+  width: 90%;
+  margin: 0 auto;
+  & .save-btn {
+    @apply self-end mt-2;
+    width: 100px
+  }
 }
 </style>
