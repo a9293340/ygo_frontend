@@ -13,7 +13,6 @@ declare module '@vue/runtime-core' {
     Calendar: typeof import('./components/Calendar/index.vue')['default']
     DeckWin: typeof import('./components/Deck/DeckWin.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
-    ElDatePicker: typeof import('element-plus/es')['ElDatePicker']
     ElDialog: typeof import('element-plus/es')['ElDialog']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElIcon: typeof import('element-plus/es')['ElIcon']
@@ -21,12 +20,14 @@ declare module '@vue/runtime-core' {
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
     ElOption: typeof import('element-plus/es')['ElOption']
-    ElPagination: typeof import('element-plus/es')['ElPagination']
     ElSelect: typeof import('element-plus/es')['ElSelect']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
+<<<<<<< HEAD
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTag: typeof import('element-plus/es')['ElTag']
+=======
+>>>>>>> eric
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     Footer: typeof import('./components/common/Footer.vue')['default']
     'IIcomoonFree:enlarge': typeof import('~icons/icomoon-free/enlarge')['default']
