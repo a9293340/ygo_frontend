@@ -575,7 +575,7 @@ onMounted(async () => {
 
 <style lang="scss" scoped>
 .deck-win-component {
-  @apply flex flex-row;
+  @apply flex justify-between;
   width: 1200px;
   margin: 20px auto;
   .no-data {
@@ -623,7 +623,7 @@ onMounted(async () => {
           select {
             padding: 3px 8px;
             border-radius: 5px;
-            width: 8vw;
+            width: 130px;
             background-color: transparent;
             color: lightgray;
           }
@@ -641,7 +641,8 @@ onMounted(async () => {
     }
   }
   .deck-contents {
-    @apply w-3/4 h-full flex flex-col;
+    @apply h-full flex flex-col;
+    width: 870px;
     height: calc(100vh - 104px - 180px);
     padding: 0 5px 5px;
     &::-webkit-scrollbar-thumb {
