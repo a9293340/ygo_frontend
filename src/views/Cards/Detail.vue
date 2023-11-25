@@ -52,8 +52,8 @@
         :colors="colors"
         :y-axis-set-size="5"
         :x-axis-set-size="4"
-        width="80vw"
-        height="500px"
+        width="100%"
+        height="400px"
         :x-grid="true"
         x-grid-color="rgba(255,255,255,0.3)"
         :y-grid="true"
@@ -70,8 +70,8 @@
         }"
         :legend="{
           color: 'white',
-          size: 14,
-          position: 'right',
+          size: 16,
+          position: 'top',
         }"
         :tool-tip="{
           color: 'rgb(0,0,0)',
@@ -171,16 +171,113 @@ onMounted(async () => {
       }
     }
     & .right-box {
+      & img {
+        width: 300px;
+      }
     }
   }
   & .chart-box {
-    @apply w-full h-auto flex justify-center;
+    @apply overflow-hidden;
+    width: 1200px;
+    margin: 0 auto;
+    border-radius: 10px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .cards-detail {
+    & .card-container {
+      @apply flex justify-between;
+      width: 900px;
+      & .left-box {
+        width: 650px;
+        & .name {
+          font-size: 22px;
+          padding: 0 0 0 10px;
+        }
+        & .effect {
+          font-size: 16px;
+        }
+        & .info-box {
+          font-size: 16px;
+        }
+      }
+      & .right-box {
+        & img {
+          width: 180px;
+        }
+      }
+    }
+    & .chart-box {
+      width: 900px;
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  .cards-detail {
+    & .card-container {
+      @apply flex justify-between;
+      width: 760px;
+      padding: 20px;
+      & .left-box {
+        width: 520px;
+        & .name {
+          font-size: 22px;
+          padding: 0 0 0 10px;
+        }
+        & .effect {
+          font-size: 16px;
+          margin: 5px 0 10px;
+        }
+        & .info-box {
+          font-size: 16px;
+        }
+      }
+      & .right-box {
+        & img {
+          width: 180px;
+        }
+      }
+    }
+    & .chart-box {
+      width: 760px;
+    }
   }
 }
 
 @media (max-width: 768px) {
   .cards-detail {
     min-height: calc(100vh - 101px);
+    padding: 30px 0;
+    & .card-container {
+      @apply flex flex-col-reverse justify-between;
+      width: 95vw;
+      margin: 0 auto 30px;
+      padding: 20px;
+      & .left-box {
+        @apply w-full;
+        & .name {
+          font-size: 22px;
+          padding: 0;
+        }
+        & .effect {
+          font-size: 16px;
+          padding: 0;
+          margin: 5px 0 20px;
+        }
+        & .info-box {
+          @apply w-full;
+          font-size: 16px;
+        }
+      }
+      & .right-box {
+        margin: 0 0 10px;
+      }
+    }
+    & .chart-box {
+      width: 95vw;
+    }
   }
 }
 </style>

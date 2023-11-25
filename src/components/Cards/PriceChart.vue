@@ -47,8 +47,8 @@ const props = withDefaults(defineProps<PriceChartProps>(), {
   ],
   xAxisSetSize: 3,
   yAxisSetSize: 5,
-  width: '80%',
-  height: '500px',
+  width: '100%',
+  height: '400px',
   yGrid: true,
   xGrid: true,
   xGridColor: 'rgba(255,255,255,0.3)',
@@ -331,16 +331,14 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
-    <div class="price-chart">
-      <Line :options="chartOptions" :data="chartData" />
-    </div>
+  <div class="price-chart">
+    <Line :options="chartOptions" :data="chartData" />
   </div>
 </template>
 
 <style scoped>
 .price-chart {
-  @apply w-8/12;
-  height: 400px;
+  padding: 10px 20px;
+  background-color: #3e476b;
 }
 </style>
