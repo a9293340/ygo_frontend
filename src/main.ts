@@ -7,6 +7,7 @@ import VueClientRecaptcha from 'vue-client-recaptcha';
 import ElementPlus from 'element-plus';
 import * as ElementPlusIconsVue from '@element-plus/icons-vue';
 import 'element-plus/dist/index.css';
+import zhTw from 'element-plus/dist/locale/zh-tw.mjs';
 
 import i18n from '@/i18n';
 import VCalendar from 'v-calendar';
@@ -26,7 +27,7 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 app.use(createPinia());
 app.use(router);
 app.use(i18n);
-app.use(ElementPlus);
+app.use(ElementPlus, { locale: zhTw });
 app.use(VCalendar, {});
 app.component('VueClientRecaptcha', VueClientRecaptcha);
 
