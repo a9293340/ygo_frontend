@@ -116,7 +116,7 @@ const { pick_deck_id } = storeToRefs(useDeckStore());
 const deckList = ref<DeckList>([]);
 const chosenCard = ref("");
 const total = ref(0);
-const date = ref("");
+const date = ref<(string | string[])>("");
 const removeVisible = ref(false);
 const editVisible = ref(false);
 const dialogTitle = ref("");
@@ -136,11 +136,8 @@ const listQuery = ref<DeckListType>({
 });
 
 const getList = async (val: PaginationGetList) => {
-  console.log(date.value)
-	if (date.value !== "") {
-		listQuery.value.filter.begin_date = new Date(date.value[0]).toDateString();
-		listQuery.value.filter.end_date = new Date(date.value[1]).toDateString();
-	}
+  listQuery.value.filter.begin_date = date.value ? new Date(date.value[0]).toDateString() : "";
+  listQuery.value.filter.end_date = date.value ? new Date(date.value[1]).toDateString() : "";
 	listQuery.value.page = val.page;
 
 	const data = decode<HasTotalRes<DeckList>>(
@@ -215,6 +212,9 @@ const openDialog = (type: string, idx: number) => {
 
 onMounted(async () => {
 	listQuery.value.filter = { ...listQuery.value.filter, ...route.query };
+  if (route.query.begin_date && route.query.end_date) {
+    date.value = [route.query.begin_date as string, route.query.end_date as string]
+  }
 	await getList({ limit: listQuery.value.limit, page: 0 });
 });
 </script>
