@@ -32,7 +32,7 @@
 
 @media (max-width: 768px) {
   .el-picker-panel {
-    width: 95vw;
+    width: 95vw !important;
     .el-picker-panel__body-wrapper {
       @apply w-full;
       .el-picker-panel__body {
@@ -41,6 +41,10 @@
     }
     .el-picker-panel__content {
       @apply w-full;
+      padding: 10px;
+      th, td {
+        padding: 2px;
+      }
     }
   }
 }
