@@ -17,6 +17,7 @@ import 'default-passive-events';
 import 'v-calendar/style.css';
 
 import './style.css';
+import './datePicker.scss'
 
 const app = createApp(App);
 

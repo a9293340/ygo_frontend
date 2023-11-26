@@ -1,0 +1,46 @@
+.el-picker-panel {
+  .el-picker-panel__content {
+    button {
+      &:hover {
+        color: #1f2c5d;
+      }
+    }
+    td.available {
+      &:hover {
+        .el-date-table-cell__text {
+          color: #1f2c5d;
+        }
+      }
+    }
+    td.start-date, td.end-date {
+      .el-date-table-cell__text {
+        background-color: #1f2c5d;
+      }
+      &:hover {
+        .el-date-table-cell__text {
+          @apply text-white;
+        }
+      }
+    }
+    td.today {
+      .el-date-table-cell__text {
+        color: #1f2c5d;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .el-picker-panel {
+    width: 95vw;
+    .el-picker-panel__body-wrapper {
+      @apply w-full;
+      .el-picker-panel__body {
+        min-width: unset;
+      }
+    }
+    .el-picker-panel__content {
+      @apply w-full;
+    }
+  }
+}
