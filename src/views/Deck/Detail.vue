@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import i18n from "@/i18n/index";
-import type { DeckList, Deck } from "module-types";
+import type { DeckList, Deck, CardsList, Cards } from "module-types";
 import type { DeckListType } from "request-data-types";
 import type { HasTotalRes } from "response-data-types";
 import { callApi } from "@/util/api";
@@ -267,6 +267,15 @@ const getImage = async () => {
 		});
 };
 
+// 卡片詳情彈窗
+const onLargeTarget = ref<Cards>();
+const cardInfoVisible = ref(false);
+const openCardInfo = (i: number, type: String) => {
+  onLargeTarget.value = deck.value[type][i]
+  cardInfoVisible.value = true;
+  console.log(onLargeTarget.value)
+}
+
 onMounted(async () => {
 	deck.value = decode<HasTotalRes<DeckList>>(
 		(
@@ -285,11 +294,9 @@ onMounted(async () => {
 
 <template>
 	<div class="deck-detail">
-		<div class="tool-list">
-			<el-button type="primary" class="mr-3" @click="getImage"
-				>下載圖檔</el-button
-			>
-			<el-button type="primary" @click="loadToExcel">下載EXCEL</el-button>
+		<div class="btn-box pc">
+      <button @click="getImage">{{ t('deck.download_img') }}</button>
+      <button @click="loadToExcel">{{ t('deck.download_excel') }}</button>
 		</div>
 		<div id="deck-list">
 			<div class="title">
@@ -300,6 +307,7 @@ onMounted(async () => {
 					class="cards-item"
 					v-for="(item, i) in deck?.main_deck"
 					:key="item.card_id"
+          @click="openCardInfo(i, 'main_deck')"
 				>
 					<div class="item-desc">
 						<el-tooltip
@@ -371,53 +379,96 @@ onMounted(async () => {
 		</div>
 	</div>
 
-	<el-dialog width="60vw" title="請對圖片點選右鍵下載" v-model="dialogVisible">
+	<el-dialog width="60vw" :title="t('deck.download_notice')" v-model="dialogVisible">
 		<div class="dialog">
 			<img :src="imgUrl" alt="" />
 		</div>
 	</el-dialog>
+
+  <!-- 卡片詳情彈窗 -->
+  <el-dialog v-model="cardInfoVisible" class="card-info-pop">
+    <div class="image-dialog">
+      <img
+          :src="`/api/card-image/cards/${onLargeTarget?.card_number}.webp`"
+          alt=""
+      />
+      <div class="info">
+        <div class="name">
+          {{ onLargeTarget?.card_name }}
+          <span class="pc">({{ onLargeTarget?.card_num_id }})</span>
+        </div>
+        <div class="name mobile">({{ onLargeTarget?.card_num_id }})</div>
+        <div>
+          {{ t("card.rarity") }} : {{ onLargeTarget?.card_rarity }}
+        </div>
+      </div>
+    </div>
+  </el-dialog>
 </template>
+
+<style lang="scss">
+.el-dialog.card-info-pop {
+  width: 700px;
+}
+@media (max-width: 768px) {
+  .el-dialog.card-info-pop {
+    width: 98vw;
+  }
+}
+</style>
 
 <style lang="scss" scoped>
 .deck-detail {
 	@apply flex flex-col items-center w-full;
 	min-height: calc(100vh - 104px);
-	.tool-list {
-		@apply flex flex-row justify-center mt-6 mb-6;
+	.btn-box {
+		@apply flex justify-center;
+    margin: 40px auto 20px;
+    & button {
+      color: lightgray;
+      border: 1px solid lightgray;
+      border-radius: 5px;
+      width: 150px;
+      height: 36px;
+      margin: 0 5px;
+      transition-duration: 0.2s;
+      &:hover {
+        @apply text-white;
+        border: 1px solid white;
+      }
+    }
 	}
 	#deck-list {
-		@apply flex flex-col bg-black;
-		width: 70vw;
-		max-width: 1000px;
-		height: 100%;
+		@apply flex flex-col;
+		width: 1200px;
 		.title {
 			@apply text-white text-lg font-extrabold;
 		}
 		.copyright {
-			@apply flex flex-row justify-center w-full text-white text-lg font-bold mb-4;
+			@apply flex flex-row justify-center w-full font-bold mb-8;
+      color: lightgrey;
+      font-size: 16px;
 		}
 		.main-deck,
 		.extra-deck,
 		.side-deck {
-			@apply p-3 rounded-2xl mb-3;
-			width: 100%;
-			min-height: 200px;
-			border: 1px solid white;
+      @apply w-full border-white border rounded-lg;
+			min-height: 205px;
+      margin: 5px 0 10px;
+      padding: 10px;
 			.cards-item {
-				@apply inline-block  box-border text-center align-top mr-2 mb-2;
-				width: 9%;
-				height: auto;
-
+				@apply inline-block align-top;
+        padding: 5px;
+				width: 10%;
 				.item-desc {
-					@apply items-center text-xs text-white flex flex-row justify-between;
+					@apply text-xs text-white flex;
 					span {
 						@apply cursor-help;
 					}
 				}
-				img {
-					@apply w-auto cursor-move;
-					height: calc(100% - 23px);
-				}
+        img {
+          @apply cursor-pointer;
+        }
 			}
 		}
 	}
@@ -427,5 +478,97 @@ onMounted(async () => {
 	img {
 		@apply w-2/3 h-auto;
 	}
+}
+.image-dialog {
+  @apply flex items-start;
+  width: 90%;
+  margin: 0 auto 20px;
+  img {
+    @apply w-1/3;
+  }
+  .info {
+    @apply w-2/3 flex flex-col ml-4;
+    font-size: 16px;
+    .name {
+      @apply font-bold text-black mb-2;
+      font-size: 20px;
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+  .deck-detail {
+    #deck-list {
+      width: 900px;
+      .main-deck,
+      .extra-deck,
+      .side-deck {
+        padding: 5px;
+        .cards-item {
+          padding: 3px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  .deck-detail {
+    #deck-list {
+      width: 760px;
+      .main-deck,
+      .extra-deck,
+      .side-deck {
+        min-height: 161.7px;
+        padding: 5px;
+        .cards-item {
+          padding: 3px;
+          width: 12.5%;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .deck-detail {
+    min-height: calc(100vh - 101px);
+    #deck-list {
+      width: 98vw;
+      margin: 20px 0 0;
+      .title {
+        @apply text-base;
+      }
+      .copyright {
+        font-size: 12px;
+        padding: 0 5px;
+      }
+      .main-deck,
+      .extra-deck,
+      .side-deck {
+        min-height: 32vw;
+        padding: 3px;
+        .cards-item {
+          padding: 2px;
+          width: 20%;
+          .item-desc {
+            font-size: 10px;
+          }
+        }
+      }
+    }
+  }
+  .image-dialog {
+    @apply flex items-start;
+    width: 95%;
+    margin: 0 0 20px;
+    .info {
+      font-size: 14px;
+      .name {
+        @apply font-bold text-black mb-1;
+        font-size: 16px;
+      }
+    }
+  }
 }
 </style>
