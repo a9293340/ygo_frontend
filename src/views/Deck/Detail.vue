@@ -294,7 +294,7 @@ onMounted(async () => {
 
 <template>
 	<div class="deck-detail">
-		<div class="btn-box pc">
+		<div class="btn-box">
       <button @click="getImage">{{ t('deck.download_img') }}</button>
       <button @click="loadToExcel">{{ t('deck.download_excel') }}</button>
 		</div>
@@ -379,7 +379,7 @@ onMounted(async () => {
 		</div>
 	</div>
 
-	<el-dialog width="60vw" :title="t('deck.download_notice')" v-model="dialogVisible">
+	<el-dialog :title="t('deck.download_notice')" v-model="dialogVisible" class="img-download-pop">
 		<div class="dialog">
 			<img :src="imgUrl" alt="" />
 		</div>
@@ -407,11 +407,11 @@ onMounted(async () => {
 </template>
 
 <style lang="scss">
-.el-dialog.card-info-pop {
+.el-dialog.card-info-pop, .el-dialog.img-download-pop {
   width: 700px;
 }
 @media (max-width: 768px) {
-  .el-dialog.card-info-pop {
+  .el-dialog.card-info-pop, .el-dialog.img-download-pop {
     width: 98vw;
   }
 }
@@ -423,7 +423,7 @@ onMounted(async () => {
 	min-height: calc(100vh - 104px);
 	.btn-box {
 		@apply flex justify-center;
-    margin: 40px auto 20px;
+    margin: 40px auto 10px;
     & button {
       color: lightgray;
       border: 1px solid lightgray;
@@ -439,13 +439,14 @@ onMounted(async () => {
     }
 	}
 	#deck-list {
-		@apply flex flex-col;
+		@apply flex flex-col bg-black;
 		width: 1200px;
+    padding: 20px 10px 0;
 		.title {
 			@apply text-white text-lg font-extrabold;
 		}
 		.copyright {
-			@apply flex flex-row justify-center w-full font-bold mb-8;
+			@apply flex flex-row justify-center w-full font-bold mb-4;
       color: lightgrey;
       font-size: 16px;
 		}
@@ -476,7 +477,7 @@ onMounted(async () => {
 .dialog {
 	@apply w-full h-auto flex flex-row justify-center;
 	img {
-		@apply w-2/3 h-auto;
+		@apply w-full h-auto;
 	}
 }
 .image-dialog {
@@ -533,9 +534,11 @@ onMounted(async () => {
 @media (max-width: 768px) {
   .deck-detail {
     min-height: calc(100vh - 101px);
+    .btn-box {
+      margin: 25px auto 0;
+    }
     #deck-list {
-      width: 98vw;
-      margin: 20px 0 0;
+      @apply w-full;
       .title {
         @apply text-base;
       }
@@ -547,7 +550,6 @@ onMounted(async () => {
       .extra-deck,
       .side-deck {
         min-height: 32vw;
-        padding: 3px;
         .cards-item {
           padding: 2px;
           width: 20%;
@@ -555,6 +557,22 @@ onMounted(async () => {
             font-size: 10px;
           }
         }
+      }
+    }
+  }
+  .image-dialog {
+    @apply flex items-start;
+    width: 90%;
+    margin: 0 auto 20px;
+    img {
+      @apply w-1/3;
+    }
+    .info {
+      @apply w-2/3 flex flex-col ml-4;
+      font-size: 16px;
+      .name {
+        @apply font-bold text-black mb-2;
+        font-size: 20px;
       }
     }
   }
