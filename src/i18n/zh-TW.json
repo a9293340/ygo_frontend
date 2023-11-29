@@ -28,7 +28,10 @@
     "edit": "修改",
     "detail": "詳情",
     "deck_check": "請輸入此牌組編號",
-    "no_data": "查無資料"
+    "no_data": "查無資料",
+    "download_img": "下載圖檔",
+    "download_excel": "下載EXCEL",
+    "download_notice": "請對圖片點選右鍵下載"
   },
   "menu": {
     "home": "首頁",
