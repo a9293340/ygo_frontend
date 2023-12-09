@@ -58,4 +58,67 @@ const openCardInfo = (i: number, type: 'main_deck' | 'extra_deck' | 'side_deck')
     @apply cursor-pointer;
   }
 }
+
+@media (max-width: 1200px) {
+  .deck-detail {
+    #deck-list {
+      width: 900px;
+      .main-deck,
+      .extra-deck,
+      .side-deck {
+        padding: 5px;
+        .cards-item {
+          padding: 3px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  .deck-detail {
+    #deck-list {
+      width: 760px;
+      .main-deck,
+      .extra-deck,
+      .side-deck {
+        min-height: 161.7px;
+        padding: 5px;
+        .cards-item {
+          padding: 3px;
+          width: 12.5%;
+        }
+      }
+    }
+  }
+}
+@media (max-width: 768px) {
+  .deck-detail {
+    min-height: calc(100vh - 101px);
+    .btn-box {
+      margin: 25px auto 0;
+    }
+    #deck-list {
+      @apply w-full;
+      .title {
+        @apply text-base;
+      }
+      .copyright {
+        font-size: 12px;
+        padding: 0 5px;
+      }
+      .main-deck,
+      .extra-deck,
+      .side-deck {
+        min-height: 32vw;
+        .cards-item {
+          padding: 2px;
+          width: 20%;
+          .item-desc {
+            font-size: 10px;
+          }
+        }
+      }
+    }
+  }
 </style>
