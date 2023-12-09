@@ -300,7 +300,7 @@ onMounted(async () => {
     <div class="btn-box">
       <button @click="getImage">{{ t('deck.download_img') }}</button>
       <button @click="loadToExcel">{{ t('deck.download_excel') }}</button>
-      <button @click="changeShowType" :class="{ 'btn-grey': showRarity }">
+      <button @click="changeShowType" :class="{ 'btn-grey': !showRarity }">
         {{ showRarity ? t('deck.showRarity') : t('deck.notShowRarity') }}
       </button>
     </div>
@@ -378,15 +378,15 @@ onMounted(async () => {
   @apply flex flex-col items-center w-full;
   min-height: calc(100vh - 104px);
   .btn-box {
-    @apply flex justify-center;
-    margin: 40px auto 10px;
+    @apply flex justify-center flex-wrap;
+    margin: 40px auto 0;
     & button {
       color: lightgray;
       border: 1px solid lightgray;
       border-radius: 5px;
       width: 150px;
       height: 36px;
-      margin: 0 5px;
+      margin: 0 5px 10px;
       transition-duration: 0.2s;
       &:hover {
         @apply text-white;
@@ -400,7 +400,7 @@ onMounted(async () => {
   #deck-list {
     @apply flex flex-col bg-black;
     width: 1200px;
-    padding: 20px 10px 0;
+    padding: 10px 10px 0;
     .title {
       @apply text-white text-lg font-extrabold;
     }
@@ -413,7 +413,7 @@ onMounted(async () => {
     .extra-deck,
     .side-deck {
       @apply w-full border-white border rounded-lg;
-      min-height: 205px;
+      min-height: 202.5px;
       margin: 5px 0 10px;
       padding: 10px;
       .cards-item {
@@ -463,6 +463,7 @@ onMounted(async () => {
       .main-deck,
       .extra-deck,
       .side-deck {
+        min-height: 151.9px;
         padding: 5px;
         .cards-item {
           padding: 3px;
@@ -479,7 +480,7 @@ onMounted(async () => {
       .main-deck,
       .extra-deck,
       .side-deck {
-        min-height: 161.7px;
+        min-height: 158.1px;
         padding: 5px;
         .cards-item {
           padding: 3px;
@@ -508,7 +509,7 @@ onMounted(async () => {
       .main-deck,
       .extra-deck,
       .side-deck {
-        min-height: 32vw;
+        min-height: 32.6vw;
         .cards-item {
           padding: 2px;
           width: 20%;
