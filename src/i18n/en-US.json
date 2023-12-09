@@ -31,7 +31,9 @@
     "no_data": "查無資料",
     "download_img": "下載圖檔",
     "download_excel": "下載EXCEL",
-    "download_notice": "請對圖片點選右鍵下載"
+    "download_notice": "請對圖片點選右鍵下載",
+    "showRarity": "顯示版本",
+    "notShowRarity": "不顯示版本"
   },
   "menu": {
     "home": "首頁",
