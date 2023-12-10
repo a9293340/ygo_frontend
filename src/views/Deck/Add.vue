@@ -41,6 +41,5 @@ const callApi = () => {
 <style lang="scss" scoped>
 .deck-add {
   min-height: calc(100vh - 104px);
-  overflow: hidden;
 }
 </style>
