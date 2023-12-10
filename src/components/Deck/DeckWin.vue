@@ -762,18 +762,12 @@ onMounted(async () => {
   }
 }
 
-@media (max-width: 1280px) {
+@media (max-width: 1200px) {
   .deck-win-component {
     width: 100vw;
-    justify-content: flex-start;
-    .card-list {
-      width: 320px;
-      margin-left: 5px;
-    }
+    padding: 0 10px;
     .deck-contents {
-      width: calc(100vw - 340px);
-      padding: 0;
-      padding-right: 5px;
+      width: calc(100vw - 350px);
     }
   }
 }
