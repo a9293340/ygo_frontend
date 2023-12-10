@@ -75,3 +75,28 @@ export const generateRandomString = (length: number): string => {
 
   return randomString;
 };
+
+export const convertBase64ToImage = (base64Data: string, deck_name: string) => {
+  const img = new Image();
+
+  img.onload = function () {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = img.width;
+    canvas.height = img.height;
+
+    ctx.drawImage(img, 0, 0);
+
+    const dataURL = canvas.toDataURL('image/png');
+    const downloadLink = document.createElement('a');
+    downloadLink.href = dataURL;
+    downloadLink.download = deck_name + '.png';
+
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+  };
+
+  img.src = base64Data;
+};

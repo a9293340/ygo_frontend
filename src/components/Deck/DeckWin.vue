@@ -10,7 +10,7 @@ import { extraType } from '@/config/ygo';
 import { VueDraggable, type UseDraggableReturn } from 'vue-draggable-plus';
 import { useDeckStore } from '@/stores/deck';
 import i18n from '@/i18n/index';
-import { generateRandomString } from '@/util/index';
+import { generateRandomString, convertBase64ToImage } from '@/util/index';
 import { callApi } from '@/util/api';
 import { decode } from '@/util';
 import { toPng } from 'html-to-image';
@@ -364,41 +364,6 @@ const getDeckDetail = async () => {
   sideDeck.value = deckDetail.value.side_deck;
 };
 
-const convertBase64ToImage = (base64Data: string) => {
-  // 创建一个图像元素
-  const img = new Image();
-
-  // 图像加载完成后的回调函数
-  img.onload = function () {
-    // 创建一个Canvas元素
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-
-    // 设置Canvas尺寸为图像尺寸
-    canvas.width = img.width;
-    canvas.height = img.height;
-
-    // 将图像绘制到Canvas上
-    ctx.drawImage(img, 0, 0);
-
-    // 将Canvas内容转换为DataURL
-    const dataURL = canvas.toDataURL('image/png');
-
-    // 创建一个下载链接
-    const downloadLink = document.createElement('a');
-    downloadLink.href = dataURL;
-    downloadLink.download = deck_name.value + '.png';
-
-    // 模拟点击下载链接
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
-  };
-
-  // 设置图像的src为Base64编码的数据
-  img.src = base64Data;
-};
-
 const getImage = async () => {
   // deck-dialog
   if (deck_name.value === '') {
@@ -407,7 +372,7 @@ const getImage = async () => {
   }
 
   toPng(document.getElementById('deck-dialog')).then(async dataUrl => {
-    convertBase64ToImage(dataUrl);
+    convertBase64ToImage(dataUrl, deck_name.value);
   });
 };
 
