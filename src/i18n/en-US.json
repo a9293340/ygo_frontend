@@ -33,7 +33,9 @@
     "download_excel": "下載EXCEL",
     "download_notice": "請對圖片點選右鍵下載",
     "showRarity": "顯示版本",
-    "notShowRarity": "不顯示版本"
+    "notShowRarity": "不顯示版本",
+    "saveImage": "截取編號",
+    "noNameMsg": "牌組名稱不得為空"
   },
   "menu": {
     "home": "首頁",

@@ -34,6 +34,7 @@ declare module 'component-types' {
     title: string;
     link?: string;
     children?: MenuItemList;
+    check?: boolean;
   }
 
   interface Page {
