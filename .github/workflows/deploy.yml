@@ -16,17 +16,11 @@ jobs:
         with:
           node-version: 18.12.1
           cache: 'yarn'
-      - run: yarn
-
-      - name: Build
-        run: yarn build-only
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
+      - run: |
+          yarn install
+          yarn build
       - name: List files in dist directory
-        run: ls -l dist
+        run: ls -R dist
       - name: deploy file to server
         uses: appleboy/scp-action@master
         with:
