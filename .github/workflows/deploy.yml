@@ -33,5 +33,5 @@ jobs:
           username: 'root'
           password: ${{ secrets.SERVER_PASSWORD }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          files: './github-cd/*'
+          source: 'dist/*'
           remote-path: '/usr/share/nginx/html'
