@@ -25,6 +25,8 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: List files in dist directory
+        run: ls -l dist
       - name: deploy file to server
         uses: appleboy/scp-action@master
         with:
@@ -33,5 +35,5 @@ jobs:
           username: 'root'
           password: ${{ secrets.SERVER_PASSWORD }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: 'dist/*'
-          target: '/usr/share/nginx/html'
+          source: 'dist/**/*'
+          target: '/usr/share/nginx/html/'
