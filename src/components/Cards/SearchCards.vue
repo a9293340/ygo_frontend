@@ -534,7 +534,6 @@ onMounted(async () => {
 
 @media (max-width: 768px) {
 	.search-cards {
-		min-height: calc(100vh - 101px);
 		& .close-form {
 			height: 55px;
 		}
