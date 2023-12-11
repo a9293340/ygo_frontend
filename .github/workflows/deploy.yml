@@ -30,4 +30,4 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: 'dist/**/*'
-          target: '/usr/share/nginx/html/'
+          target: '/usr/share/nginx/html/ygo_front'
