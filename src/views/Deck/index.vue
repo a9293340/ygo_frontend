@@ -1,99 +1,100 @@
 <template>
-  <div class="deck-list">
-    <div class="search-bar">
-      <div class="item-box">
-        <div class="item-title">{{ t("deck.deck_title") }}</div>
-        <input
-            v-model="listQuery.filter.title"
-            type="text"
-            :placeholder="t('deck.input_title')"
-        />
-      </div>
-      <div class="item-box">
-        <div class="item-title">{{ t("deck.deck_id") }}</div>
-        <input
-            v-model="listQuery.filter.admin_id"
-            type="text"
-            :placeholder="t('deck.input_id')"
-        />
-      </div>
-      <div class="item-box">
-        <div class="item-title">{{ t("deck.deck_time") }}</div>
-        <el-date-picker
-            v-model="date"
-            type="daterange"
-            :range-separator="t('deck.to')"
-            :start-placeholder="t('deck.time_start')"
-            :end-placeholder="t('deck.time_end')"
-        />
-      </div>
-      <button
-          class="search-btn"
-          @click="getList({ limit: listQuery.limit, page: 0 })"
-      >{{ t("card.search") }}</button
-      >
-    </div>
-    <div class="list-container">
-      <div class="deck-info-box">
-        <div class="deck-info-title">
-          <div class="lg-item">{{ t("deck.deck_name") }}</div>
-          <div class=sm-item>{{ t("deck.deck_time_create") }}</div>
-          <div class="sm-item">{{ t("deck.deck_time_edit") }}</div>
-          <div class="action-item"></div>
-        </div>
-        <div
-            class="deck-info"
-            :class="{ 'chosen-deck': chosenCard === item.title }"
-            v-for="(item, i) in deckList"
-            :key="item.title"
-            @click.stop="chosenCard = item.title ? item.title : ''"
-        >
-          <div class="lg-item">{{ item.title }}</div>
-          <div class="sm-item">{{ formatDateString(item.create_date) }}</div>
-          <div class="sm-item">{{ formatDateString(item.last_edit_date) }}</div>
-          <div class="action-item">
-            <el-button type="warning" @click="openDialog('e', i)">{{
-                t("deck.edit")
-              }}</el-button>
-            <el-button type="danger" @click="openDialog('r', i)">{{
-                t("deck.remove")
-              }}</el-button>
-            <el-button type="primary" @click="goToDetail(item._id)">{{
-                t("deck.detail")
-              }}</el-button>
-          </div>
-        </div>
-      </div>
-    </div>
+	<div class="deck-list">
+		<div class="search-bar">
+			<div class="item-box">
+				<div class="item-title">{{ t("deck.deck_title") }}</div>
+				<input
+					v-model="listQuery.filter.title"
+					type="text"
+					:placeholder="t('deck.input_title')"
+				/>
+			</div>
+			<div class="item-box">
+				<div class="item-title">{{ t("deck.deck_id") }}</div>
+				<input
+					v-model="listQuery.filter.admin_id"
+					type="text"
+					:placeholder="t('deck.input_id')"
+				/>
+			</div>
+			<div class="item-box">
+				<div class="item-title">{{ t("deck.deck_time") }}</div>
+				<el-date-picker
+					v-model="date"
+					type="daterange"
+					:range-separator="t('deck.to')"
+					:start-placeholder="t('deck.time_start')"
+					:end-placeholder="t('deck.time_end')"
+				/>
+			</div>
+			<button
+				class="search-btn"
+				@click="getList({ limit: listQuery.limit, page: 0 })"
+			>
+				{{ t("card.search") }}
+			</button>
+		</div>
+		<div class="list-container">
+			<div class="deck-info-box">
+				<div class="deck-info-title">
+					<div class="lg-item">{{ t("deck.deck_name") }}</div>
+					<div class="sm-item">{{ t("deck.deck_time_create") }}</div>
+					<div class="sm-item">{{ t("deck.deck_time_edit") }}</div>
+					<div class="action-item"></div>
+				</div>
+				<div
+					class="deck-info"
+					:class="{ 'chosen-deck': chosenCard === item.title }"
+					v-for="(item, i) in deckList"
+					:key="item.title"
+					@click.stop="chosenCard = item.title ? item.title : ''"
+				>
+					<div class="lg-item">{{ item.title }}</div>
+					<div class="sm-item">{{ formatDateString(item.create_date) }}</div>
+					<div class="sm-item">{{ formatDateString(item.last_edit_date) }}</div>
+					<div class="action-item">
+						<el-button type="warning" @click="openDialog('e', i)">{{
+							t("deck.edit")
+						}}</el-button>
+						<el-button type="danger" @click="openDialog('r', i)">{{
+							t("deck.remove")
+						}}</el-button>
+						<el-button type="primary" @click="goToDetail(item._id)">{{
+							t("deck.detail")
+						}}</el-button>
+					</div>
+				</div>
+			</div>
+		</div>
 
-    <Pagination
-        :hidden="total <= 0"
-        :total="total"
-        :limit="listQuery.limit"
-        :page.sync="listQuery.page"
-        @pagination="getList"
-    />
-  </div>
-  <!-- remove dialog -->
-  <el-dialog v-model="dialogVisible" :title="dialogTitle">
-    <el-form-item class="deck-form" :label="t('deck.deck_check')">
-      <el-input class="deck-input" v-model="deck_check_id" />
-    </el-form-item>
-    <el-button
-        style="width: 100px"
-        type="danger"
-        v-if="removeVisible"
-        @click="removeDeck"
-    >{{ t("deck.remove") }}</el-button
-    >
-    <el-button
-        style="width: 100px"
-        type="warning"
-        v-if="editVisible"
-        @click="editDeck"
-    >{{ t("deck.edit") }}</el-button
-    >
-  </el-dialog>
+		<Pagination
+			:hidden="total <= 0"
+			:total="total"
+			:limit="listQuery.limit"
+			:page.sync="listQuery.page"
+			@pagination="getList"
+		/>
+	</div>
+	<!-- remove dialog -->
+	<el-dialog v-model="dialogVisible" :title="dialogTitle">
+		<el-form-item class="deck-form" :label="t('deck.deck_check')">
+			<el-input class="deck-input" v-model="deck_check_id" />
+		</el-form-item>
+		<el-button
+			style="width: 100px"
+			type="danger"
+			v-if="removeVisible"
+			@click="removeDeck"
+			>{{ t("deck.remove") }}</el-button
+		>
+		<el-button
+			style="width: 100px"
+			type="warning"
+			v-if="editVisible"
+			@click="editDeck"
+			>{{ t("deck.edit") }}</el-button
+		>
+	</el-dialog>
 </template>
 
 <script setup lang="ts">
@@ -101,7 +102,7 @@ import type { HasTotalRes } from "response-data-types";
 import type { DeckListType, DeckDeleteType } from "request-data-types";
 import type { PaginationGetList } from "common-types";
 import type { DeckList } from "module-types";
-import { formatDateString } from "@/util/parseDate"
+import { formatDateString } from "@/util/parseDate";
 import { decode, removeNullAndEmptyString } from "@/util";
 import { callApi } from "@/util/api";
 import i18n from "@/i18n/index";
@@ -116,7 +117,7 @@ const { pick_deck_id } = storeToRefs(useDeckStore());
 const deckList = ref<DeckList>([]);
 const chosenCard = ref("");
 const total = ref(0);
-const date = ref<(string | string[])>("");
+const date = ref<any>([""]);
 const removeVisible = ref(false);
 const editVisible = ref(false);
 const dialogTitle = ref("");
@@ -136,8 +137,12 @@ const listQuery = ref<DeckListType>({
 });
 
 const getList = async (val: PaginationGetList) => {
-  listQuery.value.filter.begin_date = date.value ? new Date(date.value[0]).toDateString() : "";
-  listQuery.value.filter.end_date = date.value ? new Date(date.value[1]).toDateString() : "";
+	listQuery.value.filter.begin_date = date.value
+		? new Date(date.value[0]).toDateString()
+		: "";
+	listQuery.value.filter.end_date = date.value
+		? new Date(date.value[1]).toDateString()
+		: "";
 	listQuery.value.page = val.page;
 
 	const data = decode<HasTotalRes<DeckList>>(
@@ -212,9 +217,12 @@ const openDialog = (type: string, idx: number) => {
 
 onMounted(async () => {
 	listQuery.value.filter = { ...listQuery.value.filter, ...route.query };
-  if (route.query.begin_date && route.query.end_date) {
-    date.value = [route.query.begin_date as string, route.query.end_date as string]
-  }
+	if (route.query.begin_date && route.query.end_date) {
+		date.value = [
+			route.query.begin_date as string,
+			route.query.end_date as string,
+		];
+	}
 	await getList({ limit: listQuery.value.limit, page: 0 });
 });
 </script>
@@ -222,54 +230,54 @@ onMounted(async () => {
 <style lang="scss" scoped>
 .deck-list {
 	min-height: calc(100vh - 104px);
-  padding: 0 0 30px;
+	padding: 0 0 30px;
 	& .search-bar {
 		@apply flex justify-center;
-    width: 1150px;
-    margin: 0 auto;
-    padding: 40px 0 20px;
+		width: 1150px;
+		margin: 0 auto;
+		padding: 40px 0 20px;
 		& .item-box {
-      font-size: 16px;
-      margin: 0 5px 10px;
-      & .item-title {
-        color: lightgray;
-        margin: 0 0 3px;
-      }
-      & input {
-        @apply bg-white;
-        color: #606266;
-        padding: 5px 11px;
-        border-radius: 5px;
-        width: 200px;
-        &::placeholder {
-          color: #aBabb2;
-        }
-      }
+			font-size: 16px;
+			margin: 0 5px 10px;
+			& .item-title {
+				color: lightgray;
+				margin: 0 0 3px;
+			}
+			& input {
+				@apply bg-white;
+				color: #606266;
+				padding: 5px 11px;
+				border-radius: 5px;
+				width: 200px;
+				&::placeholder {
+					color: #ababb2;
+				}
+			}
 		}
-    :deep(.el-date-editor) {
-      height: 36px;
-      border-radius: 5px;
-      .el-range-input {
-        font-size: 16px;
-      }
-    }
-    & .search-btn {
-      @apply self-end;
-      color: lightgray;
-      border: 1px solid lightgray;
-      border-radius: 5px;
-      width: 120px;
-      height: 36px;
-      margin: 10px 5px 10px;
-      transition-duration: 0.2s;
-      &:hover {
-        @apply text-white;
-        border: 1px solid white;
-      }
-    }
+		:deep(.el-date-editor) {
+			height: 36px;
+			border-radius: 5px;
+			.el-range-input {
+				font-size: 16px;
+			}
+		}
+		& .search-btn {
+			@apply self-end;
+			color: lightgray;
+			border: 1px solid lightgray;
+			border-radius: 5px;
+			width: 120px;
+			height: 36px;
+			margin: 10px 5px 10px;
+			transition-duration: 0.2s;
+			&:hover {
+				@apply text-white;
+				border: 1px solid white;
+			}
+		}
 	}
 	& .list-container {
-    width: 80vw;
+		width: 80vw;
 		min-width: 1150px;
 		margin: 10px auto 30px;
 		& .deck-info-box {
@@ -292,9 +300,9 @@ onMounted(async () => {
 				& .lg-item {
 					@apply grow;
 				}
-        & .action-item {
-          width: 250px;
-        }
+				& .action-item {
+					width: 250px;
+				}
 			}
 			& .deck-info-title {
 				background-color: #333333;
@@ -315,72 +323,72 @@ onMounted(async () => {
 
 @media (max-width: 1200px) {
 	.deck-list {
-    & .search-bar {
-      width: 900px;
-    }
+		& .search-bar {
+			width: 900px;
+		}
 		& .list-container {
 			width: 95vw;
 			min-width: unset;
-      & .deck-info-box {
-        & .deck-info-title,
-        & .deck-info {
-          & .sm-item {
-            width: 120px;
-          }
-          & .action-item {
-            width: 230px;
-          }
-        }
-      }
+			& .deck-info-box {
+				& .deck-info-title,
+				& .deck-info {
+					& .sm-item {
+						width: 120px;
+					}
+					& .action-item {
+						width: 230px;
+					}
+				}
+			}
 		}
 	}
 }
 
 @media (max-width: 900px) {
 	.deck-list {
-    & .search-bar {
-      width: 760px;
-      & .item-box {
-        & input {
-          width: 150px;
-        }
-      }
-      :deep(.el-date-editor) {
-        width: 300px;
-      }
-      & .search-btn {
-        width: 100px;
-      }
-    }
-    & .list-container {
-      width: 95vw;
-      min-width: unset;
-      overflow-y: scroll;
-      & .deck-info-box {
-        min-width: 800px;
-      }
-    }
+		& .search-bar {
+			width: 760px;
+			& .item-box {
+				& input {
+					width: 150px;
+				}
+			}
+			:deep(.el-date-editor) {
+				width: 300px;
+			}
+			& .search-btn {
+				width: 100px;
+			}
+		}
+		& .list-container {
+			width: 95vw;
+			min-width: unset;
+			overflow-y: scroll;
+			& .deck-info-box {
+				min-width: 800px;
+			}
+		}
 	}
 }
 
 @media (max-width: 768px) {
 	.deck-list {
 		min-height: calc(100vh - 101px);
-    & .search-bar {
-      @apply w-full flex flex-wrap justify-center;
-      padding: 40px 0 20px;
-      & .item-box {
-        & input {
-          width: 45vw;
-        }
-      }
-      :deep(.el-date-editor) {
-        width: 70vw;
-      }
-      & .search-btn {
-        width: 20vw;
-      }
-    }
+		& .search-bar {
+			@apply w-full flex flex-wrap justify-center;
+			padding: 40px 0 20px;
+			& .item-box {
+				& input {
+					width: 45vw;
+				}
+			}
+			:deep(.el-date-editor) {
+				width: 70vw;
+			}
+			& .search-btn {
+				width: 20vw;
+			}
+		}
 	}
 }
 </style>
