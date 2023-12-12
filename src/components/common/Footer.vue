@@ -1,15 +1,13 @@
 <template>
   <div class="footer-wrapper">
-    <div class="text">
-      Copyright ©  卡壇 YGO Info. All rights reserved.
-    </div>
+    <div class="text">Copyright © 卡壇 YGO Info. All rights reserved.test</div>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .footer-wrapper {
   @apply w-full text-center;
-  background-color: #2B2B2B;
+  background-color: #2b2b2b;
   padding: 10px 0;
   & .text {
     color: lightgray;
