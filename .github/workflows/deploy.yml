@@ -29,7 +29,9 @@ jobs:
           username: 'root'
           password: ${{ secrets.SERVER_PASSWORD }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: 'rm -rf /var/www/ygo_front/*'
+          script: |
+            echo "Removing old files..."
+            rm -rf /var/www/ygo_front/*
       - name: deploy file to server
         uses: appleboy/scp-action@master
         with:
@@ -40,3 +42,4 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: 'dist/**/*'
           target: '/var/www/ygo_front'
+          strip_components: 1
