@@ -29,6 +29,5 @@ jobs:
           username: 'root'
           password: ${{ secrets.SERVER_PASSWORD }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: 'dist/**/*'
+          source: 'dist/*'
           target: '/var/www/ygo_front'
-          strip_components: 1
