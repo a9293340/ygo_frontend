@@ -262,6 +262,10 @@ const router = createRouter({
 			name: "calendar",
 			component: () => import("../views/Calendar/index.vue"),
 		},
+		{
+			path: "/:catchAll(.*)",
+			redirect: "/",
+		},
 	],
 	scrollBehavior(to, from, savedPosition) {
 		// always scroll to top
