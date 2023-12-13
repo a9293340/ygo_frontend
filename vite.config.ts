@@ -59,11 +59,10 @@ export default defineConfig({
 		cors: true,
 		proxy: {
 			"/api": {
-				target: "http://localhost:3300",
+				target: "http://172.233.65.87:3300",
 				changeOrigin: true,
 				rewrite: (path) => path,
 			},
 		},
 	},
 });
-// http://172.233.65.87:3300

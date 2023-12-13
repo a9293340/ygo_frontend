@@ -16,6 +16,37 @@ const route = useRoute();
 const imgUrl = ref("");
 const dialogVisible = ref(false);
 const showRarity = ref(true);
+const deckList = ref<null | HTMLElement>(null);
+const contentRef = ref<null | HTMLElement>(null);
+const allImagesLoaded = ref(false);
+
+const checkAllImagesLoaded = async () => {
+	const images = contentRef.value?.querySelectorAll("img");
+	if (!images) return;
+
+	const totalImages = images.length;
+	let loadedImages = 0;
+
+	images.forEach((img) => {
+		if (img.complete && img.naturalHeight !== 0) {
+			loadedImages++;
+		} else {
+			img.addEventListener("load", () => {
+				loadedImages++;
+				if (loadedImages === totalImages) {
+					allImagesLoaded.value = true; // 所有圖片已加載
+				}
+			});
+			img.addEventListener("error", () => {
+				console.error("圖片加載失敗:", img.src);
+			});
+		}
+	});
+
+	if (loadedImages === totalImages) {
+		allImagesLoaded.value = true; // 所有圖片已加載
+	}
+};
 
 const getDataFromDeck = () => {
 	const makeDeckArr = (decks: DeckContent[]) => {
@@ -254,7 +285,7 @@ const base64AddWaterMaker = (
 };
 
 const getImage = async () => {
-	toPng(document.getElementById("deck-list"))
+	toPng(deckList.value)
 		.then(async function (dataUrl) {
 			imgUrl.value = await base64AddWaterMaker(dataUrl, {
 				font: "Ariel",
@@ -293,7 +324,9 @@ onMounted(async () => {
 			)
 		).data
 	).list[0];
-
+	if (contentRef.value) {
+		await checkAllImagesLoaded();
+	}
 	console.log(deck.value);
 });
 </script>
@@ -307,7 +340,7 @@ onMounted(async () => {
 				{{ showRarity ? t("deck.showRarity") : t("deck.notShowRarity") }}
 			</button>
 		</div>
-		<div id="deck-list">
+		<div id="deck-list" ref="deckList">
 			<div class="title">
 				{{ t("deck.main_deck") }}({{ deck?.main_deck.length }})
 			</div>

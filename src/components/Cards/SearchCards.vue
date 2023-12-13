@@ -320,6 +320,7 @@ const getCards = async (page: number) => {
 	) {
 		listQuery.value.filter.def_t = parseInt(listQuery.value.filter.def_t);
 	}
+	listQuery.value.filter.id = listQuery.value.filter.id.toUpperCase();
 	listQuery.value.page = page;
 	listQuery.value.limit = props.limit;
 	if (pages.value.findIndex((page) => page === listQuery.value.page) === -1)
@@ -402,13 +403,13 @@ onMounted(async () => {
 	width: 150px;
 	.el-input__wrapper {
 		overflow: hidden;
-    padding: 0 11px 1px;
+		padding: 0 11px 1px;
 	}
 	.el-input__inner {
 		height: 35px;
 		border-color: transparent;
 		box-shadow: none;
-    font-size: 16px;
+		font-size: 16px;
 	}
 	.el-input {
 		border-radius: 5px;
@@ -456,14 +457,14 @@ onMounted(async () => {
 			}
 			& input,
 			& select {
-        @apply bg-white;
-        color: #606266;
-        padding: 5px 11px;
+				@apply bg-white;
+				color: #606266;
+				padding: 5px 11px;
 				border-radius: 5px;
 				width: 150px;
-        &::placeholder {
-          color: #aBabb2;
-        }
+				&::placeholder {
+					color: #ababb2;
+				}
 			}
 			& span {
 				color: lightgray;
