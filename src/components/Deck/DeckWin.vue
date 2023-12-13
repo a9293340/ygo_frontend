@@ -514,7 +514,7 @@ onMounted(async () => {
 								<span>{{ item.card_rarity }}</span>
 							</el-tooltip>
 							<el-icon
-								size="18"
+								size="16"
 								class="cursor-pointer"
 								@click="removeDeck('m', i)"
 							>
@@ -558,7 +558,7 @@ onMounted(async () => {
 								<span>{{ item.card_rarity }}</span>
 							</el-tooltip>
 							<el-icon
-								size="20"
+								size="16"
 								class="cursor-pointer"
 								@click="removeDeck('e', i)"
 							>
@@ -602,7 +602,7 @@ onMounted(async () => {
 								<span>{{ item.card_rarity }}</span>
 							</el-tooltip>
 							<el-icon
-								size="20"
+								size="16"
 								class="cursor-pointer"
 								@click="removeDeck('s', i)"
 							>
@@ -787,18 +787,16 @@ onMounted(async () => {
 		}
 		.main-deck {
 			@apply w-full border-white border rounded-lg;
-			min-height: 282.38px;
+      padding: 10px;
 			.main-drag,
 			.extra-drag,
 			.side-drag {
-				@apply w-full h-full p-2 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-track-rounded-xl scrollbar-thumb-rounded-xl scrollbar-thumb-blue-700 scrollbar-track-slate-200;
-				font-size: 0;
 				.main-drag-item,
 				.extra-drag-item,
 				.side-drag-item {
-					@apply inline-block box-border text-center align-top;
-					width: 74.5px;
-					margin: 2px 5px;
+          @apply inline-block align-bottom;
+          padding: 5px;
+          width: 10%;
 					.item-desc {
 						@apply items-center text-xs text-white flex flex-row justify-between;
 						span {
@@ -810,12 +808,13 @@ onMounted(async () => {
 					}
 				}
 			}
-		}
-		.extra-deck {
-			min-height: 152.19px;
-		}
-		.side-deck {
-			min-height: 152.19px;
+      .main-drag {
+        min-height: 273.97px;
+      }
+      .extra-drag,
+      .side-drag {
+        min-height: 134.98px;
+      }
 		}
 	}
 }
@@ -858,7 +857,56 @@ onMounted(async () => {
 		padding: 0 10px;
 		.deck-contents {
 			width: calc(100vw - 350px);
+      .main-deck {
+        .main-drag,
+        .extra-drag,
+        .side-drag {
+          .main-drag-item,
+          .extra-drag-item,
+          .side-drag-item {
+            width: 12.5%;
+          }
+        }
+        .main-drag {
+          min-height: 26.55vw;
+        }
+        .extra-drag,
+        .side-drag {
+          min-height: 13.28vw;
+        }
+      }
 		}
 	}
+}
+
+@media (max-width: 1000px) {
+  .deck-win-component {
+    width: 100vw;
+    padding: 0 10px;
+    .deck-contents {
+      width: calc(100vw - 350px);
+      .main-deck {
+        .main-drag,
+        .extra-drag,
+        .side-drag {
+          .main-drag-item,
+          .extra-drag-item,
+          .side-drag-item {
+            width: 16.66%;
+            .item-desc {
+              font-size: 9px;
+            }
+          }
+        }
+        .main-drag {
+          min-height: 27.13vw;
+        }
+        .extra-drag,
+        .side-drag {
+          min-height: 13.58vw;
+        }
+      }
+    }
+  }
 }
 </style>
