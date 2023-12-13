@@ -54,8 +54,8 @@ const menu = ref<MenuItem[]>([
 	{
 		title: t("menu.series_introduction"),
 		children: [
-			{ title: t("menu.theme_deck"), link: "/series_introduction/theme_deck" },
-			{ title: t("menu.plugin"), link: "/series_introduction/plugin" },
+			{ title: t("menu.theme_deck"), link: "/serial_introduction/theme_deck" },
+			{ title: t("menu.plugin"), link: "/serial_introduction/plugin" },
 		],
 	},
 	{

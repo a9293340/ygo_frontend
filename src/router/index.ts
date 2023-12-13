@@ -60,9 +60,9 @@ const router = createRouter({
 		},
 		// 系列介紹
 		{
-			path: "/series_introduction",
-			name: "series_introduction",
-			redirect: "/series_introduction/theme_deck",
+			path: "/serial_introduction",
+			name: "serial_introduction",
+			redirect: "/serial_introduction/theme_deck",
 			children: [
 				{
 					path: "theme_deck",
