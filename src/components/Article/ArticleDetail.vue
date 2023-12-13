@@ -43,6 +43,7 @@ const props = defineProps({
 });
 
 const route = useRoute();
+const router = useRouter();
 
 const article = ref<BaseArticle | NormalArticle>({
 	_id: "643c135f6d9a4b14a77be3aa",
@@ -60,7 +61,6 @@ const article = ref<BaseArticle | NormalArticle>({
 
 onMounted(async () => {
 	console.log(route.params.id);
-
 	try {
 		article.value = decode<HasTotalRes<BaseArticleList | NormalArticleList>>(
 			(
@@ -72,10 +72,11 @@ onMounted(async () => {
 				)
 			).data
 		).list[0];
+		console.log(article.value);
 	} catch (error) {
-		console.log(error);
-
 		console.log("Get Api Error");
+
+		router.go(-1);
 	}
 });
 </script>
