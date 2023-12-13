@@ -18,7 +18,7 @@
 			</div>
 			<div class="list-container">
 				<router-link
-					:to="`/${typePath}/${item._id}`"
+					:to="`${route.path}/${item._id}`"
 					class="list-item"
 					v-for="item in list"
 					:key="item._id"
@@ -77,6 +77,7 @@ import { decode } from "@/util";
 import i18n from "@/i18n/index";
 
 const { t } = i18n.global;
+const route = useRoute();
 const props = defineProps({
 	type: {
 		type: Number,

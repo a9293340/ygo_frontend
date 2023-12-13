@@ -59,6 +59,8 @@ const article = ref<BaseArticle | NormalArticle>({
 });
 
 onMounted(async () => {
+	console.log(route.params.id);
+
 	try {
 		article.value = decode<HasTotalRes<BaseArticleList | NormalArticleList>>(
 			(
@@ -71,6 +73,8 @@ onMounted(async () => {
 			).data
 		).list[0];
 	} catch (error) {
+		console.log(error);
+
 		console.log("Get Api Error");
 	}
 });
