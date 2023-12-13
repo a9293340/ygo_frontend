@@ -47,7 +47,7 @@ const openCardInfo = (i: number, type: 'main_deck' | 'extra_deck' | 'side_deck')
 
 <style lang="scss" scoped>
 .cards-item {
-  @apply inline-block align-top;
+  @apply inline-block align-bottom;
   padding: 5px;
   width: 10%;
   .item-desc {
@@ -78,7 +78,7 @@ const openCardInfo = (i: number, type: 'main_deck' | 'extra_deck' | 'side_deck')
     padding: 2px;
     width: 20%;
     .item-desc {
-      font-size: 10px;
+      font-size: 9.5px;
     }
   }
 }
