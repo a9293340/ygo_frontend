@@ -73,8 +73,7 @@ const router = createRouter({
 				{
 					path: "theme_deck/:id",
 					name: "theme_deck_detail",
-					component: () =>
-						import("../views/SeriesIntroduction/ThemeDeckDetail.vue"),
+					component: () => import("../views/SeriesIntroduction/Detail.vue"),
 				},
 				{
 					path: "plugin",
@@ -84,8 +83,7 @@ const router = createRouter({
 				{
 					path: "plugin/:id",
 					name: "plugin_detail",
-					component: () =>
-						import("../views/SeriesIntroduction/PluginDetail.vue"),
+					component: () => import("../views/SeriesIntroduction/Detail.vue"),
 				},
 			],
 		},
@@ -104,8 +102,7 @@ const router = createRouter({
 				{
 					path: "single_card/:id",
 					name: "single_card_detail",
-					component: () =>
-						import("../views/UsefulCardIntroduction/SingleCardDetail.vue"),
+					component: () => import("../views/UsefulCardIntroduction/Detail.vue"),
 				},
 				{
 					path: "strategy",
@@ -116,8 +113,7 @@ const router = createRouter({
 				{
 					path: "strategy/:id",
 					name: "strategy_detail",
-					component: () =>
-						import("../views/UsefulCardIntroduction/StrategyDetail.vue"),
+					component: () => import("../views/UsefulCardIntroduction/Detail.vue"),
 				},
 			],
 		},
@@ -136,8 +132,7 @@ const router = createRouter({
 				{
 					path: "pack/:id",
 					name: "pack_detail",
-					component: () =>
-						import("../views/ProductionInformation/PackDetail.vue"),
+					component: () => import("../views/ProductionInformation/Detail.vue"),
 				},
 				{
 					path: "deck",
@@ -148,8 +143,7 @@ const router = createRouter({
 				{
 					path: "deck/:id",
 					name: "deck_detail",
-					component: () =>
-						import("../views/ProductionInformation/DeckDetail.vue"),
+					component: () => import("../views/ProductionInformation/Detail.vue"),
 				},
 				{
 					path: "rd",
@@ -159,8 +153,7 @@ const router = createRouter({
 				{
 					path: "rd/:id",
 					name: "rd_detail",
-					component: () =>
-						import("../views/ProductionInformation/RdDetail.vue"),
+					component: () => import("../views/ProductionInformation/Detail.vue"),
 				},
 				{
 					path: "box",
@@ -170,8 +163,7 @@ const router = createRouter({
 				{
 					path: "box/:id",
 					name: "box_detail",
-					component: () =>
-						import("../views/ProductionInformation/BoxDetail.vue"),
+					component: () => import("../views/ProductionInformation/Detail.vue"),
 				},
 				{
 					path: "other",
@@ -182,8 +174,7 @@ const router = createRouter({
 				{
 					path: "other/:id",
 					name: "other_detail",
-					component: () =>
-						import("../views/ProductionInformation/OtherDetail.vue"),
+					component: () => import("../views/ProductionInformation/Detail.vue"),
 				},
 			],
 		},
@@ -201,7 +192,7 @@ const router = createRouter({
 				{
 					path: "judgment/:id",
 					name: "judgment_detail",
-					component: () => import("../views/Rules/JudgementDetail.vue"),
+					component: () => import("../views/Rules/Detail.vue"),
 				},
 				{
 					path: "ban_list",
@@ -211,7 +202,7 @@ const router = createRouter({
 				{
 					path: "ban_list/:id",
 					name: "ban_list_detail",
-					component: () => import("../views/Rules/BanListDetail.vue"),
+					component: () => import("../views/Rules/Detail.vue"),
 				},
 			],
 		},
