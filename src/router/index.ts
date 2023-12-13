@@ -45,7 +45,7 @@ const router = createRouter({
 		{
 			path: "/meta_deck/:id",
 			name: "meta_deck_detail",
-			component: () => import("../views/MetaDeck/Detail.vue"),
+			component: () => import("../views/Article/Detail.vue"),
 		},
 		// 戰報
 		{
@@ -56,7 +56,7 @@ const router = createRouter({
 		{
 			path: "/battle_paper/:id",
 			name: "battle_paper_detail",
-			component: () => import("../views/BattlePaper/Detail.vue"),
+			component: () => import("../views/Article/Detail.vue"),
 		},
 		// 系列介紹
 		{
@@ -73,7 +73,7 @@ const router = createRouter({
 				{
 					path: "theme_deck/:id",
 					name: "theme_deck_detail",
-					component: () => import("../views/SeriesIntroduction/Detail.vue"),
+					component: () => import("../views/Article/Detail.vue"),
 				},
 				{
 					path: "plugin",
@@ -83,7 +83,7 @@ const router = createRouter({
 				{
 					path: "plugin/:id",
 					name: "plugin_detail",
-					component: () => import("../views/SeriesIntroduction/Detail.vue"),
+					component: () => import("../views/Article/Detail.vue"),
 				},
 			],
 		},
@@ -102,7 +102,7 @@ const router = createRouter({
 				{
 					path: "single_card/:id",
 					name: "single_card_detail",
-					component: () => import("../views/UsefulCardIntroduction/Detail.vue"),
+					component: () => import("../views/Article/Detail.vue"),
 				},
 				{
 					path: "strategy",
@@ -113,15 +113,15 @@ const router = createRouter({
 				{
 					path: "strategy/:id",
 					name: "strategy_detail",
-					component: () => import("../views/UsefulCardIntroduction/Detail.vue"),
+					component: () => import("../views/Article/Detail.vue"),
 				},
 			],
 		},
 		// 卡表介紹
 		{
-			path: "/production_information",
-			name: "production_information",
-			redirect: "/production_information/pack",
+			path: "/product_information",
+			name: "product_information",
+			redirect: "/product_information/pack",
 			children: [
 				{
 					path: "pack",
@@ -132,7 +132,7 @@ const router = createRouter({
 				{
 					path: "pack/:id",
 					name: "pack_detail",
-					component: () => import("../views/ProductionInformation/Detail.vue"),
+					component: () => import("../views/Article/Detail.vue"),
 				},
 				{
 					path: "deck",
@@ -143,7 +143,7 @@ const router = createRouter({
 				{
 					path: "deck/:id",
 					name: "deck_detail",
-					component: () => import("../views/ProductionInformation/Detail.vue"),
+					component: () => import("../views/Article/Detail.vue"),
 				},
 				{
 					path: "rd",
@@ -153,7 +153,7 @@ const router = createRouter({
 				{
 					path: "rd/:id",
 					name: "rd_detail",
-					component: () => import("../views/ProductionInformation/Detail.vue"),
+					component: () => import("../views/Article/Detail.vue"),
 				},
 				{
 					path: "box",
@@ -163,7 +163,7 @@ const router = createRouter({
 				{
 					path: "box/:id",
 					name: "box_detail",
-					component: () => import("../views/ProductionInformation/Detail.vue"),
+					component: () => import("../views/Article/Detail.vue"),
 				},
 				{
 					path: "other",
@@ -174,7 +174,7 @@ const router = createRouter({
 				{
 					path: "other/:id",
 					name: "other_detail",
-					component: () => import("../views/ProductionInformation/Detail.vue"),
+					component: () => import("../views/Article/Detail.vue"),
 				},
 			],
 		},
@@ -192,7 +192,7 @@ const router = createRouter({
 				{
 					path: "judgment/:id",
 					name: "judgment_detail",
-					component: () => import("../views/Rules/Detail.vue"),
+					component: () => import("../views/Article/Detail.vue"),
 				},
 				{
 					path: "ban_list",
@@ -202,7 +202,7 @@ const router = createRouter({
 				{
 					path: "ban_list/:id",
 					name: "ban_list_detail",
-					component: () => import("../views/Rules/Detail.vue"),
+					component: () => import("../views/Article/Detail.vue"),
 				},
 			],
 		},
@@ -215,7 +215,7 @@ const router = createRouter({
 		{
 			path: "/series_story/:id",
 			name: "series_story_detail",
-			component: () => import("../views/SeriesStory/Detail.vue"),
+			component: () => import("../views/Article/Detail.vue"),
 		},
 		// 卡片查詢
 		{

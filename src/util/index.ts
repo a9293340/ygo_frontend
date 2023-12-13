@@ -110,3 +110,12 @@ export const convertBase64ToImage = (base64Data: string, deck_name: string) => {
 
 	img.src = base64Data;
 };
+
+export const toCamelCase = (input: string): string => {
+	return input
+		.split("_")
+		.map((word, index) =>
+			index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1)
+		)
+		.join("");
+};
