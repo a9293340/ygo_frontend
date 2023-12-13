@@ -111,7 +111,7 @@ const typePath = computed(() => {
 			article_db = "meta_deck";
 			break;
 		case 1:
-			article_db = "series_introduction";
+			article_db = "serial_introduction";
 			break;
 		case 2:
 			article_db = "useful_card_introduction";

@@ -75,6 +75,7 @@ onMounted(async () => {
 		console.log(article.value);
 	} catch (error) {
 		console.log("Get Api Error");
+		console.log(error);
 
 		router.go(-1);
 	}
