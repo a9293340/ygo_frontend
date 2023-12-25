@@ -5,6 +5,7 @@ interface DeckDetailItemProps {
   deck: Deck;
   showRarity: boolean;
   deckType: 'main_deck' | 'extra_deck' | 'side_deck';
+  showMoney: boolean;
 }
 
 const props = withDefaults(defineProps<DeckDetailItemProps>(), {
@@ -12,9 +13,23 @@ const props = withDefaults(defineProps<DeckDetailItemProps>(), {
 });
 
 const emit = defineEmits(['cardInfo']);
+const deck = computed(() => props.deck);
+const prices = ref([]);
+
+watch(deck, () => {
+  if (deck.value) prices.value = deck.value[props.deckType].map(() => '自開');
+});
 
 const openCardInfo = (i: number, type: 'main_deck' | 'extra_deck' | 'side_deck') => {
   emit('cardInfo', i, type);
+};
+
+const checkPrice = (i: number) => {
+  if (prices.value[i].length > 5 && parseInt(prices.value[i])) {
+    prices.value[i] = prices.value[i].substring(0, 5);
+  } else if (prices.value[i].length > 3 && !parseInt(prices.value[i])) {
+    prices.value[i] = prices.value[i].substring(0, 3);
+  }
 };
 </script>
 
@@ -24,7 +39,6 @@ const openCardInfo = (i: number, type: 'main_deck' | 'extra_deck' | 'side_deck')
     class="cards-item"
     v-for="(item, i) in props.deck[props.deckType]"
     :key="item.card_id"
-    @click="openCardInfo(i, props.deckType)"
   >
     <template v-if="props.showRarity">
       <div class="item-desc">
@@ -41,9 +55,34 @@ const openCardInfo = (i: number, type: 'main_deck' | 'extra_deck' | 'side_deck')
         <span>{{ item.card_rarity }}</span>
       </div>
     </template>
-    <img :src="`/api/card-image/cards/${item?.card_number}.webp`" alt="" />
+    <img
+      @click="openCardInfo(i, props.deckType)"
+      :src="`/api/card-image/cards/${item?.card_number}.webp`"
+      alt=""
+    />
+    <template v-if="props.showMoney">
+      <div class="item-desc item-money">
+        <div class="money-format">
+          <span>$</span>
+          <input type="text" v-model="prices[i]" @input="checkPrice(i)" />
+        </div>
+      </div>
+    </template>
   </div>
 </template>
+
+<style>
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+</style>
 
 <style lang="scss" scoped>
 .cards-item {
@@ -51,9 +90,19 @@ const openCardInfo = (i: number, type: 'main_deck' | 'extra_deck' | 'side_deck')
   padding: 5px;
   width: 10%;
   .item-desc {
-    @apply text-xs text-white flex;
-    span {
-      @apply cursor-help;
+    @apply text-xs text-white flex justify-between items-center;
+  }
+  .item-money {
+    @apply w-full;
+    .money-format {
+      @apply flex flex-row items-center justify-between w-full text-base mt-1;
+      span {
+        @apply text-blue-400;
+      }
+      input {
+        @apply text-blue-400 h-5 p-0 bg-black border-black rounded-md;
+        width: 80%;
+      }
     }
   }
   img {

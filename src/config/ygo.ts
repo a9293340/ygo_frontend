@@ -173,4 +173,18 @@ export const ygoOptions: {
   ],
 };
 
-export const extraType: string[] = ['連結怪獸', '同步怪獸', '超量怪獸', '融合怪獸'];
+export const extraType: string[] = ['融合怪獸', '同步怪獸', '超量怪獸', '連結怪獸'];
+
+export const ceremony: string = '儀式怪獸';
+
+export const manaType: string[] = [
+  '通常魔法',
+  '速攻魔法',
+  '裝備魔法',
+  '永續魔法',
+  '場地魔法',
+  '儀式魔法',
+  '通常陷阱',
+  '永續陷阱',
+  '反擊陷阱',
+];

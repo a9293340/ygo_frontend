@@ -35,7 +35,10 @@
     "showRarity": "顯示版本",
     "notShowRarity": "不顯示版本",
     "saveImage": "截取編號",
-    "noNameMsg": "牌組名稱不得為空"
+    "noNameMsg": "牌組名稱不得為空",
+    "isMondey": "是否填寫卡價",
+    "sort": "排序",
+    "random": "亂數排序"
   },
   "menu": {
     "home": "首頁",

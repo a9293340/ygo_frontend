@@ -8,9 +8,10 @@
     <div class="list-container">
       <div class="card-info-box">
         <div class="card-info-title">
+          <div>{{ t('card.image') }}</div>
           <div>{{ t('card.id') }}</div>
           <div class="lg-item">{{ t('card.name') }}</div>
-          <div>{{ t('card.type') }}</div>
+          <!-- <div>{{ t('card.type') }}</div> -->
           <div class="sm-item">{{ t('card.star') }}</div>
           <div class="sm-item">{{ t('card.attribute') }}</div>
           <div class="sm-item">{{ t('card.race') }}</div>
@@ -27,9 +28,12 @@
           :key="item.id"
           @click.stop="chosenCard = item.id ? item.id : ''"
         >
+          <div>
+            <img class="w-1/2" :src="`/api/card-image/cards/${item?.number}.webp`" alt="" />
+          </div>
           <div>{{ item.id }}</div>
           <div class="lg-item">{{ item.name }}</div>
-          <div>{{ item.type }}</div>
+          <!-- <div>{{ item.type }}</div> -->
           <div class="sm-item">{{ item.star }}</div>
           <div class="sm-item">{{ item.attribute }}</div>
           <div class="sm-item">{{ item.race }}</div>

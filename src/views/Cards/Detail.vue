@@ -22,8 +22,8 @@
           </div>
           <div class="info-content">
             <div>{{ cardInfo?.star ? cardInfo.star : '-' }}</div>
-            <div>{{ cardInfo?.atk ? cardInfo.atk : '-' }}</div>
-            <div>{{ cardInfo?.def ? cardInfo.def : '-' }}</div>
+            <div>{{ cardInfo?.atk >= 0 ? cardInfo.atk : '-' }}</div>
+            <div>{{ cardInfo?.def >= 0 ? cardInfo.def : '-' }}</div>
           </div>
           <div class="info-title">
             <div>{{ t('card.race') }}</div>
