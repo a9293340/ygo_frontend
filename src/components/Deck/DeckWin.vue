@@ -415,13 +415,12 @@ const orderSort = () => {
     return starA - starB;
   };
 
-  const sortByType = (a: DeckContent, b: DeckContent) => {
-    const typeIndexA = manaType.indexOf(a.card_type);
-    const typeIndexB = manaType.indexOf(b.card_type);
-    return typeIndexA - typeIndexB;
-  };
-
   const mackMainSort = (deck: DeckContent[]) => {
+    const sortByType = (a: DeckContent, b: DeckContent) => {
+      const typeIndexA = manaType.indexOf(a.card_type);
+      const typeIndexB = manaType.indexOf(b.card_type);
+      return typeIndexA - typeIndexB;
+    };
     let firstArr = deck
       .filter(el => el.card_type !== ceremony && !manaType.find(x => x === el.card_type))
       .sort(sortByStar);
@@ -450,7 +449,6 @@ const orderSort = () => {
   mainDeck.value = mackMainSort([...mainDeck.value]);
   sideDeck.value = mackMainSort([...sideDeck.value]);
   extraDeck.value = mackExtraSort([...extraDeck.value]);
-  mackExtraSort([...extraDeck.value]);
 };
 
 onMounted(async () => {
@@ -583,7 +581,7 @@ onMounted(async () => {
         >
           <div
             v-for="(item, i) in extraDeck"
-            :key="item.card_id"
+            :key="item.card_id + i"
             class="extra-drag-item text-white"
           >
             <div class="item-desc">
@@ -612,7 +610,11 @@ onMounted(async () => {
           @move="onDeckStart"
           data-type="s"
         >
-          <div v-for="(item, i) in sideDeck" :key="item.card_id" class="side-drag-item text-white">
+          <div
+            v-for="(item, i) in sideDeck"
+            :key="item.card_id + i"
+            class="side-drag-item text-white"
+          >
             <div class="item-desc">
               <el-tooltip effect="dark" :content="item.card_num_id" placement="top">
                 <span>{{ item.card_rarity }}</span>
