@@ -63,7 +63,7 @@ const checkPrice = (i: number) => {
     <template v-if="props.showMoney">
       <div class="item-desc item-money">
         <div class="money-format">
-          <span>$</span>
+          <div class="text-blue-400">$</div>
           <input type="text" v-model="prices[i]" @input="checkPrice(i)" />
         </div>
       </div>
@@ -95,13 +95,10 @@ input[type='number'] {
   .item-money {
     @apply w-full;
     .money-format {
-      @apply flex flex-row items-center justify-between w-full text-base mt-1;
-      span {
-        @apply text-blue-400;
-      }
+      @apply flex flex-row items-center justify-between w-full text-base;
       input {
-        @apply text-blue-400 h-5 p-0 bg-black border-black rounded-md;
-        width: 80%;
+        @apply text-blue-400 h-5 p-0 bg-black border-black;
+        width: 85%;
       }
     }
   }
@@ -128,6 +125,13 @@ input[type='number'] {
     width: 20%;
     .item-desc {
       font-size: 9.5px;
+    }
+    .item-money {
+      .money-format {
+        input {
+          height: 24px;
+        }
+      }
     }
   }
 }

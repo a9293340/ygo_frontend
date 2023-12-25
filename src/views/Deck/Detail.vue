@@ -337,7 +337,7 @@ onMounted(async () => {
       <button @click="changeShowType" :class="{ 'btn-grey': !showRarity }">
         {{ showRarity ? t('deck.showRarity') : t('deck.notShowRarity') }}
       </button>
-      <el-checkbox v-if="!showRarity" :label="t('deck.isMondey')" v-model="isShowMoney" />
+      <el-checkbox v-if="!showRarity" class="check-fill-price" :label="t('deck.isMondey')" v-model="isShowMoney" />
     </div>
     <div id="deck-list" ref="deckList">
       <div class="title">{{ t('deck.main_deck') }}({{ deck?.main_deck.length }})</div>
@@ -416,7 +416,7 @@ onMounted(async () => {
   @apply flex flex-col items-center w-full;
   min-height: calc(100vh - 104px);
   .btn-box {
-    @apply flex justify-center flex-wrap;
+    @apply flex justify-center items-center flex-wrap;
     margin: 40px auto 0;
     & button {
       color: lightgray;
@@ -433,6 +433,10 @@ onMounted(async () => {
     }
     .btn-grey {
       @apply bg-gray-700;
+    }
+    .check-fill-price {
+      width: 150px;
+      margin: 0 5px 10px;
     }
   }
   #deck-list {
