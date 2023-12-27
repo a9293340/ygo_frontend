@@ -90,12 +90,12 @@ input[type='number'] {
   padding: 5px;
   width: 10%;
   .item-desc {
-    @apply text-xs text-white flex justify-between items-center;
+    @apply text-sm text-white flex justify-between items-center;
   }
   .item-money {
     @apply w-full;
     .money-format {
-      @apply flex flex-row items-center justify-between w-full text-base;
+      @apply flex flex-row items-center justify-between w-full text-base font-bold;
       input {
         @apply text-blue-400 h-5 p-0 bg-black border-black;
         width: 85%;
@@ -104,12 +104,16 @@ input[type='number'] {
   }
   img {
     @apply cursor-pointer;
+    margin: 2px 0 0;
   }
 }
 
 @media (max-width: 1200px) {
   .cards-item {
     padding: 3px;
+    .item-desc {
+      @apply text-xs;
+    }
   }
 }
 
@@ -128,6 +132,7 @@ input[type='number'] {
     }
     .item-money {
       .money-format {
+        @apply font-normal;
         input {
           height: 24px;
         }
