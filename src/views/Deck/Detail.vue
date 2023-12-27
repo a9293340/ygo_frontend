@@ -340,6 +340,7 @@ onMounted(async () => {
       <el-checkbox v-if="!showRarity" class="check-fill-price" :label="t('deck.isMondey')" v-model="isShowMoney" />
     </div>
     <div id="deck-list" ref="deckList">
+      <div class="deck-title">{{ deck?.title }}</div>
       <div class="title">{{ t('deck.main_deck') }}({{ deck?.main_deck.length }})</div>
       <div class="main-deck">
         <deck-detail-component
@@ -443,8 +444,13 @@ onMounted(async () => {
     @apply flex flex-col bg-black;
     width: 1200px;
     padding: 10px 10px 0;
+    .deck-title {
+      @apply text-white text-2xl font-extrabold;
+      margin: 0 0 10px;
+    }
     .title {
-      @apply text-white text-lg font-extrabold;
+      @apply text-lg font-extrabold;
+      color: lightgray;
     }
     .copyright {
       @apply flex flex-row justify-center w-full font-bold mb-4;
@@ -454,8 +460,9 @@ onMounted(async () => {
     .main-deck,
     .extra-deck,
     .side-deck {
-      @apply w-full border-white border rounded-lg;
-      min-height: 202.5px;
+      @apply w-full border rounded-lg;
+      border-color: lightgrey;
+      min-height: 208.42px;
       margin: 5px 0 10px;
       padding: 10px;
       .cards-item {
@@ -505,7 +512,7 @@ onMounted(async () => {
       .main-deck,
       .extra-deck,
       .side-deck {
-        min-height: 151.9px;
+        min-height: 153.92px;
         padding: 5px;
         .cards-item {
           padding: 3px;
@@ -522,7 +529,7 @@ onMounted(async () => {
       .main-deck,
       .extra-deck,
       .side-deck {
-        min-height: 158.1px;
+        min-height: 160.06px;
         padding: 5px;
         .cards-item {
           padding: 3px;
