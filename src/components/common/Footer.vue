@@ -1,6 +1,6 @@
 <template>
   <div class="footer-wrapper">
-    <div class="text">Copyright © 卡壇 YGO Info. All rights reserved.</div>
+    <div class="text">Copyright © 卡壇 Card Time. All rights reserved.</div>
   </div>
 </template>
 
