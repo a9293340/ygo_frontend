@@ -270,14 +270,11 @@ const listQuery = ref<CardListType>({
 		product_information_type: "",
 	},
 });
+
 const isShowForm = ref<Boolean>(true);
 const packTypeList = ref<PackTypeList | []>([]);
 const page = computed(() => props.page);
-const pages = ref<number[]>([]);
-
 watch(page, (newVal) => {
-	if (pages.value.findIndex((page) => page === newVal) !== -1) return;
-
 	getList({
 		limit: props.limit,
 		page: props.page,
@@ -285,13 +282,11 @@ watch(page, (newVal) => {
 });
 
 const searchNewData = () => {
-	pages.value = [];
 	getList({ page: 0, limit: listQuery.value.limit });
 };
 
 const getList = async (val: PaginationGetList) => {
 	isShowForm.value = false;
-	// listQuery.value.page = val.page;
 	await getCards(val.page);
 };
 const getCards = async (page: number) => {
@@ -299,7 +294,6 @@ const getCards = async (page: number) => {
 		listQuery.value.filter.atk_l !== "" &&
 		typeof listQuery.value.filter.atk_l === "string"
 	) {
-    console.log(listQuery.value.filter.atk_l)
 		listQuery.value.filter.atk_l = parseInt(listQuery.value.filter.atk_l);
 	}
 	if (
@@ -323,8 +317,6 @@ const getCards = async (page: number) => {
 	listQuery.value.filter.id = listQuery.value.filter.id.toUpperCase();
 	listQuery.value.page = page;
 	listQuery.value.limit = props.limit;
-	if (pages.value.findIndex((page) => page === listQuery.value.page) === -1)
-		pages.value.push(listQuery.value.page);
 
   console.log(listQuery.value)
 	const cards = decode<HasTotalRes<CardsList>>(
@@ -337,6 +329,7 @@ const getCards = async (page: number) => {
 			)
 		).data
 	);
+  console.log(cards)
 	emit("get:data", {
 		cards,
 		listQuery: listQuery.value,

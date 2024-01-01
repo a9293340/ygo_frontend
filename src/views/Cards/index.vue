@@ -106,7 +106,7 @@ const getList = async (val: PaginationGetList) => {
 const getCards = async (data: { cards: HasTotalRes<CardsList>; listQuery: CardListType }) => {
   list.value = data.cards.list;
   total.value = data.cards.total;
-  listQuery.value.filter = data.listQuery.filter;
+  listQuery.value = data.listQuery;
   await router.replace({
     query: removeNullAndEmptyString(listQuery.value.filter),
   });
