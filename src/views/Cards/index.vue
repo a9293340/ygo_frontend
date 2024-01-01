@@ -38,9 +38,11 @@
           <div class="sm-item">{{ item.attribute }}</div>
           <div class="sm-item">{{ item.race }}</div>
           <div class="lg-item">
-            <span v-for="(rarity, rarityIndex) in item.rarity" :key="rarityIndex">
-              {{ `${rarity}${item.rarity.length - 1 === rarityIndex ? '' : '、'} ` }}
-            </span>
+            <div class="rarity-list">
+              <template v-for="(rarity, rarityIndex) in item.rarity" :key="rarityIndex">
+              {{ `${rarity}${item.rarity.length - 1 === rarityIndex ? '' : '、'}` }}
+            </template>
+            </div>
           </div>
           <div class="sm-item">{{ item.atk }}</div>
           <div class="sm-item">{{ item.def }}</div>
@@ -137,7 +139,7 @@ onMounted(async () => {
         & div {
           @apply flex flex-wrap justify-center items-center text-center;
           border: 1px solid lightgray;
-          width: 130px;
+          width: 120px;
           padding: 10px 0;
         }
         & .sm-item {
@@ -145,6 +147,10 @@ onMounted(async () => {
         }
         & .lg-item {
           @apply grow;
+          & .rarity-list {
+            width: 90%;
+            border: none;
+          }
         }
         & .detail {
           @apply flex justify-center items-center text-center;
@@ -183,7 +189,20 @@ onMounted(async () => {
     & .list-container {
       width: 95vw;
       min-width: unset;
-      overflow-y: scroll;
+      overflow-x: scroll;
+      overscroll-behavior-x: contain;
+      &::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+      }
+      &::-webkit-scrollbar-track {
+        border-radius: 3px;
+      }
+      &::-webkit-scrollbar-thumb {
+        -webkit-border-radius: 4px;
+        border-radius: 4px;
+        background: rgba(255, 255, 255, 0.5);
+      }
       & .card-info-box {
         min-width: 1100px;
       }
