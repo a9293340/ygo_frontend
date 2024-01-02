@@ -300,4 +300,8 @@ declare module 'response-data-types' {
   interface HasTotalRes<T> extends NotHasTotalRes<T> {
     total: number;
   }
+
+  interface CreateMemberToken {
+    token: string;
+  }
 }
