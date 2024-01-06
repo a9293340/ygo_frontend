@@ -2,39 +2,105 @@
   <div class="login-pop-wrapper">
     <el-icon class="cross" @click="closeLogin"><Close /></el-icon>
     <div class="form-container">
-
       <!-- 會員登入 type=0 -->
       <template v-if="type === 0">
         <div class="title">{{ t('user.login_title') }}</div>
-        <input class="input" v-model="loginForm.account" type="text" :placeholder="t('user.account')">
-        <input class="input" v-model="loginForm.password" type="password" :placeholder="t('user.password')">
+        <form action="">
+          <input
+            class="input"
+            v-model="loginForm.account"
+            type="text"
+            :placeholder="t('user.account')"
+            autocomplete="username"
+          />
+          <input
+            class="input"
+            v-model="loginForm.password"
+            type="password"
+            :placeholder="t('user.password')"
+            autocomplete="current-password"
+          />
+        </form>
         <button class="btn" @click="handleLogin">{{ t('user.login') }}</button>
       </template>
 
       <!-- 忘記密碼 type=1 -->
       <template v-if="type === 1">
         <div class="title">{{ t('user.forget') }}</div>
-        <input class="input" v-model="forgetForm.email" type="text" :placeholder="t('user.email')">
-        <input class="input" v-model="forgetForm.account" type="text" :placeholder="t('user.account')">
+        <form action="">
+          <input
+            class="input"
+            v-model="forgetForm.email"
+            type="text"
+            :placeholder="t('user.email')"
+          />
+          <input
+            class="input"
+            v-model="forgetForm.account"
+            type="text"
+            :placeholder="t('user.account')"
+            autocomplete="username"
+          />
+        </form>
         <button class="btn" @click="handleVerify">{{ t('user.verify') }}</button>
       </template>
 
       <!-- 註冊帳號 type=2 -->
       <template v-if="type === 2">
         <div class="title">{{ t('user.register') }}</div>
-        <input class="input" v-model="registerForm.name" type="text" :placeholder="t('user.name')">
-        <input class="input" v-model="registerForm.email" type="text" :placeholder="t('user.email')">
-        <input class="input" v-model="registerForm.account" type="text" :placeholder="t('user.account')">
-        <input class="input" v-model="registerForm.password" type="password" :placeholder="t('user.password')">
-        <input class="input" v-model="confirmPsd" type="password" :placeholder="t('user.confirm_psd')">
+        <form action="">
+          <input
+            class="input"
+            v-model="registerForm.name"
+            type="text"
+            :placeholder="t('user.name')"
+          />
+          <input
+            class="input"
+            v-model="registerForm.email"
+            type="text"
+            :placeholder="t('user.email')"
+          />
+          <input
+            class="input"
+            v-model="registerForm.account"
+            type="text"
+            :placeholder="t('user.account')"
+            autocomplete="username"
+          />
+          <input
+            class="input"
+            v-model="registerForm.password"
+            type="password"
+            :placeholder="t('user.password')"
+            autocomplete="new-password"
+          />
+          <input
+            class="input"
+            v-model="confirmPsd"
+            type="password"
+            :placeholder="t('user.confirm_psd')"
+            autocomplete="new-password"
+          />
+        </form>
         <button class="btn" @click="handleRegister">{{ t('user.sign_up') }}</button>
       </template>
 
       <!-- 填寫新密碼 type=3 -->
       <template v-if="type === 3">
         <div class="title">{{ t('user.new_password') }}</div>
-        <input class="input" v-model="newPsdForm.old_password" type="password" :placeholder="t('user.password')">
-        <input class="input" v-model="confirmNewPsd" type="password" :placeholder="t('user.confirm_psd')">
+        <input
+          class="input"
+          v-model="newPsdForm.old_password"
+          type="password"
+          :placeholder="t('user.password')"
+        />
+        <input
+          class="input"
+          v-model="confirmNewPsd"
+          type="password"
+          :placeholder="t('user.confirm_psd')"
+        />
         <button class="btn" @click="handleResetPsd">{{ t('user.send') }}</button>
       </template>
 
@@ -48,22 +114,22 @@
 </template>
 
 <script setup lang="ts">
-import type {LoginType, VerifyType, MemberAddType, ResetPWDType} from "request-data-types";
-import i18n from "@/i18n";
+import type { LoginType, VerifyType, MemberAddType, ResetPWDType } from 'request-data-types';
+import i18n from '@/i18n';
 const { t } = i18n.global;
-import { getNowDate } from '@/util/parseDate'
+import { getNowDate } from '@/util/parseDate';
 import { callApi } from '@/util/api';
 import type { AdminList, Admin } from 'module-types';
 import type { NotHasTotalRes, CreateMemberToken } from 'response-data-types';
 import { decode } from '@/util';
 
-const type = ref<number>(0) // 0=會員登入 1=忘記密碼, 2=建立帳號, 3=填寫新密碼
-const changeType = (num:number) => {
-  type.value = num
-  resetForm(num)
-}
+const type = ref<number>(0); // 0=會員登入 1=忘記密碼, 2=建立帳號, 3=填寫新密碼
+const changeType = (num: number) => {
+  type.value = num;
+  resetForm(num);
+};
 // 清空表單
-function resetForm(type:number) {
+function resetForm(type: number) {
   switch (type) {
     case 0:
       loginForm.value = { account: '', password: '' };
@@ -72,7 +138,13 @@ function resetForm(type:number) {
       forgetForm.value = { account: '', date: getNowDate(), email: '' };
       break;
     case 2:
-      registerForm.value = { name: '', email: '', create_date: getNowDate(), account: '', password: '' };
+      registerForm.value = {
+        name: '',
+        email: '',
+        create_date: getNowDate(),
+        account: '',
+        password: '',
+      };
       break;
     case 3:
       newPsdForm.value = { old_password: '', new_password: '' };
@@ -83,13 +155,13 @@ function resetForm(type:number) {
 // 會員登入
 const loginForm = ref<LoginType>({
   account: '',
-  password: ''
-})
+  password: '',
+});
 const handleLogin = async () => {
   if (checkObjNotEmpty(forgetForm.value)) {
     // call member/login
   } else {
-    alert(t('user.blank_notice'))
+    alert(t('user.blank_notice'));
   }
 };
 
@@ -97,16 +169,16 @@ const handleLogin = async () => {
 const forgetForm = ref<VerifyType>({
   account: '',
   date: getNowDate(),
-  email: ''
-})
+  email: '',
+});
 const handleVerify = () => {
   if (checkObjNotEmpty(forgetForm.value)) {
     // call member/verify
-    changeType(3)
+    changeType(3);
   } else {
-    alert(t('user.blank_notice'))
+    alert(t('user.blank_notice'));
   }
-}
+};
 
 // 註冊帳號
 const registerForm = ref<MemberAddType>({
@@ -114,9 +186,9 @@ const registerForm = ref<MemberAddType>({
   email: '',
   create_date: getNowDate(),
   account: '',
-  password: ''
-})
-const confirmPsd = ref<string>('')
+  password: '',
+});
+const confirmPsd = ref<string>('');
 const handleRegister = () => {
   if (!checkObjNotEmpty(registerForm.value)) {
     alert(t('user.blank_notice'));
@@ -127,14 +199,14 @@ const handleRegister = () => {
     return;
   }
   // call member/add
-}
+};
 
 // 填寫新密碼
 const newPsdForm = ref<ResetPWDType>({
   old_password: '',
-  new_password: ''
-})
-const confirmNewPsd = ref<string>('')
+  new_password: '',
+});
+const confirmNewPsd = ref<string>('');
 const handleResetPsd = () => {
   if (!checkObjNotEmpty(newPsdForm.value)) {
     alert(t('user.blank_notice'));
@@ -145,27 +217,30 @@ const handleResetPsd = () => {
     return;
   }
   // call member/resetPassword
-}
+};
 
 // 檢查物件內是否有空字串，有則 return false
-const checkObjNotEmpty = (obj: {[key: string]: string}): boolean => {
+const checkObjNotEmpty = (obj: { [key: string]: string }): boolean => {
   return Object.values(obj).every(value => value !== '');
-}
+};
 
-const emit = defineEmits(['closeLogin'])
+const emit = defineEmits(['closeLogin']);
 const closeLogin = () => {
-  emit('closeLogin')
-}
+  emit('closeLogin');
+};
 </script>
 
 <style lang="css" scoped>
-.fade-enter-from, .fade-leave-to {
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
 }
-.fade-enter-active, .fade-leave-active {
-  transition: all .1s;
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.1s;
 }
-.fade-enter-to, .fade-leave-from {
+.fade-enter-to,
+.fade-leave-from {
   opacity: 1;
 }
 
