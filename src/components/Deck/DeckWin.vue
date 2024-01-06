@@ -529,9 +529,9 @@ onMounted(async () => {
     <div class="deck-contents scroll">
       <!-- tool button -->
       <div class="btn-box">
-        <div>
+        <div class="title-input">
           <span>{{ t('deck.title') }}</span>
-          <el-input v-if="deckDetail" v-model="deckDetail.title" style="width: 230px" />
+          <input v-if="deckDetail" v-model="deckDetail.title" />
         </div>
         <div>
           <button @click="orderSort">{{ t('deck.sort') }}</button>
@@ -767,17 +767,25 @@ onMounted(async () => {
       background: rgba(255, 255, 255, 0.3);
     }
     .btn-box {
-      @apply flex justify-between;
-      span {
-        @apply text-white mr-3;
+      @apply flex justify-between mb-1 text-white;
+      .title-input {
+        input {
+          @apply ml-3;
+          color: white;
+          background-color: #1f2c5d;
+          border-radius: 3px;
+          width: 170px;
+          height: 30px;
+          padding: 0 5px;
+        }
       }
       button {
         background-color: #1f2c5d;
-        font-size: 16px;
+        font-size: 15px;
         color: lightgray;
         border: 1px solid lightgray;
         border-radius: 5px;
-        width: 90px;
+        width: 80px;
         height: 30px;
         margin: 0 0 0 10px;
         transition-duration: 0.2s;
@@ -890,6 +898,12 @@ onMounted(async () => {
     padding: 0 10px;
     .deck-contents {
       width: calc(100vw - 350px);
+      .btn-box {
+        @apply flex flex-col items-center;
+        button {
+          margin: 10px 10px 0 0;
+        }
+      }
       .main-deck {
         .main-drag,
         .extra-drag,
