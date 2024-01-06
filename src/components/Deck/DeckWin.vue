@@ -83,6 +83,20 @@ watch(isIntersection, newVal => {
   if (newVal) emit('call:api');
 });
 
+watch(
+  () => route.query,
+  async newVal => {
+    if (newVal.deck_admin_id) {
+      pick_deck_id.value = route.query.deck_admin_id as string;
+      await getDeckDetail();
+    } else {
+      pick_deck_id.value = '';
+      deckDetail.value = null;
+      reset();
+    }
+  },
+);
+
 const calculateCount = (cardDeckItem: DeckType) => {
   const allData: DeckContent[] = [...mainDeck.value, ...extraDeck.value, ...sideDeck.value];
   let count = 0;
