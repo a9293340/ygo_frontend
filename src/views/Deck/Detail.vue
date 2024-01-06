@@ -372,7 +372,7 @@ onMounted(async () => {
         />
       </div>
       <div class="copyright">
-        Copyright © 卡壇 YGO Info. All rights reserved. Resource : http://cardtime.tw
+        Copyright © 卡壇 Card Time. All rights reserved. Resource : https://cardtime.tw
       </div>
     </div>
   </div>

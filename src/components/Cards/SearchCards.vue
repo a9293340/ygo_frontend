@@ -398,15 +398,20 @@ onMounted(async () => {
 	.el-input__wrapper {
 		overflow: hidden;
 		padding: 0 11px 1px;
+    box-shadow: none;
+    border-radius: 5px;
+    &:hover {
+      box-shadow: none;
+    }
+    &:focus-within {
+      box-shadow: none !important;
+    }
 	}
 	.el-input__inner {
 		height: 35px;
 		border-color: transparent;
 		box-shadow: none;
 		font-size: 16px;
-	}
-	.el-input {
-		border-radius: 5px;
 	}
 	.el-input__placeholder {
 		@apply text-black;
@@ -453,7 +458,7 @@ onMounted(async () => {
 			& select {
 				@apply bg-white;
 				color: #606266;
-				padding: 5px 11px;
+				padding: 6px 11px;
 				border-radius: 5px;
 				width: 150px;
 				&::placeholder {
@@ -543,10 +548,9 @@ onMounted(async () => {
 				}
 				& input,
 				& select {
-					padding: 5px 8px;
+					padding: 6px 8px;
 					border-radius: 5px;
 					width: 45vw;
-					background-color: rgba(255, 255, 255, 0.9);
 				}
 				& span {
 					color: lightgray;
