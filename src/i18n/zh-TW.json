@@ -4,6 +4,23 @@
     "date": "日期",
     "more": "更多文章"
   },
+  "user": {
+    "account": "帳號 Account",
+    "password": "密碼 Password",
+    "forget": "忘記密碼",
+    "login": "登入",
+    "register": "註冊帳號",
+    "email": "信箱 Email",
+    "login_title": "會員登入",
+    "verify": "驗證",
+    "sign_up": "註冊",
+    "name": "名稱 Name",
+    "confirm_psd": "確認密碼 Confirm Password",
+    "blank_notice": "表格輸入錯誤，請檢查是否完整填寫",
+    "psd_different": "密碼不一致",
+    "new_password": "填寫新密碼",
+    "send": "確認送出"
+  },
   "deck": {
     "reset": "重置",
     "save": "保存",
