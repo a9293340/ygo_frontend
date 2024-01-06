@@ -1,0 +1,255 @@
+<template>
+  <div class="login-pop-wrapper">
+    <el-icon class="cross" @click="closeLogin"><Close /></el-icon>
+    <div class="form-container">
+
+      <!-- 會員登入 type=0 -->
+      <template v-if="type === 0">
+        <div class="title">{{ t('user.login_title') }}</div>
+        <input class="input" v-model="loginForm.account" type="text" :placeholder="t('user.account')">
+        <input class="input" v-model="loginForm.password" type="password" :placeholder="t('user.password')">
+        <button class="btn" @click="handleLogin">{{ t('user.login') }}</button>
+      </template>
+
+      <!-- 忘記密碼 type=1 -->
+      <template v-if="type === 1">
+        <div class="title">{{ t('user.forget') }}</div>
+        <input class="input" v-model="forgetForm.email" type="text" :placeholder="t('user.email')">
+        <input class="input" v-model="forgetForm.account" type="text" :placeholder="t('user.account')">
+        <button class="btn" @click="handleVerify">{{ t('user.verify') }}</button>
+      </template>
+
+      <!-- 註冊帳號 type=2 -->
+      <template v-if="type === 2">
+        <div class="title">{{ t('user.register') }}</div>
+        <input class="input" v-model="registerForm.name" type="text" :placeholder="t('user.name')">
+        <input class="input" v-model="registerForm.email" type="text" :placeholder="t('user.email')">
+        <input class="input" v-model="registerForm.account" type="text" :placeholder="t('user.account')">
+        <input class="input" v-model="registerForm.password" type="password" :placeholder="t('user.password')">
+        <input class="input" v-model="confirmPsd" type="password" :placeholder="t('user.confirm_psd')">
+        <button class="btn" @click="handleRegister">{{ t('user.sign_up') }}</button>
+      </template>
+
+      <!-- 填寫新密碼 type=3 -->
+      <template v-if="type === 3">
+        <div class="title">{{ t('user.new_password') }}</div>
+        <input class="input" v-model="newPsdForm.old_password" type="password" :placeholder="t('user.password')">
+        <input class="input" v-model="confirmNewPsd" type="password" :placeholder="t('user.confirm_psd')">
+        <button class="btn" @click="handleResetPsd">{{ t('user.send') }}</button>
+      </template>
+
+      <div class="other-box">
+        <div v-if="type !== 0" @click="changeType(0)">{{ t('user.login_title') }}</div>
+        <div v-if="type !== 1 && type !== 3" @click="changeType(1)">{{ t('user.forget') }}</div>
+        <div v-if="type !== 2" @click="changeType(2)">{{ t('user.register') }}</div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import type {LoginType, VerifyType, MemberAddType, ResetPWDType} from "request-data-types";
+import i18n from "@/i18n";
+const { t } = i18n.global;
+import { getNowDate } from '@/util/parseDate'
+import { callApi } from '@/util/api';
+import type { AdminList, Admin } from 'module-types';
+import type { NotHasTotalRes, CreateMemberToken } from 'response-data-types';
+import { decode } from '@/util';
+
+const type = ref<number>(0) // 0=會員登入 1=忘記密碼, 2=建立帳號, 3=填寫新密碼
+const changeType = (num:number) => {
+  type.value = num
+  resetForm(num)
+}
+// 清空表單
+function resetForm(type:number) {
+  switch (type) {
+    case 0:
+      loginForm.value = { account: '', password: '' };
+      break;
+    case 1:
+      forgetForm.value = { account: '', date: getNowDate(), email: '' };
+      break;
+    case 2:
+      registerForm.value = { name: '', email: '', create_date: getNowDate(), account: '', password: '' };
+      break;
+    case 3:
+      newPsdForm.value = { old_password: '', new_password: '' };
+      break;
+  }
+}
+
+// 會員登入
+const loginForm = ref<LoginType>({
+  account: '',
+  password: ''
+})
+const handleLogin = async () => {
+  if (checkObjNotEmpty(forgetForm.value)) {
+    // call member/login
+  } else {
+    alert(t('user.blank_notice'))
+  }
+};
+
+// 忘記密碼
+const forgetForm = ref<VerifyType>({
+  account: '',
+  date: getNowDate(),
+  email: ''
+})
+const handleVerify = () => {
+  if (checkObjNotEmpty(forgetForm.value)) {
+    // call member/verify
+    changeType(3)
+  } else {
+    alert(t('user.blank_notice'))
+  }
+}
+
+// 註冊帳號
+const registerForm = ref<MemberAddType>({
+  name: '',
+  email: '',
+  create_date: getNowDate(),
+  account: '',
+  password: ''
+})
+const confirmPsd = ref<string>('')
+const handleRegister = () => {
+  if (!checkObjNotEmpty(registerForm.value)) {
+    alert(t('user.blank_notice'));
+    return;
+  }
+  if (registerForm.value.password !== confirmPsd.value) {
+    alert(t('user.psd_different'));
+    return;
+  }
+  // call member/add
+}
+
+// 填寫新密碼
+const newPsdForm = ref<ResetPWDType>({
+  old_password: '',
+  new_password: ''
+})
+const confirmNewPsd = ref<string>('')
+const handleResetPsd = () => {
+  if (!checkObjNotEmpty(newPsdForm.value)) {
+    alert(t('user.blank_notice'));
+    return;
+  }
+  if (newPsdForm.value.new_password !== confirmNewPsd.value) {
+    alert(t('user.psd_different'));
+    return;
+  }
+  // call member/resetPassword
+}
+
+// 檢查物件內是否有空字串，有則 return false
+const checkObjNotEmpty = (obj: {[key: string]: string}): boolean => {
+  return Object.values(obj).every(value => value !== '');
+}
+
+const emit = defineEmits(['closeLogin'])
+const closeLogin = () => {
+  emit('closeLogin')
+}
+</script>
+
+<style lang="css" scoped>
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
+.fade-enter-active, .fade-leave-active {
+  transition: all .1s;
+}
+.fade-enter-to, .fade-leave-from {
+  opacity: 1;
+}
+
+.login-pop-wrapper {
+  @apply fixed left-0 top-0 z-50 w-full h-full flex justify-center items-center;
+  background-color: rgba(0, 0, 0, 0.85);
+  & .cross {
+    @apply absolute right-0 top-0 text-white cursor-pointer;
+    font-size: 35px;
+    margin: 13px 20px;
+  }
+  & .form-container {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 30px 40px 40px;
+    border-radius: 10px;
+    width: 400px;
+    & .title {
+      @apply font-bold text-center;
+      font-size: 30px;
+      color: #1f2c5d;
+    }
+    & .input {
+      @apply w-full bg-white;
+      height: 50px;
+      margin: 15px 0 0;
+      padding: 0 16px;
+      border-radius: 8px;
+      border: 3px solid #1f2c5d;
+      font-size: 18px;
+    }
+    & .btn {
+      @apply w-full text-white font-bold;
+      height: 50px;
+      margin: 25px 0 0;
+      border-radius: 8px;
+      font-size: 18px;
+      background-color: #1f2c5d;
+      transition-duration: 0.2s;
+      &:hover {
+        background-color: #2a3d83;
+      }
+    }
+    & .other-box {
+      @apply flex justify-center underline;
+      & div {
+        @apply cursor-pointer;
+        margin: 20px 30px 0;
+        color: #1f2c5d;
+        font-size: 16px;
+        transition-duration: 0.2s;
+        &:hover {
+          color: #2a3d83;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .login-pop-wrapper {
+    & .form-container {
+      width: 90vw;
+      padding: 25px 30px 30px;
+      & .title {
+        font-size: 26px;
+      }
+      & .input {
+        height: 45px;
+        margin: 12px 0 0;
+        padding: 0 10px;
+        border: 2px solid #1f2c5d;
+        font-size: 16px;
+      }
+      & .btn {
+        height: 45px;
+        margin: 20px 0 0;
+        font-size: 16px;
+      }
+      & .other-box {
+        & div {
+          margin: 15px 30px 0;
+        }
+      }
+    }
+  }
+}
+</style>

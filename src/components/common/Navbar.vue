@@ -7,41 +7,25 @@
     <router-link to="/">
       <img src="/src/assets/img/logo.png" alt="" />
     </router-link>
-    <div style="width: 30px">註冊</div>
-    <!-- <div style="width: 30px" @click="signIn">註冊</div> -->
+    <div class="login-btn" @click="isShowLogin = true">
+      <el-icon class="login-icon"><Avatar /></el-icon>
+    </div>
   </div>
   <div class="nav-height"></div>
+
   <transition name="slide">
-    <Sideboard v-if="isExpand" @closeSideboard="isExpand = false" />
+    <Sideboard v-if="isExpand" @closeSideboard="isExpand=false" />
+  </transition>
+
+  <transition name="fade">
+    <LoginPop v-if="isShowLogin" @close-login="isShowLogin=false" />
   </transition>
 </template>
 
 <script setup lang="ts">
-import { callApi } from '@/util/api';
-import type { AdminList, Admin } from 'module-types';
-import type { NotHasTotalRes, CreateMemberToken } from 'response-data-types';
-import type { MemberAddType } from 'request-data-types';
-
-import { decode } from '@/util';
-
 const isExpand = ref<boolean>(false);
+const isShowLogin = ref<boolean>(false);
 
-// const signIn = async () => {
-//   const temp: Admin = {
-//     name: 'user.name',
-//     account: 'user.account',
-//     create_date: 'user.create_date',
-//     password: 'user.password',
-//     email: 'f102041332@gmail.com',
-//     photo: 'user.photo',
-//     status: 1,
-//     type: 2,
-//   };
-//   const token = decode<NotHasTotalRes<CreateMemberToken>>(
-//     (await callApi<MemberAddType>(temp, 'member', 'add', false)).data,
-//   );
-//   console.log(token);
-// };
 </script>
 
 <style lang="scss" scoped>
@@ -70,14 +54,43 @@ const isExpand = ref<boolean>(false);
     font-size: 30px;
     transition: 0.2s;
     &:hover {
-      color: #b4b4b4;
+      color: #dbdbdb;
     }
   }
   & img {
     height: 40px;
   }
+  & .login-btn {
+    @apply flex justify-center items-center text-white cursor-pointer;
+    border: 2px solid white;
+    width: 35px;
+    height: 35px;
+    border-radius: 999px;
+    transition: 0.2s;
+    &:hover {
+      border: 2px solid #dbdbdb;
+      color: #dbdbdb;
+    }
+    & .login-icon {
+      font-size: 22px;
+      margin: 0 0 3px;
+    }
+  }
 }
 .nav-height {
   height: 60px;
+}
+
+@media (max-width: 768px) {
+  .nav-wrapper {
+    & .login-btn {
+      width: 30px;
+      height: 30px;
+      & .login-icon {
+        font-size: 20px;
+        margin: 0 0 2px;
+      }
+    }
+  }
 }
 </style>

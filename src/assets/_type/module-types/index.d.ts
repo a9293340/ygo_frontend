@@ -198,7 +198,9 @@ declare module 'request-data-types' {
   };
 
   type VerifyType = {
-    verify_code: string;
+    account: string;
+    date: string;
+    email?: string;
   };
 
   type MemberAddType = {

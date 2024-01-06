@@ -246,7 +246,7 @@ onMounted(async () => {
 			& input {
 				@apply bg-white;
 				color: #606266;
-				padding: 5px 11px;
+				padding: 6px 11px;
 				border-radius: 5px;
 				width: 200px;
 				&::placeholder {
@@ -257,6 +257,7 @@ onMounted(async () => {
 		:deep(.el-date-editor) {
 			height: 36px;
 			border-radius: 5px;
+      box-shadow: none;
 			.el-range-input {
 				font-size: 16px;
 			}
