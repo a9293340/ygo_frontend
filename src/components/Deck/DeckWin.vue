@@ -543,10 +543,11 @@ onMounted(async () => {
     <div class="deck-contents scroll">
       <!-- tool button -->
       <div class="btn-box">
-        <div class="title-input" v-if="deckDetail">
+        <div v-if="deckDetail" class="title-input">
           <span>{{ t('deck.title') }}</span>
           <input v-model="deckDetail.title" />
         </div>
+        <div v-else></div>
         <div>
           <button @click="orderSort">{{ t('deck.sort') }}</button>
           <button @click="randomSort">{{ t('deck.random') }}</button>
@@ -682,10 +683,10 @@ onMounted(async () => {
         <el-input class="deck-input" v-model="deck_id" :readonly="true" />
       </el-form-item>
       <div class="button-list">
-        <el-button class="save-btn" type="success" @click="addDeck">{{ t('deck.save') }}</el-button>
-        <el-button class="save-btn" type="success" @click="getImage">{{
+        <button class="save-btn" @click="addDeck">{{ t('deck.save') }}</button>
+        <button class="save-btn" @click="getImage">{{
           t('deck.saveImage')
-        }}</el-button>
+        }}</button>
       </div>
     </div>
   </el-dialog>
@@ -872,8 +873,15 @@ onMounted(async () => {
   .button-list {
     @apply flex flex-row justify-end;
     & .save-btn {
-      @apply self-end mt-2 mr-2;
+      @apply text-white self-end mt-2 ml-2;
       width: 100px;
+      height: 35px;
+      border-radius: 5px;
+      background-color: #1f2c5d;
+      transition-duration: 0.2s;
+      &:hover {
+        background-color: #2a3d83;
+      }
     }
   }
 }

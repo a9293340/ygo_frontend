@@ -53,10 +53,10 @@
 					<div class="sm-item">{{ formatDateString(item.create_date) }}</div>
 					<div class="sm-item">{{ formatDateString(item.last_edit_date) }}</div>
 					<div class="action-item">
-						<el-button type="warning" @click="openDialog('e', i)">{{
+						<el-button class="pc" type="warning" @click="openDialog('e', i)">{{
 							t("deck.edit")
 						}}</el-button>
-						<el-button type="danger" @click="openDialog('r', i)">{{
+						<el-button class="pc" type="danger" @click="openDialog('r', i)">{{
 							t("deck.remove")
 						}}</el-button>
 						<el-button type="primary" @click="goToDetail(item._id)">{{
@@ -76,24 +76,25 @@
 		/>
 	</div>
 	<!-- remove dialog -->
-	<el-dialog v-model="dialogVisible" :title="dialogTitle">
-		<el-form-item class="deck-form" :label="t('deck.deck_check')">
-			<el-input class="deck-input" v-model="deck_check_id" />
-		</el-form-item>
-		<el-button
-			style="width: 100px"
-			type="danger"
-			v-if="removeVisible"
-			@click="removeDeck"
-			>{{ t("deck.remove") }}</el-button
-		>
-		<el-button
-			style="width: 100px"
-			type="warning"
-			v-if="editVisible"
-			@click="editDeck"
-			>{{ t("deck.edit") }}</el-button
-		>
+	<el-dialog class="pop" v-model="dialogVisible" :title="dialogTitle">
+    <div class="pop-content">
+      <el-form-item :label="t('deck.deck_check')">
+        <el-input v-model="deck_check_id" />
+      </el-form-item>
+      <el-button
+          type="danger"
+          v-if="removeVisible"
+          @click="removeDeck"
+      >{{ t("deck.remove") }}</el-button
+      >
+      <el-button
+          type="warning"
+          v-if="editVisible"
+          @click="editDeck"
+      >{{ t("deck.edit") }}</el-button
+      >
+    </div>
+
 	</el-dialog>
 </template>
 
@@ -227,6 +228,26 @@ onMounted(async () => {
 });
 </script>
 
+<style lang="scss">
+.el-dialog.pop {
+  width: 500px;
+  font-size: 16px;
+  & .pop-content {
+    @apply flex flex-col w-4/5;
+    margin: 0 auto;
+    button {
+      @apply self-end;
+      width: 100px;
+    }
+  }
+}
+@media (max-width: 768px) {
+  .el-dialog.pop {
+    width: 80vw;
+  }
+}
+</style>
+
 <style lang="scss" scoped>
 .deck-list {
 	min-height: calc(100vh - 104px);
@@ -281,6 +302,23 @@ onMounted(async () => {
 		width: 80vw;
 		min-width: 1150px;
 		margin: 10px auto 30px;
+    overflow-x: scroll;
+    overscroll-behavior-x: contain;
+    &::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    &::-webkit-scrollbar-track {
+      border-radius: 3px;
+    }
+    &::-webkit-scrollbar-thumb {
+      -webkit-border-radius: 4px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.5);
+    }
+    & .deck-info-box {
+      min-width: 800px;
+    }
 		& .deck-info-box {
 			@apply w-full flex flex-col;
 			& .deck-info-title,
@@ -364,10 +402,6 @@ onMounted(async () => {
 		& .list-container {
 			width: 95vw;
 			min-width: unset;
-			overflow-y: scroll;
-			& .deck-info-box {
-				min-width: 800px;
-			}
 		}
 	}
 }
@@ -390,6 +424,19 @@ onMounted(async () => {
 				width: 20vw;
 			}
 		}
+    & .list-container {
+      & .deck-info-box {
+        & .deck-info-title,
+        & .deck-info {
+          & .action-item {
+            width: 90px;
+            button {
+              margin: 0;
+            }
+          }
+        }
+      }
+    }
 	}
 }
 </style>
