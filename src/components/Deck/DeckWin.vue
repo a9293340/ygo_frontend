@@ -529,9 +529,9 @@ onMounted(async () => {
     <div class="deck-contents scroll">
       <!-- tool button -->
       <div class="btn-box">
-        <div class="title-input">
+        <div class="title-input" v-if="deckDetail">
           <span>{{ t('deck.title') }}</span>
-          <input v-if="deckDetail" v-model="deckDetail.title" />
+          <input v-model="deckDetail.title" />
         </div>
         <div>
           <button @click="orderSort">{{ t('deck.sort') }}</button>
