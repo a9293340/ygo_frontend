@@ -529,10 +529,16 @@ onMounted(async () => {
     <div class="deck-contents scroll">
       <!-- tool button -->
       <div class="btn-box">
-        <button @click="orderSort">{{ t('deck.sort') }}</button>
-        <button @click="randomSort">{{ t('deck.random') }}</button>
-        <button @click="reset">{{ t('deck.reset') }}</button>
-        <button @click="saveDeck">{{ t('deck.save') }}</button>
+        <div>
+          <span>{{ t('deck.title') }}</span>
+          <el-input v-if="deckDetail" v-model="deckDetail.title" style="width: 230px" />
+        </div>
+        <div>
+          <button @click="orderSort">{{ t('deck.sort') }}</button>
+          <button @click="randomSort">{{ t('deck.random') }}</button>
+          <button @click="reset">{{ t('deck.reset') }}</button>
+          <button @click="saveDeck">{{ t('deck.save') }}</button>
+        </div>
       </div>
       <!-- main -->
       <div class="title">{{ t('deck.main_deck') }}({{ mainDeck.length }}/{{ mainDeckLens }})</div>
@@ -761,7 +767,10 @@ onMounted(async () => {
       background: rgba(255, 255, 255, 0.3);
     }
     .btn-box {
-      @apply flex justify-end;
+      @apply flex justify-between;
+      span {
+        @apply text-white mr-3;
+      }
       button {
         background-color: #1f2c5d;
         font-size: 16px;

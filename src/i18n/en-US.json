@@ -38,7 +38,8 @@
     "noNameMsg": "牌組名稱不得為空",
     "isMondey": "是否填寫卡價",
     "sort": "排序",
-    "random": null
+    "random": "亂數排序",
+    "title": "牌組名稱 :"
   },
   "menu": {
     "home": "首頁",
