@@ -19,7 +19,22 @@
     "blank_notice": "表格輸入錯誤，請檢查是否完整填寫",
     "psd_different": "密碼不一致",
     "new_password": "填寫新密碼",
-    "send": "確認送出"
+    "send": "確認送出",
+    "error_password": "密碼格式錯誤",
+    "sign_up_good": "註冊成功，請至信箱收信並點選驗證連結",
+    "sign_up_bad": "帳號或信箱重複註冊",
+    "sign_up_bug": "伺服器問題，請來信ygo.cardtime@gmail.com回報",
+    "verify_good": "驗證成功，畫面將導回首頁",
+    "verify_11005": "驗證逾時",
+    "verify_10007": "修改錯誤(10007)",
+    "verify_11001": "查無此帳號資料",
+    "reset_pwd_good": "密碼更新成功",
+    "verify_10003": "修改錯誤(10003)",
+    "verify_10008": "此帳號尚未啟用，請來信ygo.cardtime@gmail.com回報",
+    "verify_11002": "密碼錯誤",
+    "login_good": "登入成功",
+    "logout_good": "登出成功",
+    "verify_10004": "修改錯誤(10004)"
   },
   "deck": {
     "reset": "重置",

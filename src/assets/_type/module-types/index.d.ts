@@ -195,6 +195,7 @@ declare module 'request-data-types' {
   type ResetPWDType = {
     old_password: string;
     new_password: string;
+    tokenReq: string;
   };
 
   type VerifyType = {

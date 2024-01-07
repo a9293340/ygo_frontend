@@ -17,13 +17,19 @@ export default defineConfig({
   plugins: [
     vue(),
     vueI18n({
-      include: resolve(dirname(fileURLToPath(import.meta.url)), './path/to/src/locales/**'),
+      include: resolve(
+        dirname(fileURLToPath(import.meta.url)),
+        './path/to/src/locales/**'
+      ),
     }),
     AutoImport({
       include: [/\.[tj]sx?$/, /\.vue$/, /\.vue\?vue/, /\.md$/],
       imports: ['vue', 'vue-router', 'vue-i18n', 'pinia'],
       dts: 'src/auto-imports.ts',
-      resolvers: [ElementPlusResolver({ importStyle: 'sass' }), IconsResolver()],
+      resolvers: [
+        ElementPlusResolver({ importStyle: 'sass' }),
+        IconsResolver(),
+      ],
     }),
     Components({
       extensions: ['vue'],

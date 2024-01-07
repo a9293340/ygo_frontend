@@ -42,7 +42,9 @@
             autocomplete="username"
           />
         </form>
-        <button class="btn" @click="handleVerify">{{ t('user.verify') }}</button>
+        <button class="btn" @click="handleVerify">
+          {{ t('user.verify') }}
+        </button>
       </template>
 
       <!-- 註冊帳號 type=2 -->
@@ -83,45 +85,64 @@
             autocomplete="new-password"
           />
         </form>
-        <button class="btn" @click="handleRegister">{{ t('user.sign_up') }}</button>
+        <button class="btn" @click="handleRegister">
+          {{ t('user.sign_up') }}
+        </button>
       </template>
 
       <!-- 填寫新密碼 type=3 -->
       <template v-if="type === 3">
         <div class="title">{{ t('user.new_password') }}</div>
-        <input
-          class="input"
-          v-model="newPsdForm.old_password"
-          type="password"
-          :placeholder="t('user.password')"
-        />
-        <input
-          class="input"
-          v-model="confirmNewPsd"
-          type="password"
-          :placeholder="t('user.confirm_psd')"
-        />
-        <button class="btn" @click="handleResetPsd">{{ t('user.send') }}</button>
+        <form action="">
+          <input
+            class="input"
+            v-model="newPsdForm.old_password"
+            type="password"
+            :placeholder="t('user.password')"
+            autocomplete="username"
+          />
+          <input
+            class="input"
+            v-model="confirmNewPsd"
+            type="password"
+            :placeholder="t('user.confirm_psd')"
+            autocomplete="username"
+          />
+        </form>
+        <button class="btn" @click="handleResetPsd">
+          {{ t('user.send') }}
+        </button>
       </template>
 
       <div class="other-box">
-        <div v-if="type !== 0" @click="changeType(0)">{{ t('user.login_title') }}</div>
-        <div v-if="type !== 1 && type !== 3" @click="changeType(1)">{{ t('user.forget') }}</div>
-        <div v-if="type !== 2" @click="changeType(2)">{{ t('user.register') }}</div>
+        <div v-if="type !== 0" @click="changeType(0)">
+          {{ t('user.login_title') }}
+        </div>
+        <div v-if="type !== 1 && type !== 3" @click="changeType(1)">
+          {{ t('user.forget') }}
+        </div>
+        <div v-if="type !== 2" @click="changeType(2)">
+          {{ t('user.register') }}
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { LoginType, VerifyType, MemberAddType, ResetPWDType } from 'request-data-types';
+import type {
+  LoginType,
+  VerifyType,
+  MemberAddType,
+  ResetPWDType,
+} from 'request-data-types';
 import i18n from '@/i18n';
 const { t } = i18n.global;
 import { getNowDate } from '@/util/parseDate';
 import { callApi } from '@/util/api';
 import type { AdminList, Admin } from 'module-types';
 import type { NotHasTotalRes, CreateMemberToken } from 'response-data-types';
-import { decode } from '@/util';
+import { decode, validatePassword } from '@/util';
 
 const type = ref<number>(0); // 0=會員登入 1=忘記密碼, 2=建立帳號, 3=填寫新密碼
 const changeType = (num: number) => {
@@ -147,7 +168,7 @@ function resetForm(type: number) {
       };
       break;
     case 3:
-      newPsdForm.value = { old_password: '', new_password: '' };
+      newPsdForm.value = { old_password: '', new_password: '', tokenReq: '' };
       break;
   }
 }
@@ -158,8 +179,20 @@ const loginForm = ref<LoginType>({
   password: '',
 });
 const handleLogin = async () => {
-  if (checkObjNotEmpty(forgetForm.value)) {
+  if (checkObjNotEmpty(loginForm.value)) {
     // call member/login
+    const res = await callApi<LoginType>(
+      loginForm.value,
+      'member',
+      'login',
+      false
+    );
+    if (!res.error_code) {
+      alert(t('user.login_good'));
+      // 顯示登入圖示，及登入內容
+    } else {
+      alert(t(`user.verify_${res.error_code}`));
+    }
   } else {
     alert(t('user.blank_notice'));
   }
@@ -171,13 +204,42 @@ const forgetForm = ref<VerifyType>({
   date: getNowDate(),
   email: '',
 });
-const handleVerify = () => {
+const handleVerify = async () => {
   if (checkObjNotEmpty(forgetForm.value)) {
     // call member/verify
-    changeType(3);
+    const res = await callApi<{ verify_code: VerifyType }>(
+      { verify_code: forgetForm.value },
+      'member',
+      'verify',
+      false
+    );
+    !res.error_code ? changeType(3) : alert(t(`user.verify_${res.error_code}`));
   } else {
     alert(t('user.blank_notice'));
   }
+};
+
+// 確認表單、密碼
+const checkFormat = <T extends { password: string }>(
+  target: T,
+  confirm: string
+) => {
+  if (!checkObjNotEmpty(target)) {
+    alert(t('user.blank_notice'));
+    return false;
+  }
+
+  if (!validatePassword(target.password)) {
+    alert(t('user.error_password'));
+    return false;
+  }
+
+  if (registerForm.value.password !== confirm) {
+    alert(t('user.psd_different'));
+    return false;
+  }
+
+  return true;
 };
 
 // 註冊帳號
@@ -189,34 +251,57 @@ const registerForm = ref<MemberAddType>({
   password: '',
 });
 const confirmPsd = ref<string>('');
-const handleRegister = () => {
-  if (!checkObjNotEmpty(registerForm.value)) {
-    alert(t('user.blank_notice'));
-    return;
-  }
-  if (registerForm.value.password !== confirmPsd.value) {
-    alert(t('user.psd_different'));
-    return;
-  }
+const handleRegister = async () => {
+  // check
+  if (!checkFormat<MemberAddType>(registerForm.value, confirmPsd.value)) return;
   // call member/add
+  const response = await callApi<MemberAddType>(
+    registerForm.value,
+    'member',
+    'add',
+    false
+  );
+  if (!response.error_code) {
+    const res = decode<CreateMemberToken>(response.data);
+    if (res.token) alert(t('user.sign_up_good'));
+    else alert(t('user.sign_up_bug'));
+  } else {
+    alert(t('user.sign_up_bad'));
+  }
 };
 
 // 填寫新密碼
 const newPsdForm = ref<ResetPWDType>({
   old_password: '',
   new_password: '',
+  tokenReq: '',
 });
 const confirmNewPsd = ref<string>('');
-const handleResetPsd = () => {
-  if (!checkObjNotEmpty(newPsdForm.value)) {
-    alert(t('user.blank_notice'));
+const handleResetPsd = async () => {
+  newPsdForm.value.tokenReq = forgetForm.value.account;
+  newPsdForm.value.new_password = confirmNewPsd.value;
+  console.log(newPsdForm.value);
+
+  // check
+  if (
+    !checkFormat({ password: newPsdForm.value.old_password }, confirmPsd.value)
+  )
     return;
-  }
-  if (newPsdForm.value.new_password !== confirmNewPsd.value) {
-    alert(t('user.psd_different'));
-    return;
-  }
+
   // call member/resetPassword
+  const res = await callApi<ResetPWDType>(
+    newPsdForm.value,
+    'member',
+    'resetPassword',
+    false
+  );
+
+  if (!res.error_code) {
+    alert(t('user.reset_pwd_good'));
+    changeType(0);
+  } else {
+    alert(t(`user.verify_${res.error_code}`));
+  }
 };
 
 // 檢查物件內是否有空字串，有則 return false
@@ -230,7 +315,7 @@ const closeLogin = () => {
 };
 </script>
 
-<style lang="css" scoped>
+<style lang="scss" scoped>
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;

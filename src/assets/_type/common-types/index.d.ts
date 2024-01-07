@@ -26,7 +26,10 @@ declare module 'axios-types' {
     | 'articleList'
     | 'deckList'
     | 'delete'
-    | 'yuyuPrice';
+    | 'yuyuPrice'
+    | 'verify'
+    | 'resetPassword'
+    | 'login';
 }
 
 declare module 'component-types' {
