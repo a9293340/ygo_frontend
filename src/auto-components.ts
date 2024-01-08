@@ -11,6 +11,7 @@ declare module '@vue/runtime-core' {
     ArticleList: typeof import('./components/Article/ArticleList.vue')['default']
     Banner: typeof import('./components/home/Banner.vue')['default']
     Calendar: typeof import('./components/Calendar/index.vue')['default']
+    Captcha: typeof import('./components/Captcha.vue')['default']
     DeckDetailComponent: typeof import('./components/Deck/DeckDetailComponent.vue')['default']
     DeckWin: typeof import('./components/Deck/DeckWin.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']

@@ -34,7 +34,10 @@
     "verify_11002": "密碼錯誤",
     "login_good": "登入成功",
     "logout_good": "登出成功",
-    "verify_10004": "修改錯誤(10004)"
+    "verify_10004": "修改錯誤(10004)",
+    "show_password": "顯示密碼",
+    "captcha": "驗證碼",
+    "error_captcha": "驗證碼輸入錯誤"
   },
   "deck": {
     "reset": "重置",

@@ -20,12 +20,24 @@
             :placeholder="t('user.password')"
             autocomplete="current-password"
           />
+          <div class="checkbox" tabindex="0">
+            <label class="cursor-pointer">
+              <input v-model="isShowPsd" type="checkbox" tabindex="-1"/>
+              {{ $t('user.show_password') }}
+            </label>
+          </div>
         </form>
-        <div class="checkbox" tabindex="0">
-          <label class="cursor-pointer">
-            <input v-model="isShowPsd" type="checkbox" tabindex="-1"/>
-            {{ $t('user.show_password') }}
-          </label>
+        <div class="captcha">
+          <input
+              class="captcha-input"
+              v-model="captcha"
+              type="text"
+              :placeholder="t('user.captcha')"
+          />
+          <Captcha
+              ref="captchaRef"
+              @getCaptcha="captchaCode = $event"
+          />
         </div>
         <button class="btn" @click="handleLogin">{{ t('user.login') }}</button>
       </template>
@@ -48,6 +60,18 @@
             autocomplete="username"
           />
         </form>
+        <div class="captcha">
+          <input
+              class="captcha-input"
+              v-model="captcha"
+              type="text"
+              :placeholder="t('user.captcha')"
+          />
+          <Captcha
+              ref="captchaRef"
+              @getCaptcha="captchaCode = $event"
+          />
+        </div>
         <button class="btn" @click="handleVerify">
           {{ t('user.verify') }}
         </button>
@@ -90,12 +114,24 @@
             :placeholder="t('user.confirm_psd')"
             autocomplete="new-password"
           />
+          <div class="checkbox" tabindex="0">
+            <label class="cursor-pointer">
+              <input v-model="isShowPsd" type="checkbox" tabindex="-1"/>
+              {{ $t('user.show_password') }}
+            </label>
+          </div>
         </form>
-        <div class="checkbox" tabindex="0">
-          <label class="cursor-pointer">
-            <input v-model="isShowPsd" type="checkbox" tabindex="-1"/>
-            {{ $t('user.show_password') }}
-          </label>
+        <div class="captcha">
+          <input
+              class="captcha-input"
+              v-model="captcha"
+              type="text"
+              :placeholder="t('user.captcha')"
+          />
+          <Captcha
+              ref="captchaRef"
+              @getCaptcha="captchaCode = $event"
+          />
         </div>
         <button class="btn" @click="handleRegister">
           {{ t('user.sign_up') }}
@@ -120,13 +156,13 @@
             :placeholder="t('user.confirm_psd')"
             autocomplete="username"
           />
+          <div class="checkbox" tabindex="0">
+            <label class="cursor-pointer">
+              <input v-model="isShowPsd" type="checkbox" tabindex="-1"/>
+              {{ $t('user.show_password') }}
+            </label>
+          </div>
         </form>
-        <div class="checkbox" tabindex="0">
-          <label class="cursor-pointer">
-            <input v-model="isShowPsd" type="checkbox" tabindex="-1"/>
-            {{ $t('user.show_password') }}
-          </label>
-        </div>
         <button class="btn" @click="handleResetPsd">
           {{ t('user.send') }}
         </button>
@@ -170,6 +206,7 @@ const changeType = (num: number) => {
 // 清空表單
 function resetForm(type: number) {
   isShowPsd.value = false
+  captcha.value = ''
   switch (type) {
     case 0:
       loginForm.value = { account: '', password: '' };
@@ -192,7 +229,10 @@ function resetForm(type: number) {
   }
 }
 
-const isShowPsd = ref<boolean>(false)
+const isShowPsd = ref<boolean>(false);
+const captchaRef = ref(null);
+const captcha = ref<string>('');
+const captchaCode = ref<string>('');
 // 會員登入
 const loginForm = ref<LoginType>({
   account: '',
@@ -200,6 +240,13 @@ const loginForm = ref<LoginType>({
 });
 const handleLogin = async () => {
   if (checkObjNotEmpty(loginForm.value)) {
+    // 檢查驗證碼
+    if (captcha.value.toUpperCase() !== captchaCode.value) {
+      captchaRef.value.refreshCode();
+      captcha.value = ''
+      alert(t('user.error_captcha'));
+      return
+    }
     // call member/login
     const res = await callApi<LoginType>(
       loginForm.value,
@@ -211,7 +258,7 @@ const handleLogin = async () => {
       alert(t('user.login_good'));
       // 顯示登入圖示，及登入內容
     } else {
-      alert(t(`user.verify_${res.error_code}`));
+      alert(t(`user.verify_${res.error_code === 10004 ? '11001' : res.error_code}`));
     }
   } else {
     alert(t('user.blank_notice'));
@@ -225,6 +272,13 @@ const forgetForm = ref<VerifyType>({
   email: '',
 });
 const handleVerify = async () => {
+  // 檢查驗證碼
+  if (captcha.value.toUpperCase() !== captchaCode.value) {
+    captchaRef.value.refreshCode();
+    captcha.value = ''
+    alert(t('user.error_captcha'));
+    return
+  }
   if (checkObjNotEmpty(forgetForm.value)) {
     // call member/verify
     const res = await callApi<{ verify_code: VerifyType }>(
@@ -359,7 +413,7 @@ const closeLogin = () => {
   }
   & .form-container {
     background-color: rgba(255, 255, 255, 0.9);
-    padding: 30px 40px 40px;
+    padding: 20px 40px 30px;
     border-radius: 10px;
     width: 400px;
     & .title {
@@ -385,10 +439,17 @@ const closeLogin = () => {
         margin: 0 5px 0 0;
       }
     }
+    & .captcha {
+      @apply flex justify-between items-center;
+      margin: 10px 0 0;
+      & .captcha-input {
+        width: calc(100% - 155px);
+      }
+    }
     & .btn {
       @apply w-full text-white font-bold;
       height: 50px;
-      margin: 25px 0 0;
+      margin: 20px 0 0;
       border-radius: 8px;
       font-size: 18px;
       background-color: #1f2c5d;
@@ -401,7 +462,7 @@ const closeLogin = () => {
       @apply flex justify-center underline;
       & div {
         @apply cursor-pointer;
-        margin: 20px 30px 0;
+        margin: 15px 30px 0;
         color: #1f2c5d;
         font-size: 16px;
         transition-duration: 0.2s;
