@@ -754,6 +754,7 @@ onMounted(async () => {
         .rarity {
           margin: 5px 0 0 -2px;
           select {
+            border: 1px solid rgba(211, 211, 211, 0.5);
             padding: 3px 8px;
             border-radius: 5px;
             width: 130px;
