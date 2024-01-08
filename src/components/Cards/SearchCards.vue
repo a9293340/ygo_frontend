@@ -56,7 +56,7 @@
 						:key="index"
 						:label="item"
 						:value="item"
-						style="font-size: 16px"
+            style="font-size: 16px; color: #333333;"
 					/>
 				</el-select>
 			</div>
@@ -76,7 +76,7 @@
 						:key="index"
 						:label="item"
 						:value="item"
-						style="font-size: 16px"
+            style="font-size: 16px; color: #333333;"
 					/>
 				</el-select>
 			</div>
@@ -96,7 +96,7 @@
 						:key="index"
 						:label="item"
 						:value="item"
-						style="font-size: 16px"
+            style="font-size: 16px; color: #333333;"
 					/>
 				</el-select>
 			</div>
@@ -116,7 +116,7 @@
 						:key="index"
 						:label="item"
 						:value="item"
-						style="font-size: 16px"
+            style="font-size: 16px; color: #333333;"
 					/>
 				</el-select>
 			</div>
@@ -136,7 +136,7 @@
 						:key="index"
 						:label="item"
 						:value="item"
-						style="font-size: 16px"
+            style="font-size: 16px; color: #333333;"
 					/>
 				</el-select>
 			</div>
@@ -158,7 +158,7 @@
 						:key="index"
 						:label="item.name"
 						:value="item.packType"
-						style="font-size: 16px"
+            style="font-size: 16px; color: #333333;"
 					/>
 				</el-select>
 			</div>
