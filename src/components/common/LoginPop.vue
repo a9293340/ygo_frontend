@@ -16,11 +16,17 @@
           <input
             class="input"
             v-model="loginForm.password"
-            type="password"
+            :type="isShowPsd ? 'text' : 'password'"
             :placeholder="t('user.password')"
             autocomplete="current-password"
           />
         </form>
+        <div class="checkbox" tabindex="0">
+          <label class="cursor-pointer">
+            <input v-model="isShowPsd" type="checkbox" tabindex="-1"/>
+            {{ $t('user.show_password') }}
+          </label>
+        </div>
         <button class="btn" @click="handleLogin">{{ t('user.login') }}</button>
       </template>
 
@@ -73,18 +79,24 @@
           <input
             class="input"
             v-model="registerForm.password"
-            type="password"
+            :type="isShowPsd ? 'text' : 'password'"
             :placeholder="t('user.password')"
             autocomplete="new-password"
           />
           <input
             class="input"
             v-model="confirmPsd"
-            type="password"
+            :type="isShowPsd ? 'text' : 'password'"
             :placeholder="t('user.confirm_psd')"
             autocomplete="new-password"
           />
         </form>
+        <div class="checkbox" tabindex="0">
+          <label class="cursor-pointer">
+            <input v-model="isShowPsd" type="checkbox" tabindex="-1"/>
+            {{ $t('user.show_password') }}
+          </label>
+        </div>
         <button class="btn" @click="handleRegister">
           {{ t('user.sign_up') }}
         </button>
@@ -97,18 +109,24 @@
           <input
             class="input"
             v-model="newPsdForm.old_password"
-            type="password"
+            :type="isShowPsd ? 'text' : 'password'"
             :placeholder="t('user.password')"
             autocomplete="username"
           />
           <input
             class="input"
             v-model="confirmNewPsd"
-            type="password"
+            :type="isShowPsd ? 'text' : 'password'"
             :placeholder="t('user.confirm_psd')"
             autocomplete="username"
           />
         </form>
+        <div class="checkbox" tabindex="0">
+          <label class="cursor-pointer">
+            <input v-model="isShowPsd" type="checkbox" tabindex="-1"/>
+            {{ $t('user.show_password') }}
+          </label>
+        </div>
         <button class="btn" @click="handleResetPsd">
           {{ t('user.send') }}
         </button>
@@ -151,6 +169,7 @@ const changeType = (num: number) => {
 };
 // 清空表單
 function resetForm(type: number) {
+  isShowPsd.value = false
   switch (type) {
     case 0:
       loginForm.value = { account: '', password: '' };
@@ -173,6 +192,7 @@ function resetForm(type: number) {
   }
 }
 
+const isShowPsd = ref<boolean>(false)
 // 會員登入
 const loginForm = ref<LoginType>({
   account: '',
@@ -355,6 +375,15 @@ const closeLogin = () => {
       border-radius: 8px;
       border: 3px solid #1f2c5d;
       font-size: 18px;
+    }
+    & .checkbox {
+      @apply cursor-pointer;
+      font-size: 16px;
+      color: #333333;
+      margin: 10px 0 0 5px;
+      & input {
+        margin: 0 5px 0 0;
+      }
     }
     & .btn {
       @apply w-full text-white font-bold;
