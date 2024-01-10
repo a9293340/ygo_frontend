@@ -22,22 +22,20 @@
           />
           <div class="checkbox" tabindex="0">
             <label class="cursor-pointer">
-              <input v-model="isShowPsd" type="checkbox" tabindex="-1"/>
+              <input v-model="isShowPsd" type="checkbox" tabindex="-1" />
               {{ $t('user.show_password') }}
             </label>
           </div>
         </form>
         <div class="captcha">
           <input
-              class="captcha-input"
-              v-model="captcha"
-              type="text"
-              :placeholder="t('user.captcha')"
+            class="captcha-input"
+            v-model="captcha"
+            type="text"
+            :placeholder="t('user.captcha')"
+            @keyup.enter.native="handleLogin"
           />
-          <Captcha
-              ref="captchaRef"
-              @getCaptcha="captchaCode = $event"
-          />
+          <Captcha ref="captchaRef" @getCaptcha="captchaCode = $event" />
         </div>
         <button class="btn" @click="handleLogin">{{ t('user.login') }}</button>
       </template>
@@ -62,15 +60,13 @@
         </form>
         <div class="captcha">
           <input
-              class="captcha-input"
-              v-model="captcha"
-              type="text"
-              :placeholder="t('user.captcha')"
+            class="captcha-input"
+            v-model="captcha"
+            type="text"
+            :placeholder="t('user.captcha')"
+            @keyup.enter.native="handleVerify"
           />
-          <Captcha
-              ref="captchaRef"
-              @getCaptcha="captchaCode = $event"
-          />
+          <Captcha ref="captchaRef" @getCaptcha="captchaCode = $event" />
         </div>
         <button class="btn" @click="handleVerify">
           {{ t('user.verify') }}
@@ -116,22 +112,20 @@
           />
           <div class="checkbox" tabindex="0">
             <label class="cursor-pointer">
-              <input v-model="isShowPsd" type="checkbox" tabindex="-1"/>
+              <input v-model="isShowPsd" type="checkbox" tabindex="-1" />
               {{ $t('user.show_password') }}
             </label>
           </div>
         </form>
         <div class="captcha">
           <input
-              class="captcha-input"
-              v-model="captcha"
-              type="text"
-              :placeholder="t('user.captcha')"
+            class="captcha-input"
+            v-model="captcha"
+            type="text"
+            :placeholder="t('user.captcha')"
+            @keyup.enter.native="handleRegister"
           />
-          <Captcha
-              ref="captchaRef"
-              @getCaptcha="captchaCode = $event"
-          />
+          <Captcha ref="captchaRef" @getCaptcha="captchaCode = $event" />
         </div>
         <button class="btn" @click="handleRegister">
           {{ t('user.sign_up') }}
@@ -158,7 +152,7 @@
           />
           <div class="checkbox" tabindex="0">
             <label class="cursor-pointer">
-              <input v-model="isShowPsd" type="checkbox" tabindex="-1"/>
+              <input v-model="isShowPsd" type="checkbox" tabindex="-1" />
               {{ $t('user.show_password') }}
             </label>
           </div>
@@ -194,10 +188,13 @@ import i18n from '@/i18n';
 const { t } = i18n.global;
 import { getNowDate } from '@/util/parseDate';
 import { callApi } from '@/util/api';
-import type { AdminList, Admin } from 'module-types';
-import type { NotHasTotalRes, CreateMemberToken } from 'response-data-types';
+import type { Token } from 'module-types';
+import type { CreateMemberToken } from 'response-data-types';
 import { decode, validatePassword } from '@/util';
+import Cookies from 'js-cookie';
+import { useCommon } from '@/stores/common';
 
+const { account_token } = storeToRefs(useCommon());
 const type = ref<number>(0); // 0=會員登入 1=忘記密碼, 2=建立帳號, 3=填寫新密碼
 const changeType = (num: number) => {
   type.value = num;
@@ -205,8 +202,8 @@ const changeType = (num: number) => {
 };
 // 清空表單
 function resetForm(type: number) {
-  isShowPsd.value = false
-  captcha.value = ''
+  isShowPsd.value = false;
+  captcha.value = '';
   switch (type) {
     case 0:
       loginForm.value = { account: '', password: '' };
@@ -243,9 +240,9 @@ const handleLogin = async () => {
     // 檢查驗證碼
     if (captcha.value.toUpperCase() !== captchaCode.value) {
       captchaRef.value.refreshCode();
-      captcha.value = ''
+      captcha.value = '';
       alert(t('user.error_captcha'));
-      return
+      return;
     }
     // call member/login
     const res = await callApi<LoginType>(
@@ -254,11 +251,17 @@ const handleLogin = async () => {
       'login',
       false
     );
-    if (!res.error_code) {
+    if (!res.error_code || res.error_code === 10009) {
       alert(t('user.login_good'));
       // 顯示登入圖示，及登入內容
+      const token = decode<Token>(res.data);
+      account_token.value = token.token;
+      Cookies.set('ygo-frontend-token', token.token, { expires: 3 });
+      // console.log(account_token.value);
     } else {
-      alert(t(`user.verify_${res.error_code === 10004 ? '11001' : res.error_code}`));
+      alert(
+        t(`user.verify_${res.error_code === 10004 ? '11001' : res.error_code}`)
+      );
     }
   } else {
     alert(t('user.blank_notice'));
@@ -275,9 +278,9 @@ const handleVerify = async () => {
   // 檢查驗證碼
   if (captcha.value.toUpperCase() !== captchaCode.value) {
     captchaRef.value.refreshCode();
-    captcha.value = ''
+    captcha.value = '';
     alert(t('user.error_captcha'));
-    return
+    return;
   }
   if (checkObjNotEmpty(forgetForm.value)) {
     // call member/verify
