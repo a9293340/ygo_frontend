@@ -94,20 +94,20 @@ onMounted(async () => {
 		}
 		& h1 {
 			@apply w-full font-bold text-white;
-			font-size: 30px;
+			font-size: 28px;
 		}
 		& .info {
 			@apply w-full flex justify-end items-center text-white;
-			font-size: 18px;
+			font-size: 16px;
 			div {
 				margin: 0 10px;
 			}
 		}
 		& .content {
-			@apply w-full text-justify;
+			@apply w-full;
 			font-size: 18px;
-			margin: 20px 0 50px;
-			padding: 20px;
+			margin: 2px 0 50px;
+			padding: 20px 25px;
 			border-radius: 10px;
 			background-color: rgba(255, 255, 255, 0.9);
 		}
@@ -122,7 +122,7 @@ onMounted(async () => {
 				margin: 20px 0;
 			}
 			& h1 {
-				font-size: 28px;
+				font-size: 26px;
 			}
 		}
 	}
@@ -137,21 +137,21 @@ onMounted(async () => {
 				margin: 0 0 2.6vw;
 			}
 			& h1 {
-				font-size: 24px;
+				font-size: 20px;
 				padding: 0 5px 5px 10px;
 			}
 			& .info {
 				@apply w-full flex flex-col justify-end items-end text-white;
-				font-size: 16px;
+				font-size: 14px;
 				div {
 					margin: 0 10px;
 				}
 			}
 			& .content {
 				width: calc(100vw - 20px);
-				font-size: 18px;
-				margin: 10px auto 50px;
-				padding: 10px;
+				font-size: 16px;
+				margin: 2px auto 50px;
+				padding: 10px 15px;
 				border-radius: 5px;
 			}
 		}
