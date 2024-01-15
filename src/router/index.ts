@@ -42,6 +42,17 @@ const router = createRouter({
       name: 'email_check',
       component: () => import('../views/Member/EmailCheck.vue'),
     },
+    // 卡片查詢
+    {
+      path: '/cards',
+      name: 'cards',
+      component: () => import('../views/Cards/index.vue'),
+    },
+    {
+      path: '/cards/:id',
+      name: 'cards_detail',
+      component: () => import('../views/Cards/Detail.vue'),
+    },
     // 上位卡表
     {
       path: '/meta_deck',
@@ -54,61 +65,61 @@ const router = createRouter({
       component: () => import('../views/Article/Detail.vue'),
     },
     // 系列介紹
-    {
-      path: '/serial_introduction',
-      name: 'serial_introduction',
-      redirect: '/serial_introduction/theme_deck',
-      children: [
-        {
-          path: 'theme_deck',
-          name: 'theme_deck',
-          component: () => import('../views/SeriesIntroduction/ThemeDeckList.vue'),
-        },
-        {
-          path: 'theme_deck/:id',
-          name: 'theme_deck_detail',
-          component: () => import('../views/Article/Detail.vue'),
-        },
-        {
-          path: 'plugin',
-          name: 'plugin',
-          component: () => import('../views/SeriesIntroduction/PluginList.vue'),
-        },
-        {
-          path: 'plugin/:id',
-          name: 'plugin_detail',
-          component: () => import('../views/Article/Detail.vue'),
-        },
-      ],
-    },
+    // {
+    //   path: '/serial_introduction',
+    //   name: 'serial_introduction',
+    //   redirect: '/serial_introduction/theme_deck',
+    //   children: [
+    //     {
+    //       path: 'theme_deck',
+    //       name: 'theme_deck',
+    //       component: () => import('../views/SeriesIntroduction/ThemeDeckList.vue'),
+    //     },
+    //     {
+    //       path: 'theme_deck/:id',
+    //       name: 'theme_deck_detail',
+    //       component: () => import('../views/Article/Detail.vue'),
+    //     },
+    //     {
+    //       path: 'plugin',
+    //       name: 'plugin',
+    //       component: () => import('../views/SeriesIntroduction/PluginList.vue'),
+    //     },
+    //     {
+    //       path: 'plugin/:id',
+    //       name: 'plugin_detail',
+    //       component: () => import('../views/Article/Detail.vue'),
+    //     },
+    //   ],
+    // },
     // 泛用卡介紹
-    {
-      path: '/useful_card_introduction',
-      name: 'useful_card_introduction',
-      redirect: '/useful_card_introduction/single_card',
-      children: [
-        {
-          path: 'single_card',
-          name: 'single_card',
-          component: () => import('../views/UsefulCardIntroduction/SingleCardList.vue'),
-        },
-        {
-          path: 'single_card/:id',
-          name: 'single_card_detail',
-          component: () => import('../views/Article/Detail.vue'),
-        },
-        {
-          path: 'strategy',
-          name: 'strategy',
-          component: () => import('../views/UsefulCardIntroduction/StrategyList.vue'),
-        },
-        {
-          path: 'strategy/:id',
-          name: 'strategy_detail',
-          component: () => import('../views/Article/Detail.vue'),
-        },
-      ],
-    },
+    // {
+    //   path: '/useful_card_introduction',
+    //   name: 'useful_card_introduction',
+    //   redirect: '/useful_card_introduction/single_card',
+    //   children: [
+    //     {
+    //       path: 'single_card',
+    //       name: 'single_card',
+    //       component: () => import('../views/UsefulCardIntroduction/SingleCardList.vue'),
+    //     },
+    //     {
+    //       path: 'single_card/:id',
+    //       name: 'single_card_detail',
+    //       component: () => import('../views/Article/Detail.vue'),
+    //     },
+    //     {
+    //       path: 'strategy',
+    //       name: 'strategy',
+    //       component: () => import('../views/UsefulCardIntroduction/StrategyList.vue'),
+    //     },
+    //     {
+    //       path: 'strategy/:id',
+    //       name: 'strategy_detail',
+    //       component: () => import('../views/Article/Detail.vue'),
+    //     },
+    //   ],
+    // },
     // 卡表介紹
     {
       path: '/product_information',
@@ -196,27 +207,16 @@ const router = createRouter({
       ],
     },
     // 卡片故事
-    {
-      path: '/series_story',
-      name: 'series_story',
-      component: () => import('../views/SeriesStory/index.vue'),
-    },
-    {
-      path: '/series_story/:id',
-      name: 'series_story_detail',
-      component: () => import('../views/Article/Detail.vue'),
-    },
-    // 卡片查詢
-    {
-      path: '/cards',
-      name: 'cards',
-      component: () => import('../views/Cards/index.vue'),
-    },
-    {
-      path: '/cards/:id',
-      name: 'cards_detail',
-      component: () => import('../views/Cards/Detail.vue'),
-    },
+    // {
+    //   path: '/series_story',
+    //   name: 'series_story',
+    //   component: () => import('../views/SeriesStory/index.vue'),
+    // },
+    // {
+    //   path: '/series_story/:id',
+    //   name: 'series_story_detail',
+    //   component: () => import('../views/Article/Detail.vue'),
+    // },
     // 組牌
     {
       path: '/deck',

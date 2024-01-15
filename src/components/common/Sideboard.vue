@@ -41,6 +41,7 @@ const { t } = i18n.global;
 const router = useRouter();
 
 const menu = ref<MenuItem[]>([
+  // 首頁
 	{ title: t("menu.home"), link: "/" },
 	// {
 	// 	title: t("menu.member"),
@@ -49,25 +50,30 @@ const menu = ref<MenuItem[]>([
 	// 		{ title: t("menu.deck_list"), link: "/member/deck_list" },
 	// 	],
 	// },
+  // 卡片查詢
+  { title: t("menu.cards"), link: "/cards" },
+  // 上位卡表
 	{ title: t("menu.meta_deck"), link: "/meta_deck" },
-	{ title: t("menu.battle_paper"), link: "/battle_paper" },
-	{
-		title: t("menu.series_introduction"),
-		children: [
-			{ title: t("menu.theme_deck"), link: "/serial_introduction/theme_deck" },
-			{ title: t("menu.plugin"), link: "/serial_introduction/plugin" },
-		],
-	},
-	{
-		title: t("menu.useful_card_introduction"),
-		children: [
-			{
-				title: t("menu.single_card"),
-				link: "/useful_card_introduction/single_card",
-			},
-			{ title: t("menu.strategy"), link: "/useful_card_introduction/strategy" },
-		],
-	},
+  // 系列介紹
+	// {
+	// 	title: t("menu.series_introduction"),
+	// 	children: [
+	// 		{ title: t("menu.theme_deck"), link: "/serial_introduction/theme_deck" },
+	// 		{ title: t("menu.plugin"), link: "/serial_introduction/plugin" },
+	// 	],
+	// },
+  // 汎用卡介紹
+	// {
+	// 	title: t("menu.useful_card_introduction"),
+	// 	children: [
+	// 		{
+	// 			title: t("menu.single_card"),
+	// 			link: "/useful_card_introduction/single_card",
+	// 		},
+	// 		{ title: t("menu.strategy"), link: "/useful_card_introduction/strategy" },
+	// 	],
+	// },
+  // 卡表介紹
 	{
 		title: t("menu.production_information"),
 		children: [
@@ -78,6 +84,7 @@ const menu = ref<MenuItem[]>([
 			{ title: t("menu.p_other"), link: "/product_information/other" },
 		],
 	},
+  // 規則相關
 	{
 		title: t("menu.rules"),
 		children: [
@@ -85,8 +92,9 @@ const menu = ref<MenuItem[]>([
 			{ title: t("menu.ban_list"), link: "/rules/ban_list" },
 		],
 	},
-	{ title: t("menu.series_story"), link: "/series_story" },
-	{ title: t("menu.cards"), link: "/cards" },
+  // 卡片故事
+	// { title: t("menu.series_story"), link: "/series_story" },
+  // 組牌
 	{
 		title: t("menu.deck"),
 		children: [
@@ -94,6 +102,7 @@ const menu = ref<MenuItem[]>([
 			{ title: t("menu.deck_list"), link: "/deck" },
 		],
 	},
+  // 日曆
 	{ title: t("menu.calendar"), link: "/calendar" },
 ]);
 
