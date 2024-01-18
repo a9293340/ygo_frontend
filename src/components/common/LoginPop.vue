@@ -194,7 +194,7 @@ import { decode, validatePassword } from '@/util';
 import Cookies from 'js-cookie';
 import { useCommon } from '@/stores/common';
 
-const { account_token } = storeToRefs(useCommon());
+const { account_token, account_id } = storeToRefs(useCommon());
 const type = ref<number>(0); // 0=會員登入 1=忘記密碼, 2=建立帳號, 3=填寫新密碼
 const changeType = (num: number) => {
   type.value = num;
@@ -256,7 +256,11 @@ const handleLogin = async () => {
       // 顯示登入圖示，及登入內容
       const token = decode<Token>(res.data);
       account_token.value = token.token;
-      Cookies.set('ygo-frontend-token', token.token, { expires: 3 });
+      account_id.value = loginForm.value.account;
+      Cookies.set('card-time-frontend-token', token.token, { expires: 3 });
+      Cookies.set('card-time-frontend-account', loginForm.value.account, {
+        expires: 3,
+      });
       // console.log(account_token.value);
     } else {
       alert(

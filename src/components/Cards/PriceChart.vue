@@ -31,9 +31,11 @@ interface PriceChartProps {
   yTickSet: GridTickSet;
   legend: Legends;
   toolTip: ToolTip;
+  type: string;
 }
 
 const props = withDefaults(defineProps<PriceChartProps>(), {
+  type: 'avg',
   price: () => [{ time: '', price_avg: 0, price_lowest: 0, rarity: '' }],
   colors: () => [
     'rgba(255, 0, 0, 1)', // 紅色
@@ -92,14 +94,14 @@ ChartJS.register(
   LinearScale,
   LineController,
   PointElement,
-  TimeScale,
+  TimeScale
 );
 const chartData = computed(
   () =>
     ({
       labels: priceX.value,
       datasets: [...priceY.value],
-    }) as ChartData<'line'>,
+    }) as ChartData<'line'>
 );
 
 const chartOptions = computed(
@@ -142,7 +144,7 @@ const chartOptions = computed(
               (max.value +
                 Math.floor(max.value * 0.1) -
                 (min.value - Math.round(min.value - 0.1))) /
-                props.yAxisSetSize,
+                props.yAxisSetSize
             ),
           },
           grid: {
@@ -183,8 +185,13 @@ const chartOptions = computed(
         mode: 'y',
         intersect: true,
       },
-    }) as ChartOptions<'line'>,
+    }) as ChartOptions<'line'>
 );
+const priceType = computed(() => props.type);
+
+watch(priceType, newVal => {
+  makePriceChart();
+});
 
 const getOrCreateTooltip = (chart: any) => {
   let tooltipEl = chart.canvas.parentNode.querySelector('div');
@@ -292,36 +299,45 @@ const externalTooltipHandler = (context: any) => {
   tooltipEl.style.left = positionX + tooltip.caretX + 'px';
   tooltipEl.style.top = positionY + tooltip.caretY + 'px';
   tooltipEl.style.font = tooltip.options.bodyFont.string;
-  tooltipEl.style.padding = tooltip.options.padding + 'px ' + tooltip.options.padding + 'px';
+  tooltipEl.style.padding =
+    tooltip.options.padding + 'px ' + tooltip.options.padding + 'px';
   tooltipEl.style.backgroundColor = props.toolTip.bgc;
   tooltipEl.style.borderRadius = '10px';
 };
 
+const makePriceChart = () => {
+  priceX.value = [];
+  priceY.value = [];
+  const rarity = [...new Set(props.price.map(el => el.rarity))];
+  for (let i = 0; i < rarity.length; i++) {
+    const rar = rarity[i];
+    const date = props.price.filter(el => el.rarity === rar);
+    priceX.value = date.map(el => el.time.split(' ')[0]);
+    priceY.value.push({
+      label: `${rar} 露天${priceType.value === 'avg' ? '均價' : '最低價'}`,
+      data:
+        priceType.value === 'avg'
+          ? date.map(el => el.price_avg)
+          : date.map(el => el.price_lowest),
+      backgroundColor: props.colors[i % 7],
+      borderColor: props.colors[i % 7], // 设置线的颜色
+      tension: 0.1,
+      borderWidth: 1,
+    });
+    max.value =
+      Math.max(...date.map(el => el.price_avg)) > max.value
+        ? Math.max(...date.map(el => el.price_avg))
+        : max.value;
+    min.value =
+      Math.min(...date.map(el => el.price_avg)) < min.value
+        ? Math.min(...date.map(el => el.price_avg))
+        : min.value;
+  }
+};
+
 onMounted(() => {
   if (props.price.length) {
-    const rarity = [...new Set(props.price.map(el => el.rarity))];
-    for (let i = 0; i < rarity.length; i++) {
-      const rar = rarity[i];
-      const date = props.price.filter(el => el.rarity === rar);
-      priceX.value = date.map(el => el.time.split(' ')[0]);
-      priceY.value.push({
-        label: `${rar} 露天均價`,
-        data: date.map(el => el.price_avg),
-        backgroundColor: props.colors[i % 7],
-        borderColor: props.colors[i % 7], // 设置线的颜色
-        tension: 0.1,
-        borderWidth: 1,
-      });
-      max.value =
-        Math.max(...date.map(el => el.price_avg)) > max.value
-          ? Math.max(...date.map(el => el.price_avg))
-          : max.value;
-      min.value =
-        Math.min(...date.map(el => el.price_avg)) < min.value
-          ? Math.min(...date.map(el => el.price_avg))
-          : min.value;
-    }
-    console.log(priceY.value);
+    makePriceChart();
   }
 
   const dom = <HTMLDivElement>document.querySelector('.price-chart');
@@ -342,5 +358,7 @@ onMounted(() => {
 .price-chart {
   padding: 10px 20px;
   background-color: #3e476b;
+  margin-bottom: 20px;
+  border-radius: 10px;
 }
 </style>
