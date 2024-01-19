@@ -100,6 +100,7 @@ const menu = ref<MenuItem[]>([
 		children: [
 			{ title: t("menu.deck_add"), link: "/deck/add", check: true },
 			{ title: t("menu.deck_list"), link: "/deck" },
+      { title: t("menu.my_deck"), link: "/deck/mydeck" },
 		],
 	},
   // 日曆
