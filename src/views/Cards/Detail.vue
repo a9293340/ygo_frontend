@@ -39,7 +39,7 @@
                 }}
               </span>
             </div>
-            <div>{{ cardInfo?.number }}</div>
+            <div>{{ cardInfo?.number.substring(0, 8) }}</div>
           </div>
         </div>
       </div>
@@ -133,7 +133,7 @@ onMounted(async () => {
   cardInfo.value = decode<HasTotalRes<CardsList>>(
     (
       await callApi<CardListType>(
-        { page: 0, limit: 1, filter: { id: route.params.id as string } },
+        { page: 0, limit: 1, filter: { id: route.params.id as string, number: route.query.number ? route.query.number as string : '' } },
         'cards',
         'list',
         false
