@@ -39,7 +39,7 @@
                 }}
               </span>
             </div>
-            <div>{{ cardInfo?.number }}</div>
+            <div>{{ cardInfo?.number.substring(0, 8) }}</div>
           </div>
         </div>
       </div>
@@ -99,8 +99,8 @@
 </template>
 
 <script setup lang="ts">
-import type { CardListType } from 'request-data-types';
-import type { Cards, CardsList } from 'module-types';
+import type { CardListType, JurisprudenceListType } from 'request-data-types';
+import type {Cards, CardsList, Jurisprudence } from 'module-types';
 import type { HasTotalRes } from 'response-data-types';
 import { callApi } from '@/util/api';
 import { decode } from '@/util';
@@ -113,7 +113,9 @@ const { account_token, account_id } = storeToRefs(useCommon());
 const { t } = i18n.global;
 
 const route = useRoute();
+const router = useRouter();
 const cardInfo = ref<Cards | undefined>();
+const jurisprudence = ref<Jurisprudence | []>([]);
 const priceType = ref('avg');
 const colors = ref([
   'rgba(255, 0, 0, 1)', // 紅色
@@ -130,17 +132,32 @@ const colors = ref([
 
 onMounted(async () => {
   if (account_id.value && account_token.value) priceType.value = 'lowest';
-  cardInfo.value = decode<HasTotalRes<CardsList>>(
-    (
-      await callApi<CardListType>(
-        { page: 0, limit: 1, filter: { id: route.params.id as string } },
-        'cards',
-        'list',
-        false
-      )
-    ).data
-  ).list[0];
-  console.log(cardInfo.value);
+  if (!route.query.number) {
+    await router.push('/cards')
+  } else {
+    cardInfo.value = decode<HasTotalRes<CardsList>>(
+        (
+            await callApi<CardListType>(
+                { page: 0, limit: 1, filter: { id: route.params.id as string, number: route.query.number as string } },
+                'cards',
+                'list',
+                false
+            )
+        ).data
+    ).list[0];
+
+    jurisprudence.value = decode<HasTotalRes<Jurisprudence>>(
+        (
+            await callApi<JurisprudenceListType>(
+                { number: (route.query.number as string).substring(0, 8) },
+                'jurisprudence',
+                'list',
+                false
+            )
+        ).data
+    ).list[0];
+    console.log(jurisprudence.value)
+  }
 });
 </script>
 

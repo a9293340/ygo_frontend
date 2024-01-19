@@ -238,6 +238,11 @@ const router = createRouter({
           name: 'deck_add',
           component: () => import('../views/Deck/Add.vue'),
         },
+        {
+          path: '/deck/mydeck',
+          name: 'my_deck',
+          component: () => import('../views/Deck/MyDeck.vue'),
+        }
       ],
     },
     {

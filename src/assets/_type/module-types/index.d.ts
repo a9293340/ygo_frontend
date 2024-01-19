@@ -163,6 +163,26 @@ declare module 'module-types' {
     name: string;
   }
 
+  interface Jurisprudence {
+    _id?: string;
+    number: string;
+    name_jp_h: string;
+    name_jp_k: string;
+    name_en: string;
+    effect_jp: string;
+    jud_link: string;
+    info: string;
+    qa: Qa[];
+  }
+
+  interface Qa {
+    title: string;
+    tag: string;
+    date: string;
+    q: string;
+    a: string;
+  }
+
   type CardsImageList = CardsImage[];
   type CardsList = Cards[];
   type DeckList = Deck[];
@@ -292,6 +312,10 @@ declare module 'request-data-types' {
 
   type DeckDeleteType = {
     _id: string;
+  };
+
+  type JurisprudenceListType = {
+    number: string;
   };
 }
 
