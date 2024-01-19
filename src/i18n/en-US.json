@@ -126,7 +126,10 @@
     "input_number": "請輸入卡片密碼",
     "search": "搜尋",
     "show_form": "點擊箭頭顯示篩選列",
-    "detail": "詳情"
+    "detail": "詳情",
+    "price_select": "露天價格",
+    "price_low": "露天最低價",
+    "price_avg": "露天均價"
   },
   "calendar": {
     "title": "活動行事曆",

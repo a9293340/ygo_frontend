@@ -34,7 +34,9 @@
             <div>{{ cardInfo?.race ? cardInfo.race : '-' }}</div>
             <div v-if="cardInfo">
               <span v-for="(item, index) in cardInfo?.rarity" :key="index">
-                {{ `${item}${cardInfo?.rarity.length - 1 === index ? '' : '、'} ` }}
+                {{
+                  `${item}${cardInfo?.rarity.length - 1 === index ? '' : '、'} `
+                }}
               </span>
             </div>
             <div>{{ cardInfo?.number }}</div>
@@ -42,12 +44,24 @@
         </div>
       </div>
       <div class="right-box">
-        <img v-if="cardInfo" :src="`/api/card-image/cards/${cardInfo?.number}.webp`" alt="" />
+        <img
+          v-if="cardInfo"
+          :src="`/api/card-image/cards/${cardInfo?.number}.webp`"
+          alt=""
+        />
       </div>
     </div>
     <div class="chart-box">
+      <div class="select-box" v-if="account_id && account_token">
+        <p>露天價格 :</p>
+        <el-select v-model="priceType">
+          <el-option value="avg" label="露天均價" />
+          <el-option value="lowest" label="露天最低價" />
+        </el-select>
+      </div>
       <PriceChart
         v-if="cardInfo && Array.isArray(cardInfo?.price_info)"
+        :type="priceType"
         :price="cardInfo?.price_info"
         :colors="colors"
         :y-axis-set-size="5"
@@ -92,11 +106,15 @@ import { callApi } from '@/util/api';
 import { decode } from '@/util';
 import 'chartjs-adapter-date-fns';
 import i18n from '@/i18n/index';
+import { useCommon } from '@/stores/common';
+
+const { account_token, account_id } = storeToRefs(useCommon());
 
 const { t } = i18n.global;
 
 const route = useRoute();
 const cardInfo = ref<Cards | undefined>();
+const priceType = ref('avg');
 const colors = ref([
   'rgba(255, 0, 0, 1)', // 紅色
   'rgba(0, 255, 0, 1)', // 綠色
@@ -111,15 +129,16 @@ const colors = ref([
 ]);
 
 onMounted(async () => {
+  if (account_id.value && account_token.value) priceType.value = 'lowest';
   cardInfo.value = decode<HasTotalRes<CardsList>>(
     (
       await callApi<CardListType>(
         { page: 0, limit: 1, filter: { id: route.params.id as string } },
         'cards',
         'list',
-        false,
+        false
       )
-    ).data,
+    ).data
   ).list[0];
   console.log(cardInfo.value);
 });
@@ -184,6 +203,12 @@ onMounted(async () => {
     width: 1200px;
     margin: 0 auto;
     border-radius: 10px;
+    .select-box {
+      @apply mb-2 flex flex-row;
+      p {
+        @apply text-white text-2xl mr-2;
+      }
+    }
   }
 }
 

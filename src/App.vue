@@ -10,10 +10,11 @@
 import Cookies from 'js-cookie';
 import { useCommon } from '@/stores/common';
 
-const { account_token } = storeToRefs(useCommon());
+const { account_token, account_id } = storeToRefs(useCommon());
 
 onMounted(() => {
-  account_token.value = Cookies.get('ygo-frontend-token');
+  account_token.value = Cookies.get('card-time-frontend-token');
+  account_id.value = Cookies.get('card-time-frontend-account');
 
   console.log(account_token.value);
 });
