@@ -7,8 +7,14 @@ import { callApi } from '@/util/api';
 import { decode } from '@/util';
 import ExcelJS from 'exceljs';
 import { toPng } from 'html-to-image';
+import { useDeckStore } from '@/stores/deck';
+import { useCommon } from '@/stores/common';
 
 const { t } = i18n.global;
+const router = useRouter();
+
+const { pick_deck_id, isCopy } = storeToRefs(useDeckStore());
+const { account_id } = storeToRefs(useCommon());
 
 const deck = ref<Deck>();
 
@@ -54,15 +60,16 @@ const getDataFromDeck = () => {
     let arr = [];
     for (let i = 0; i < decks.length; i++) {
       const deck = decks[i];
-      arr.push([
+      let list = [
         deck.card_name,
         deck.card_num_id,
         deck.card_number,
         deck.card_rarity,
         new Date(deck.card_price[0].time).toDateString(),
         deck.card_price[0].price_avg,
-        deck.card_price[0].price_lowest,
-      ]);
+      ];
+      if (account_id.value) list.push(deck.card_price[0].price_lowest);
+      arr.push(list);
     }
     return arr;
   };
@@ -154,7 +161,7 @@ const loadToExcel = async () => {
     }
 
     // 寬度
-    worksheet.columns.forEach((column, index) => {
+    worksheet.columns.forEach(column => {
       let maxLength = 0;
       column.eachCell({ includeEmpty: true }, cell => {
         const columnLength = cell.value ? cell.value.toString().length : 0;
@@ -188,7 +195,7 @@ const drawWaterMark = (
   ctx: CanvasRenderingContext2D,
   imgWidth: number,
   imgHeight: number,
-  wmConfig: { font: string; textArray: string[]; density: number },
+  wmConfig: { font: string; textArray: string[]; density: number }
 ) => {
   let fontSize: number;
   // 判斷圖檔與文字
@@ -228,7 +235,7 @@ const drawWaterMark = (
   arrayX.push(
     ...arrayX.slice(1, arrayX.length).map(el => {
       return -el;
-    }),
+    })
   );
 
   console.log(arrayX);
@@ -252,7 +259,7 @@ const drawWaterMark = (
 
 const base64AddWaterMaker = (
   base64Img: string,
-  wmConfig: { font: string; textArray: string[]; density: number },
+  wmConfig: { font: string; textArray: string[]; density: number }
 ) => {
   if (wmConfig.textArray.length === 0) {
     console.error('****No Content*****');
@@ -285,6 +292,12 @@ const base64AddWaterMaker = (
   });
 };
 
+const copyDeck = () => {
+  pick_deck_id.value = deck.value._id;
+  isCopy.value = true;
+  router.push('/deck/add');
+};
+
 const getImage = async () => {
   toPng(deckList.value)
     .then(async function (dataUrl) {
@@ -305,7 +318,10 @@ const changeShowType = () => (showRarity.value = !showRarity.value);
 // 卡片詳情彈窗
 const onLargeTarget = ref<DeckContent>();
 const cardInfoVisible = ref(false);
-const openCardInfo = (i: number, type: 'main_deck' | 'extra_deck' | 'side_deck') => {
+const openCardInfo = (
+  i: number,
+  type: 'main_deck' | 'extra_deck' | 'side_deck'
+) => {
   onLargeTarget.value = deck.value[type][i];
   cardInfoVisible.value = true;
   console.log(onLargeTarget.value);
@@ -318,9 +334,9 @@ onMounted(async () => {
         { page: 0, limit: 1, filter: { _id: route.params.id as string } },
         'deck',
         'deckList',
-        false,
+        false
       )
-    ).data,
+    ).data
   ).list[0];
   if (contentRef.value) {
     await checkAllImagesLoaded();
@@ -332,16 +348,24 @@ onMounted(async () => {
 <template>
   <div class="deck-detail">
     <div class="btn-box">
+      <button v-if="account_id" @click="copyDeck">{{ t('deck.copy') }}</button>
       <button @click="getImage">{{ t('deck.download_img') }}</button>
       <button @click="loadToExcel">{{ t('deck.download_excel') }}</button>
       <button @click="changeShowType" :class="{ 'btn-grey': !showRarity }">
         {{ showRarity ? t('deck.showRarity') : t('deck.notShowRarity') }}
       </button>
-      <el-checkbox v-if="!showRarity" class="check-fill-price" :label="t('deck.isMondey')" v-model="isShowMoney" />
+      <el-checkbox
+        v-if="!showRarity"
+        class="check-fill-price"
+        :label="t('deck.isMondey')"
+        v-model="isShowMoney"
+      />
     </div>
     <div id="deck-list" ref="deckList">
       <div class="deck-title">{{ deck?.title }}</div>
-      <div class="title">{{ t('deck.main_deck') }}({{ deck?.main_deck.length }})</div>
+      <div class="title">
+        {{ t('deck.main_deck') }}({{ deck?.main_deck.length }})
+      </div>
       <div class="main-deck">
         <deck-detail-component
           deck-type="main_deck"
@@ -351,7 +375,9 @@ onMounted(async () => {
           @card-info="openCardInfo"
         />
       </div>
-      <div class="title">{{ t('deck.extra_deck') }}({{ deck?.extra_deck.length }})</div>
+      <div class="title">
+        {{ t('deck.extra_deck') }}({{ deck?.extra_deck.length }})
+      </div>
       <div class="extra-deck">
         <deck-detail-component
           deck-type="extra_deck"
@@ -361,7 +387,9 @@ onMounted(async () => {
           @card-info="openCardInfo"
         />
       </div>
-      <div class="title">{{ t('deck.side_deck') }}({{ deck?.side_deck.length }})</div>
+      <div class="title">
+        {{ t('deck.side_deck') }}({{ deck?.side_deck.length }})
+      </div>
       <div class="side-deck">
         <deck-detail-component
           deck-type="side_deck"
@@ -372,12 +400,17 @@ onMounted(async () => {
         />
       </div>
       <div class="copyright">
-        Copyright © 卡壇 Card Time. All rights reserved. Resource : https://cardtime.tw
+        Copyright © 卡壇 Card Time. All rights reserved. Resource :
+        https://cardtime.tw
       </div>
     </div>
   </div>
 
-  <el-dialog :title="t('deck.download_notice')" v-model="dialogVisible" class="img-download-pop">
+  <el-dialog
+    :title="t('deck.download_notice')"
+    v-model="dialogVisible"
+    class="img-download-pop"
+  >
     <div class="dialog">
       <img :src="imgUrl" alt="" />
     </div>
@@ -386,7 +419,10 @@ onMounted(async () => {
   <!-- 卡片詳情彈窗 -->
   <el-dialog v-model="cardInfoVisible" class="card-info-pop">
     <div class="image-dialog">
-      <img :src="`/api/card-image/cards/${onLargeTarget?.card_number}.webp`" alt="" />
+      <img
+        :src="`/api/card-image/cards/${onLargeTarget?.card_number}.webp`"
+        alt=""
+      />
       <div class="info">
         <div class="name">
           {{ onLargeTarget?.card_name }}

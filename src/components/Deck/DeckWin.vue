@@ -10,14 +10,13 @@ import { extraType, ceremony, manaType } from '@/config/ygo';
 import { VueDraggable, type UseDraggableReturn } from 'vue-draggable-plus';
 import { useDeckStore } from '@/stores/deck';
 import i18n from '@/i18n/index';
-import { generateRandomString, convertBase64ToImage } from '@/util/index';
 import { callApi } from '@/util/api';
 import { decode } from '@/util';
-import { toPng } from 'html-to-image';
-import { ElMessage } from 'element-plus';
+import { useCommon } from '@/stores/common';
 
 const { t } = i18n.global;
-const { pick_deck_id } = storeToRefs(useDeckStore());
+const { pick_deck_id, isCopy } = storeToRefs(useDeckStore());
+const { account_id } = storeToRefs(useCommon());
 
 interface DeckCardsListProps {
   cardsList: CardsList | [];
@@ -57,10 +56,19 @@ const cardsList = computed(() => props.cardsList);
 const trigger = computed(() => props.trigger);
 const total = computed(() => props.total);
 const cardsListRarity = computed(
-  () => cardsList.value.map((item: Cards) => item.rarity[0]) as string[],
+  () => cardsList.value.map((item: Cards) => item.rarity[0]) as string[]
 );
 // Deck
-const deckDetail = ref<Deck>();
+const deckDetail = ref<Deck>({
+  _id: '',
+  admin_id: account_id.value,
+  title: '',
+  create_date: new Date().toLocaleDateString(),
+  last_edit_date: new Date().toLocaleDateString(),
+  main_deck: [],
+  extra_deck: [],
+  side_deck: [],
+});
 const mainDeckOrigin = ref<CardsList>([]);
 const mainDeck = ref<DeckContent[]>([]);
 
@@ -69,10 +77,6 @@ const extraDeck = ref<DeckContent[]>([]);
 
 const sideDeckOrigin = ref<CardsList>([]);
 const sideDeck = ref<DeckContent[]>([]);
-
-// save
-const deck_name = ref('');
-const deck_id = ref('');
 
 watch(trigger, () => {
   const cardListElement: HTMLElement = document.querySelector('.card-list');
@@ -94,11 +98,15 @@ watch(
       deckDetail.value = null;
       reset();
     }
-  },
+  }
 );
 
 const calculateCount = (cardDeckItem: DeckType) => {
-  const allData: DeckContent[] = [...mainDeck.value, ...extraDeck.value, ...sideDeck.value];
+  const allData: DeckContent[] = [
+    ...mainDeck.value,
+    ...extraDeck.value,
+    ...sideDeck.value,
+  ];
   let count = 0;
   for (let i = 0; i < allData.length; i++) {
     const data = allData[i];
@@ -128,8 +136,10 @@ const addCardToDeck = (idx: number) => {
 
   if (isExtra && extraDeck.value.length < 15) extraDeck.value.push(deckItem);
 
-  if (!isExtra && mainDeck.value.length < mainDeckLens.value) mainDeck.value.push(deckItem);
-  else if (!isExtra && sideDeck.value.length < 15) sideDeck.value.push(deckItem);
+  if (!isExtra && mainDeck.value.length < mainDeckLens.value)
+    mainDeck.value.push(deckItem);
+  else if (!isExtra && sideDeck.value.length < 15)
+    sideDeck.value.push(deckItem);
 };
 
 const removeDeck = (type: string, idx: number) => {
@@ -160,12 +170,19 @@ const deckEnd = (evt: any) => {
         : sideDeck.value[targetCardIndex];
 
   // 長度防呆
-  if (toClass === 'main-drag' && mainDeckOrigin.value.length >= mainDeckLens.value) return;
+  if (
+    toClass === 'main-drag' &&
+    mainDeckOrigin.value.length >= mainDeckLens.value
+  )
+    return;
   if (toClass === 'side-drag' && sideDeckOrigin.value.length >= 15) return;
   if (toClass === 'extra-drag' && extraDeckOrigin.value.length >= 15) return;
 
   // main to extra
-  if ((fromClass === 'main-drag' || fromClass === 'side-drag') && toClass === 'extra-drag') {
+  if (
+    (fromClass === 'main-drag' || fromClass === 'side-drag') &&
+    toClass === 'extra-drag'
+  ) {
     extraDeck.value.splice(evt.newIndex, 1);
     return;
   }
@@ -220,7 +237,11 @@ const onEnd = (evt: any) => {
 
   if (cardItem.star) cardDeckItem.card_star = cardItem.star;
   // 長度防呆
-  if (toClass === 'main-drag' && mainDeckOrigin.value.length >= mainDeckLens.value) return;
+  if (
+    toClass === 'main-drag' &&
+    mainDeckOrigin.value.length >= mainDeckLens.value
+  )
+    return;
   if (toClass === 'side-drag' && sideDeckOrigin.value.length >= 15) return;
   if (toClass === 'extra-drag' && extraDeckOrigin.value.length >= 15) return;
 
@@ -242,7 +263,8 @@ const onEnd = (evt: any) => {
   // Main 移動到 Extra 防呆
   if (!isExtra && toClass === 'extra-drag') {
     extraDeckOrigin.value.splice(evt.newIndex, 1);
-    if (mainDeck.value.length < mainDeckLens.value) mainDeck.value.push(cardDeckItem);
+    if (mainDeck.value.length < mainDeckLens.value)
+      mainDeck.value.push(cardDeckItem);
     else if (sideDeck.value.length < 15) sideDeck.value.push(cardDeckItem);
 
     return;
@@ -285,24 +307,27 @@ const reset = () => {
   extraDeck.value = [];
   sideDeck.value = [];
   sideDeckOrigin.value = [];
+  isCopy.value = false;
 };
 
 const saveDeck = () => {
-  if (mainDeck.value.length + extraDeck.value.length + sideDeck.value.length < 1) return;
+  if (
+    mainDeck.value.length + extraDeck.value.length + sideDeck.value.length <
+    1
+  )
+    return;
 
   // 新增
-  if (pick_deck_id.value === '') {
-    dialogDisable.value = true;
-    deck_id.value = generateRandomString(14);
-  } else editDeck();
+  if (pick_deck_id.value === '' || isCopy.value) addDeck();
+  else editDeck();
 };
 
 const editDeck = async () => {
   const deck: Deck = {
     _id: deckDetail.value._id,
-    admin_id: deckDetail.value.admin_id,
+    admin_id: account_id.value,
     title: deckDetail.value.title,
-    create_date: deckDetail.value.create_date,
+    create_date: new Date().toLocaleDateString(),
     last_edit_date: new Date().toLocaleDateString(),
     main_deck: mainDeck.value.map(item => ({
       card_id: item.card_id,
@@ -332,10 +357,10 @@ const editDeck = async () => {
 };
 
 const addDeck = async () => {
-  if (deck_name.value === '' || deck_id.value === '') return;
+  if (deckDetail.value.title === '') return;
   const deck: Deck = {
-    admin_id: deck_id.value,
-    title: deck_name.value,
+    admin_id: account_id.value,
+    title: deckDetail.value.title,
     create_date: new Date().toLocaleDateString(),
     last_edit_date: new Date().toLocaleDateString(),
     main_deck: mainDeck.value.map(item => ({
@@ -354,7 +379,6 @@ const addDeck = async () => {
 
   const res = await callApi<DeckAddAndEditType>(deck, 'deck', 'add', false);
   if (!res.error_code) {
-    dialogDisable.value = false;
     pick_deck_id.value = '';
     reset();
     router.push('/deck');
@@ -371,32 +395,20 @@ const getDeckDetail = async () => {
           page: 0,
           limit: 1,
           filter: {
-            admin_id: pick_deck_id.value,
+            _id: pick_deck_id.value,
           },
         },
         'deck',
         'deckList',
-        false,
+        false
       )
-    ).data,
+    ).data
   ).list[0];
 
   mainDeck.value = deckDetail.value.main_deck;
   extraDeck.value = deckDetail.value.extra_deck;
   sideDeck.value = deckDetail.value.side_deck;
-  console.log(deckDetail.value.main_deck);
-};
-
-const getImage = async () => {
-  // deck-dialog
-  if (deck_name.value === '') {
-    ElMessage.error(t('deck.noNameMsg'));
-    return;
-  }
-
-  toPng(document.getElementById('deck-dialog')).then(async dataUrl => {
-    convertBase64ToImage(dataUrl, deck_name.value);
-  });
+  // console.log(deckDetail.value.main_deck);
 };
 
 const randomSort = () => {
@@ -436,10 +448,17 @@ const orderSort = () => {
       return typeIndexA - typeIndexB;
     };
     let firstArr = deck
-      .filter(el => el.card_type !== ceremony && !manaType.find(x => x === el.card_type))
+      .filter(
+        el =>
+          el.card_type !== ceremony && !manaType.find(x => x === el.card_type)
+      )
       .sort(sortByStar);
-    let secondArr = deck.filter(el => el.card_type === ceremony).sort(sortByStar);
-    let thirdArr = deck.filter(el => manaType.find(x => x === el.card_type)).sort(sortByType);
+    let secondArr = deck
+      .filter(el => el.card_type === ceremony)
+      .sort(sortByStar);
+    let thirdArr = deck
+      .filter(el => manaType.find(x => x === el.card_type))
+      .sort(sortByType);
 
     return [...firstArr, ...secondArr, ...thirdArr];
   };
@@ -466,6 +485,10 @@ const orderSort = () => {
 };
 
 onMounted(async () => {
+  if (!account_id.value) {
+    router.push('/');
+    return;
+  }
   intersectionObserver(loadingRef.value?.$el);
 
   if (pick_deck_id.value !== '') {
@@ -507,13 +530,17 @@ onMounted(async () => {
           :key="item._id"
           @dblclick="addCardToDeck(i)"
         >
-          <img class="card-img" :src="`/api/card-image/cards/${item?.number}.webp`" alt="" />
+          <img
+            class="card-img"
+            :src="`/api/card-image/cards/${item?.number}.webp`"
+            alt=""
+          />
           <div class="card-info">
             <div class="name">{{ item.name }}</div>
             <div>{{ item.id }}</div>
             <div>
-              {{ item.star }}{{ item.star && ' / ' }}{{ item.attribute }}{{ item.attribute && ' / '
-              }}{{ item.type }}
+              {{ item.star }}{{ item.star && ' / ' }}{{ item.attribute
+              }}{{ item.attribute && ' / ' }}{{ item.type }}
             </div>
             <div class="atk" v-if="item.atk && item.def">
               <span>ATK: {{ item.atk }}</span>
@@ -535,7 +562,9 @@ onMounted(async () => {
 							<el-button type="primary">加入</el-button>
 						</div> -->
           </div>
-          <el-icon class="card-detail-btn" @click.stop="triggerImage(i)"><InfoFilled /></el-icon>
+          <el-icon class="card-detail-btn" @click.stop="triggerImage(i)"
+            ><InfoFilled
+          /></el-icon>
         </div>
       </VueDraggable>
       <Loading ref="loadingRef" v-show="isShowLoading" />
@@ -543,11 +572,10 @@ onMounted(async () => {
     <div class="deck-contents scroll">
       <!-- tool button -->
       <div class="btn-box">
-        <div v-if="deckDetail" class="title-input">
+        <div class="title-input">
           <span>{{ t('deck.title') }}</span>
           <input v-model="deckDetail.title" />
         </div>
-        <div v-else></div>
         <div>
           <button @click="orderSort">{{ t('deck.sort') }}</button>
           <button @click="randomSort">{{ t('deck.random') }}</button>
@@ -556,7 +584,9 @@ onMounted(async () => {
         </div>
       </div>
       <!-- main -->
-      <div class="title">{{ t('deck.main_deck') }}({{ mainDeck.length }}/{{ mainDeckLens }})</div>
+      <div class="title">
+        {{ t('deck.main_deck') }}({{ mainDeck.length }}/{{ mainDeckLens }})
+      </div>
       <div class="main-deck">
         <VueDraggable
           ref="drag"
@@ -575,19 +605,32 @@ onMounted(async () => {
             class="main-drag-item text-white"
           >
             <div class="item-desc">
-              <el-tooltip effect="dark" :content="item.card_num_id" placement="top">
+              <el-tooltip
+                effect="dark"
+                :content="item.card_num_id"
+                placement="top"
+              >
                 <span>{{ item.card_rarity }}</span>
               </el-tooltip>
-              <el-icon size="16" class="cursor-pointer" @click="removeDeck('m', i)">
+              <el-icon
+                size="16"
+                class="cursor-pointer"
+                @click="removeDeck('m', i)"
+              >
                 <CloseBold />
               </el-icon>
             </div>
-            <img :src="`/api/card-image/cards/${item?.card_number}.webp`" alt="" />
+            <img
+              :src="`/api/card-image/cards/${item?.card_number}.webp`"
+              alt=""
+            />
           </div>
         </VueDraggable>
       </div>
       <!-- extra -->
-      <div class="title">{{ t('deck.extra_deck') }}({{ extraDeck.length }}/15)</div>
+      <div class="title">
+        {{ t('deck.extra_deck') }}({{ extraDeck.length }}/15)
+      </div>
       <div class="main-deck extra-deck">
         <VueDraggable
           ref="drag"
@@ -606,19 +649,32 @@ onMounted(async () => {
             class="extra-drag-item text-white"
           >
             <div class="item-desc">
-              <el-tooltip effect="dark" :content="item.card_num_id" placement="top">
+              <el-tooltip
+                effect="dark"
+                :content="item.card_num_id"
+                placement="top"
+              >
                 <span>{{ item.card_rarity }}</span>
               </el-tooltip>
-              <el-icon size="16" class="cursor-pointer" @click="removeDeck('e', i)">
+              <el-icon
+                size="16"
+                class="cursor-pointer"
+                @click="removeDeck('e', i)"
+              >
                 <CloseBold />
               </el-icon>
             </div>
-            <img :src="`/api/card-image/cards/${item?.card_number}.webp`" alt="" />
+            <img
+              :src="`/api/card-image/cards/${item?.card_number}.webp`"
+              alt=""
+            />
           </div>
         </VueDraggable>
       </div>
       <!-- side -->
-      <div class="title">{{ t('deck.side_deck') }}({{ sideDeck.length }}/15)</div>
+      <div class="title">
+        {{ t('deck.side_deck') }}({{ sideDeck.length }}/15)
+      </div>
       <div class="main-deck side-deck">
         <VueDraggable
           ref="drag"
@@ -637,14 +693,25 @@ onMounted(async () => {
             class="side-drag-item text-white"
           >
             <div class="item-desc">
-              <el-tooltip effect="dark" :content="item.card_num_id" placement="top">
+              <el-tooltip
+                effect="dark"
+                :content="item.card_num_id"
+                placement="top"
+              >
                 <span>{{ item.card_rarity }}</span>
               </el-tooltip>
-              <el-icon size="16" class="cursor-pointer" @click="removeDeck('s', i)">
+              <el-icon
+                size="16"
+                class="cursor-pointer"
+                @click="removeDeck('s', i)"
+              >
                 <CloseBold />
               </el-icon>
             </div>
-            <img :src="`/api/card-image/cards/${item?.card_number}.webp`" alt="" />
+            <img
+              :src="`/api/card-image/cards/${item?.card_number}.webp`"
+              alt=""
+            />
           </div>
         </VueDraggable>
       </div>
@@ -653,16 +720,25 @@ onMounted(async () => {
 
   <el-dialog v-model="imageDisable">
     <div class="image-dialog">
-      <img :src="`/api/card-image/cards/${onLargeTarget?.number}.webp`" alt="" />
+      <img
+        :src="`/api/card-image/cards/${onLargeTarget?.number}.webp`"
+        alt=""
+      />
       <div class="info">
-        <div class="name">{{ onLargeTarget?.name }} ({{ onLargeTarget?.id }})</div>
-        <div>{{ t('card.rarity') }} : {{ onLargeTarget?.rarity.join('、') }}</div>
+        <div class="name">
+          {{ onLargeTarget?.name }} ({{ onLargeTarget?.id }})
+        </div>
         <div>
-          {{ t('card.attribute') }} : {{ onLargeTarget?.attribute }} / {{ t('card.type') }} :
+          {{ t('card.rarity') }} : {{ onLargeTarget?.rarity.join('、') }}
+        </div>
+        <div>
+          {{ t('card.attribute') }} : {{ onLargeTarget?.attribute }} /
+          {{ t('card.type') }} :
           {{ onLargeTarget?.type }}
         </div>
         <div v-if="onLargeTarget?.race">
-          {{ t('card.race') }} : {{ onLargeTarget?.race }} / {{ t('card.star') }} :
+          {{ t('card.race') }} : {{ onLargeTarget?.race }} /
+          {{ t('card.star') }} :
           {{ onLargeTarget?.star }}
         </div>
         <div v-if="onLargeTarget?.atk">
@@ -670,23 +746,6 @@ onMounted(async () => {
           {{ onLargeTarget?.def }}
         </div>
         <div class="effect" v-html="onLargeTarget?.effect"></div>
-      </div>
-    </div>
-  </el-dialog>
-
-  <el-dialog v-model="dialogDisable" :title="t('deck.input_info')" width="600px">
-    <div class="deck-dialog" id="deck-dialog">
-      <el-form-item class="deck-form" :label="t('deck.set_name')">
-        <el-input class="deck-input" v-model="deck_name" />
-      </el-form-item>
-      <el-form-item class="deck-form" :label="t('deck.set_id')">
-        <el-input class="deck-input" v-model="deck_id" :readonly="true" />
-      </el-form-item>
-      <div class="button-list">
-        <button class="save-btn" @click="addDeck">{{ t('deck.save') }}</button>
-        <button class="save-btn" @click="getImage">{{
-          t('deck.saveImage')
-        }}</button>
       </div>
     </div>
   </el-dialog>

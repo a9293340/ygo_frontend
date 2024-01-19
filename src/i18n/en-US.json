@@ -74,7 +74,9 @@
     "isMondey": "是否填寫卡價",
     "sort": "排序",
     "random": "亂數排序",
-    "title": "牌組名稱 :"
+    "title": "牌組名稱 :",
+    "confirm_to_delete": "確認是否刪除",
+    "copy": "複製"
   },
   "menu": {
     "home": "首頁",
@@ -102,7 +104,8 @@
     "cards": "卡片查詢",
     "deck": "組牌",
     "calendar": "日曆",
-    "deck_add": "牌組列表"
+    "deck_add": "牌組列表",
+    "my_deck": "我的牌組"
   },
   "site_name": {
     "site_name": "ygo卡壇"
