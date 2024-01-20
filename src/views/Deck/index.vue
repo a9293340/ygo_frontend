@@ -40,6 +40,7 @@
           <div class="lg-item">{{ t('deck.deck_name') }}</div>
           <div class="sm-item">{{ t('deck.deck_time_create') }}</div>
           <div class="sm-item">{{ t('deck.deck_time_edit') }}</div>
+          <div class="sm-item">{{ t('deck.admin_name') }}</div>
           <div class="action-item"></div>
         </div>
         <div
@@ -52,6 +53,7 @@
           <div class="lg-item">{{ item.title }}</div>
           <div class="sm-item">{{ formatDateString(item.create_date) }}</div>
           <div class="sm-item">{{ formatDateString(item.last_edit_date) }}</div>
+          <div class="sm-item">{{ item.admin_name }}</div>
           <div class="action-item">
             <el-button type="primary" @click="goToDetail(item._id)">{{
               t('deck.detail')
