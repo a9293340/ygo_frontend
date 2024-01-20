@@ -2,8 +2,8 @@
   <div class="cards-detail">
     <div class="card-container">
       <div class="left-box">
-        <div class="name">{{ cardInfo?.name }}</div>
-        <div class="effect">{{ cardInfo?.effect }}</div>
+        <div class="name">{{ !isJp ? cardInfo?.name : jurisprudence?.name_jp_k }}</div>
+        <div class="effect">{{ !isJp ? cardInfo?.effect  : jurisprudence?.effect_jp }}</div>
         <div class="info-box">
           <div class="info-title">
             <div>{{ t('card.id') }}</div>
@@ -44,6 +44,12 @@
         </div>
       </div>
       <div class="right-box">
+        <el-switch
+            v-model="isJp"
+            :active-text="t('card.jp')"
+            :inactive-text="t('card.zh')"
+            style="--el-switch-on-color: lightgray;--el-switch-off-color: #1f2c5d;"
+        />
         <img
           v-if="cardInfo"
           :src="`/api/card-image/cards/${cardInfo?.number}.webp`"
@@ -51,7 +57,28 @@
         />
       </div>
     </div>
-    <div class="chart-box">
+    <div class="tab-box">
+      <button :class="{'active': currentType==='chart'}" @click="currentType='chart'">{{ t('card.price_select') }}</button>
+      <button :class="{'active': currentType==='qa'}" @click="currentType='qa'">{{ t('card.qa') }}</button>
+    </div>
+    <div v-if="currentType === 'qa'" class="qa-box">
+      <div class="qa-item" v-for="(item, index) in qaList" :key="item._id">
+        <div class="title-box" @click="showContent(index as number)">
+          <div class="date">{{ item.date }}</div>
+          <div class="title">
+            <div>{{ item.title }}</div>
+            <el-icon v-if="item.isShow" class="arrow"><ArrowUpBold /></el-icon>
+            <el-icon v-else class="arrow"><ArrowDownBold /></el-icon>
+          </div>
+        </div>
+        <div class="content-box" v-if="item.isShow">
+          <div>Question:</div><div>{{ item.q }}</div>
+          <br>
+          <div>Answer:</div><div>{{ item.a }}</div>
+        </div>
+      </div>
+    </div>
+    <div v-if="currentType === 'chart'" class="chart-box">
       <div class="select-box" v-if="account_id && account_token">
         <p>露天價格 :</p>
         <el-select v-model="priceType">
@@ -100,7 +127,7 @@
 
 <script setup lang="ts">
 import type { CardListType, JurisprudenceListType } from 'request-data-types';
-import type {Cards, CardsList, Jurisprudence } from 'module-types';
+import type { Cards, CardsList, Jurisprudence, Qa } from 'module-types';
 import type { HasTotalRes } from 'response-data-types';
 import { callApi } from '@/util/api';
 import { decode } from '@/util';
@@ -129,6 +156,15 @@ const colors = ref([
   'rgba(0, 0, 128, 1)', // 深藍色
   'rgba(128, 128, 128, 1)', // 灰色
 ]);
+const isJp = ref<boolean>(false);
+const currentType = ref<string>('chart');
+
+
+// qa
+const qaList = ref<Qa[]>()
+const showContent = (index: number) => {
+  qaList.value[index].isShow = !qaList.value[index].isShow
+}
 
 onMounted(async () => {
   if (account_id.value && account_token.value) priceType.value = 'lowest';
@@ -156,7 +192,7 @@ onMounted(async () => {
             )
         ).data
     ).list[0];
-    console.log(jurisprudence.value)
+    qaList.value = jurisprudence.value.qa.reverse()
   }
 });
 </script>
@@ -168,7 +204,7 @@ onMounted(async () => {
   & .card-container {
     @apply flex justify-between;
     width: 1200px;
-    margin: 0 auto 50px;
+    margin: 0 auto;
     color: #333333;
     background-color: rgba(255, 255, 255, 0.9);
     padding: 30px;
@@ -210,8 +246,73 @@ onMounted(async () => {
       }
     }
     & .right-box {
+      :deep(.el-switch__label) {
+        color: rgba(51, 51, 51, 0.5);
+      }
+      :deep(.el-switch__label).is-active {
+        color: #1f2c5d;
+      }
       & img {
+        margin: 5px 0 0;
         width: 300px;
+      }
+    }
+  }
+  & .tab-box {
+    width: 1200px;
+    margin: 30px auto 20px;
+    button {
+      font-size: 16px;
+      color: lightgray;
+      border: 1px solid lightgray;
+      border-radius: 5px;
+      width: 150px;
+      height: 36px;
+      margin: 0 10px 0 0;
+      transition-duration: 0.2s;
+      &:hover {
+        @apply text-white;
+        border: 1px solid white;
+      }
+    }
+    button.active {
+      @apply text-white;
+      border: 1px solid white;
+      background-color: rgba(211, 211, 211, 0.5);
+    }
+  }
+  & .qa-box {
+    font-size: 18px;
+    width: 1200px;
+    margin: 0 auto;
+    & .qa-item {
+      @apply text-justify overflow-hidden;
+      margin: 0 0 10px;
+      border-radius: 5px;
+      border: 1px solid lightgrey;
+      & .title-box {
+        @apply cursor-pointer;
+        background-color: #e7e7e7;
+        padding: 8px 10px;
+        transition-duration: 0.2s;
+        &:hover {
+          background-color: #e7e7e7;
+        }
+        & .date {
+          color: #1f2c5d;
+          font-size: 16px;
+        }
+        & .title {
+          @apply flex justify-between items-center;
+          .arrow {
+            margin: 0 15px;
+          }
+        }
+      }
+      & .content-box {
+        color: lightgrey;
+        border-top: 1px solid lightgrey;
+        padding: 10px;
       }
     }
   }
@@ -253,6 +354,12 @@ onMounted(async () => {
         }
       }
     }
+    & .tab-box {
+      width: 900px;
+    }
+    & .qa-box {
+      width: 900px;
+    }
     & .chart-box {
       width: 900px;
     }
@@ -282,6 +389,21 @@ onMounted(async () => {
       & .right-box {
         & img {
           width: 180px;
+        }
+      }
+    }
+    & .tab-box {
+      width: 760px;
+    }
+    & .qa-box {
+      width: 760px;
+      & .qa-item {
+        & .title-box {
+          & .title {
+            .arrow {
+              margin: 0 10px;
+            }
+          }
         }
       }
     }
@@ -318,6 +440,27 @@ onMounted(async () => {
       }
       & .right-box {
         margin: 0 0 10px;
+      }
+    }
+    & .tab-box {
+      @apply text-center;
+      width: 95vw;
+    }
+    & .qa-box {
+      font-size: 16px;
+      width: 95vw;
+      & .qa-item {
+        & .title-box {
+          padding: 5px 10px;
+          & .date {
+            font-size: 14px;
+          }
+          & .title {
+            .arrow {
+              margin: 0 5px 0 10px;
+            }
+          }
+        }
       }
     }
     & .chart-box {
