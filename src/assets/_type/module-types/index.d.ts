@@ -24,7 +24,7 @@ type CardsPriceYuYuType = {
 
 type FindCardsInfoType = {
   id?: string;
-  number?: string;
+  number?: string | string[];
   name?: string;
   type?: string;
   star?: string;
@@ -153,6 +153,7 @@ declare module 'module-types' {
     token: string;
     tokenReq: string;
     date: string;
+    name?: string;
   }
 
   interface PackType {
@@ -177,6 +178,7 @@ declare module 'module-types' {
   }
 
   interface Qa {
+    _id?: string;
     title: string;
     tag: string;
     date: string;
@@ -184,8 +186,15 @@ declare module 'module-types' {
     a: string;
   }
 
+  interface forbiddenCard {
+    _id?: string;
+    number: string;
+    type: number;
+  }
+
   type CardsImageList = CardsImage[];
   type CardsList = Cards[];
+  type forbiddenCardList = forbiddenCard[];
   type DeckList = Deck[];
   type CalendarList = Calendar[];
   type AdminList = Admin[];
@@ -269,6 +278,11 @@ declare module 'request-data-types' {
     page: number;
     limit: number;
     filter: FindCardsInfoType;
+  };
+
+  type forbiddenCardListType = {
+    number?: string[];
+    type?: number;
   };
 
   type CardEditType = {

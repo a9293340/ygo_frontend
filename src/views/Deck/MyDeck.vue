@@ -150,6 +150,8 @@ const goToDetail = _id => {
 };
 
 onMounted(async () => {
+  if (!account_id.value) router.push('/deck');
+
   listQuery.value.filter = { ...listQuery.value.filter, ...route.query };
   if (route.query.begin_date && route.query.end_date) {
     date.value = [

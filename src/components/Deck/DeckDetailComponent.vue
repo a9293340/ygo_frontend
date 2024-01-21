@@ -1,26 +1,37 @@
 <script setup lang="ts">
-import type { Deck } from 'module-types';
+import type { Deck, forbiddenCardList } from 'module-types';
+import forbidden_0 from '@/assets/img/forbiddenCardList_0.png';
+import forbidden_1 from '@/assets/img/forbiddenCardList_1.png';
+import forbidden_2 from '@/assets/img/forbiddenCardList_2.png';
 
 interface DeckDetailItemProps {
   deck: Deck;
   showRarity: boolean;
   deckType: 'main_deck' | 'extra_deck' | 'side_deck';
   showMoney: boolean;
+  showForbidden: boolean;
+  forbiddenCardList: forbiddenCardList;
 }
 
 const props = withDefaults(defineProps<DeckDetailItemProps>(), {
   showRarity: true,
+  showForbidden: true,
+  forbiddenCardList: () => [],
 });
 
 const emit = defineEmits(['cardInfo']);
 const deck = computed(() => props.deck);
 const prices = ref([]);
+const imgs = ref([forbidden_0, forbidden_1, forbidden_2]);
 
 watch(deck, () => {
   if (deck.value) prices.value = deck.value[props.deckType].map(() => '自開');
 });
 
-const openCardInfo = (i: number, type: 'main_deck' | 'extra_deck' | 'side_deck') => {
+const openCardInfo = (
+  i: number,
+  type: 'main_deck' | 'extra_deck' | 'side_deck'
+) => {
   emit('cardInfo', i, type);
 };
 
@@ -56,6 +67,16 @@ const checkPrice = (i: number) => {
       </div>
     </template>
     <img
+      v-if="
+        forbiddenCardList.find(x => x.number === item?.card_number) &&
+        props.showForbidden
+      "
+      :src="
+        imgs[forbiddenCardList.find(x => x.number === item?.card_number).type]
+      "
+      class="forbidden-card"
+    />
+    <img
       @click="openCardInfo(i, props.deckType)"
       :src="`/api/card-image/cards/${item?.card_number}.webp`"
       alt=""
@@ -86,7 +107,7 @@ input[type='number'] {
 
 <style lang="scss" scoped>
 .cards-item {
-  @apply inline-block align-bottom;
+  @apply inline-block align-bottom relative;
   padding: 5px;
   width: 10%;
   .item-desc {
@@ -105,6 +126,10 @@ input[type='number'] {
   img {
     @apply cursor-pointer;
     margin: 2px 0 0;
+  }
+  img.forbidden-card {
+    @apply absolute w-1/6;
+    top: 14%;
   }
 }
 
