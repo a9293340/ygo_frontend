@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // @ts-ignore
-import type { CardsList, Cards, Deck } from 'module-types';
+import type { CardsList, Cards, Deck, forbiddenCardList } from 'module-types';
 import type { DeckAddAndEditType, DeckListType } from 'request-data-types';
 import type { DeckList } from 'module-types';
 import type { HasTotalRes } from 'response-data-types';
@@ -13,6 +13,9 @@ import i18n from '@/i18n/index';
 import { callApi } from '@/util/api';
 import { decode } from '@/util';
 import { useCommon } from '@/stores/common';
+import forbidden_0 from '@/assets/img/forbiddenCardList_0.png';
+import forbidden_1 from '@/assets/img/forbiddenCardList_1.png';
+import forbidden_2 from '@/assets/img/forbiddenCardList_2.png';
 
 const { t } = i18n.global;
 const { pick_deck_id, isCopy } = storeToRefs(useDeckStore());
@@ -22,6 +25,7 @@ interface DeckCardsListProps {
   cardsList: CardsList | [];
   trigger: number;
   total: number;
+  forbiddenCardList: forbiddenCardList;
 }
 
 type DeckType = {
@@ -43,12 +47,14 @@ const pickIndex = ref(0);
 const dialogDisable = ref(false);
 const imageDisable = ref(false);
 const onLargeTarget = ref<Cards>();
+const imgs = ref([forbidden_0, forbidden_1, forbidden_2]);
 
 const { intersectionObserver, isIntersection } = useIntersection();
 const loadingRef = ref<ComponentPublicInstance<HTMLElement>>();
 const isShowLoading = computed(() => total.value !== cardsList.value.length);
 const props = withDefaults(defineProps<DeckCardsListProps>(), {
   cardsList: () => [],
+  forbiddenCardList: () => [],
   trigger: 0,
   total: 0,
 });
@@ -485,6 +491,8 @@ const orderSort = () => {
 };
 
 onMounted(async () => {
+  console.log(imgs.value);
+
   if (!account_id.value) {
     router.push('/');
     return;
@@ -530,6 +538,13 @@ onMounted(async () => {
           :key="item._id"
           @dblclick="addCardToDeck(i)"
         >
+          <img
+            v-if="forbiddenCardList.find(x => x.number === item?.number)"
+            :src="
+              imgs[forbiddenCardList.find(x => x.number === item?.number).type]
+            "
+            class="forbidden-card"
+          />
           <img
             class="card-img"
             :src="`/api/card-image/cards/${item?.number}.webp`"
@@ -621,6 +636,16 @@ onMounted(async () => {
               </el-icon>
             </div>
             <img
+              v-if="forbiddenCardList.find(x => x.number === item?.card_number)"
+              :src="
+                imgs[
+                  forbiddenCardList.find(x => x.number === item?.card_number)
+                    .type
+                ]
+              "
+              class="forbidden-card"
+            />
+            <img
               :src="`/api/card-image/cards/${item?.card_number}.webp`"
               alt=""
             />
@@ -665,6 +690,16 @@ onMounted(async () => {
               </el-icon>
             </div>
             <img
+              v-if="forbiddenCardList.find(x => x.number === item?.card_number)"
+              :src="
+                imgs[
+                  forbiddenCardList.find(x => x.number === item?.card_number)
+                    .type
+                ]
+              "
+              class="forbidden-card"
+            />
+            <img
               :src="`/api/card-image/cards/${item?.card_number}.webp`"
               alt=""
             />
@@ -708,6 +743,16 @@ onMounted(async () => {
                 <CloseBold />
               </el-icon>
             </div>
+            <img
+              v-if="forbiddenCardList.find(x => x.number === item?.card_number)"
+              :src="
+                imgs[
+                  forbiddenCardList.find(x => x.number === item?.card_number)
+                    .type
+                ]
+              "
+              class="forbidden-card"
+            />
             <img
               :src="`/api/card-image/cards/${item?.card_number}.webp`"
               alt=""
@@ -787,9 +832,13 @@ onMounted(async () => {
       background: rgba(255, 255, 255, 0.3);
     }
     .card-info-list {
-      @apply flex items-start box-border mb-4 cursor-move;
+      @apply flex items-start box-border mb-4 cursor-move relative;
       .card-img {
         width: 100px;
+      }
+      .forbidden-card {
+        width: 30px;
+        @apply absolute top-0 left-0;
       }
       .card-info {
         @apply flex flex-col pl-2;
@@ -882,7 +931,7 @@ onMounted(async () => {
         .main-drag-item,
         .extra-drag-item,
         .side-drag-item {
-          @apply inline-block align-bottom;
+          @apply inline-block align-bottom relative;
           padding: 5px;
           width: 10%;
           .item-desc {
@@ -893,6 +942,9 @@ onMounted(async () => {
           }
           img {
             @apply w-full cursor-move;
+          }
+          img.forbidden-card {
+            @apply absolute top-6 left-1 w-4;
           }
         }
       }

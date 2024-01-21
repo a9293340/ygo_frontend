@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import i18n from '@/i18n/index';
-import type { DeckList, Deck } from 'module-types';
-import type { DeckListType } from 'request-data-types';
-import type { HasTotalRes } from 'response-data-types';
+import type { DeckList, Deck, forbiddenCardList } from 'module-types';
+import type { DeckListType, forbiddenCardListType } from 'request-data-types';
+import type { HasTotalRes, NotHasTotalRes } from 'response-data-types';
 import { callApi } from '@/util/api';
 import { decode } from '@/util';
 import ExcelJS from 'exceljs';
@@ -26,6 +26,8 @@ const deckList = ref<null | HTMLElement>(null);
 const contentRef = ref<null | HTMLElement>(null);
 const allImagesLoaded = ref(false);
 const isShowMoney = ref(false);
+const showForbidden = ref(true);
+const forbiddenCardList = ref<forbiddenCardList>([]);
 
 const checkAllImagesLoaded = async () => {
   const images = contentRef.value?.querySelectorAll('img');
@@ -327,6 +329,8 @@ const openCardInfo = (
   console.log(onLargeTarget.value);
 };
 
+const changeForbidden = () => (showForbidden.value = !showForbidden.value);
+
 onMounted(async () => {
   deck.value = decode<HasTotalRes<DeckList>>(
     (
@@ -338,6 +342,18 @@ onMounted(async () => {
       )
     ).data
   ).list[0];
+
+  forbiddenCardList.value = decode<NotHasTotalRes<forbiddenCardList>>(
+    (
+      await callApi<forbiddenCardListType>(
+        {},
+        'forbiddenCardList',
+        'list',
+        false
+      )
+    ).data
+  ).list;
+
   if (contentRef.value) {
     await checkAllImagesLoaded();
   }
@@ -350,6 +366,13 @@ onMounted(async () => {
     <div class="btn-box">
       <button v-if="account_id" @click="copyDeck">{{ t('deck.copy') }}</button>
       <button @click="getImage">{{ t('deck.download_img') }}</button>
+      <button @click="changeForbidden">
+        {{
+          showForbidden
+            ? t('deck.not_show_forbidden')
+            : t('deck.show_forbidden')
+        }}
+      </button>
       <button @click="loadToExcel">{{ t('deck.download_excel') }}</button>
       <button @click="changeShowType" :class="{ 'btn-grey': !showRarity }">
         {{ showRarity ? t('deck.showRarity') : t('deck.notShowRarity') }}
@@ -372,6 +395,8 @@ onMounted(async () => {
           :deck="deck"
           :show-rarity="showRarity"
           :show-money="isShowMoney"
+          :show-forbidden="showForbidden"
+          :forbidden-card-list="forbiddenCardList"
           @card-info="openCardInfo"
         />
       </div>
@@ -384,6 +409,8 @@ onMounted(async () => {
           :deck="deck"
           :show-rarity="showRarity"
           :show-money="isShowMoney"
+          :show-forbidden="showForbidden"
+          :forbidden-card-list="forbiddenCardList"
           @card-info="openCardInfo"
         />
       </div>
@@ -396,6 +423,8 @@ onMounted(async () => {
           :deck="deck"
           :show-rarity="showRarity"
           :show-money="isShowMoney"
+          :show-forbidden="showForbidden"
+          :forbidden-card-list="forbiddenCardList"
           @card-info="openCardInfo"
         />
       </div>
