@@ -211,7 +211,6 @@ declare module 'request-data-types' {
   type LoginType = {
     account: string;
     password: string;
-    name?: string;
   };
 
   type ResetPWDType = {
