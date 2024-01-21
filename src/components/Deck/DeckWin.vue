@@ -350,13 +350,12 @@ const editDeck = async () => {
   };
 
   const res = await callApi<DeckAddAndEditType>(deck, 'deck', 'edit', false);
-  console.log(res);
 
   if (!res.error_code) {
     dialogDisable.value = false;
     pick_deck_id.value = '';
     reset();
-    router.push('/deck');
+    await router.push(`/deck/mydeck?admin_id=${account_id.value}`);
   } else {
     // 失敗邏輯
   }
