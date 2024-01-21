@@ -103,7 +103,7 @@ const menu = ref<MenuItem[]>([
 	{
 		title: t("menu.deck"),
 		children: [
-			{ title: t("menu.deck_add"), link: "/deck/add", onlyPc: true },
+			{ title: t("menu.deck_add"), link: "/deck/add", onlyPc: true, checkLogin: true },
 			{ title: t("menu.deck_list"), link: "/deck" },
       { title: t("menu.my_deck"), link: "/deck/mydeck", checkLogin: true },
 		],
