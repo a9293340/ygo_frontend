@@ -33,6 +33,7 @@ declare module '@vue/runtime-core' {
     Footer: typeof import('./components/common/Footer.vue')['default']
     Loading: typeof import('./components/common/Loading.vue')['default']
     LoginPop: typeof import('./components/common/LoginPop.vue')['default']
+    LogoutPop: typeof import('./components/common/LogoutPop.vue')['default']
     Navbar: typeof import('./components/common/Navbar.vue')['default']
     Pagination: typeof import('./components/Pagination.vue')['default']
     PriceChart: typeof import('./components/Cards/PriceChart.vue')['default']
