@@ -165,6 +165,16 @@ declare module 'module-types' {
     name: string;
   }
 
+  interface Qa {
+    _id?: string;
+    title: string;
+    tag: string;
+    date: string;
+    q: string;
+    a: string;
+    isShow: boolean;
+  }
+
   interface Jurisprudence {
     _id?: string;
     number: string;
@@ -174,16 +184,7 @@ declare module 'module-types' {
     effect_jp: string;
     jud_link: string;
     info: string;
-    qa: Qa[];
-  }
-
-  interface Qa {
-    _id?: string;
-    title: string;
-    tag: string;
-    date: string;
-    q: string;
-    a: string;
+    qa: QaList;
   }
 
   interface forbiddenCard {
@@ -192,6 +193,7 @@ declare module 'module-types' {
     type: number;
   }
 
+  type QaList = Qa[];
   type CardsImageList = CardsImage[];
   type CardsList = Cards[];
   type forbiddenCardList = forbiddenCard[];

@@ -468,21 +468,9 @@ onMounted(async () => {
     &:focus-within {
       box-shadow: none !important;
     }
-<<<<<<< HEAD
-	}
-	.el-input__inner {
-    color: #1e40af;
-		height: 35px;
-		border-color: transparent;
-		box-shadow: none;
-		font-size: 16px;
-	}
-	.el-input__placeholder {
-		@apply text-black;
-	}
-=======
   }
   .el-input__inner {
+    color: #1e40af;
     height: 35px;
     border-color: transparent;
     box-shadow: none;
@@ -491,7 +479,6 @@ onMounted(async () => {
   .el-input__placeholder {
     @apply text-black;
   }
->>>>>>> eric
 }
 :deep(.el-input) {
   font-size: 16px;
@@ -512,72 +499,6 @@ onMounted(async () => {
 
 <style lang="scss" scoped>
 .search-cards {
-<<<<<<< HEAD
-	& .form-container {
-		@apply flex flex-wrap justify-center relative overflow-hidden;
-		width: 1150px;
-		margin: 0 auto;
-		padding: 20px 0;
-		border: 1px solid rgba(255, 255, 255, 0.2);
-		& .mask {
-			@apply w-full text-center;
-			height: 30px;
-			color: lightgray;
-		}
-		& .item-box {
-			font-size: 16px;
-			margin: 0 5px 10px;
-			& .item-title {
-				color: lightgray;
-				margin: 0 0 3px;
-			}
-			& input,
-			& select {
-				@apply bg-white;
-        color: #1e40af;
-				padding: 6px 11px;
-				border-radius: 5px;
-				width: 150px;
-				&::placeholder {
-					color: #ababb2;
-				}
-			}
-			& span {
-				color: lightgray;
-				margin: 0 0.25px;
-			}
-		}
-		& .search-btn {
-			@apply self-end;
-			color: lightgray;
-			border: 1px solid lightgray;
-			border-radius: 5px;
-			width: 150px;
-			height: 36px;
-			margin: 10px 5px 10px;
-			transition-duration: 0.2s;
-			&:hover {
-				@apply text-white;
-				border: 1px solid white;
-			}
-		}
-	}
-	& .toggle-btn {
-		@apply cursor-pointer text-center;
-		color: lightgray;
-		border: 1px solid rgba(255, 255, 255, 0.2);
-		border-top: transparent;
-		width: 80px;
-		margin: 0 auto 20px;
-		padding: 2px 0;
-		border-radius: 0 0 5px 5px;
-		transition-duration: 0.2s;
-		&:hover {
-			@apply text-white;
-			border: 1px solid rgba(255, 255, 255, 0.5);
-		}
-	}
-=======
   & .form-container {
     @apply flex flex-wrap justify-center relative overflow-hidden;
     width: 1150px;
@@ -599,7 +520,7 @@ onMounted(async () => {
       & input,
       & select {
         @apply bg-white;
-        color: #606266;
+        color: #1e40af;
         padding: 6px 11px;
         border-radius: 5px;
         width: 150px;
@@ -642,7 +563,6 @@ onMounted(async () => {
       border: 1px solid rgba(255, 255, 255, 0.5);
     }
   }
->>>>>>> eric
 }
 
 @media (max-width: 1200px) {

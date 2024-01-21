@@ -1,7 +1,7 @@
 import type { AxiosType, RequestObject, RequestMethodType } from 'axios-types';
-import type { ResetPWDType, LoginType, VerifyType } from 'request-data-types';
 import axios from 'axios';
-import { getAccount, getToken, encode } from '.';
+import { encode } from '.';
+import Cookies from 'js-cookie';
 
 export const callApi = async <DataRequestType>(
   data: DataRequestType,
@@ -9,8 +9,8 @@ export const callApi = async <DataRequestType>(
   method: RequestMethodType | null,
   hasToken?: boolean
 ): Promise<AxiosType> => {
-  const tokenReq = getAccount();
-  const token = getToken();
+  const tokenReq = Cookies.get('card-time-frontend-account');
+  const token = Cookies.get('card-time-frontend-token');
 
   let requestObject: RequestObject<DataRequestType> = {
     ...data,

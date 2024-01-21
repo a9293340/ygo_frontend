@@ -2,8 +2,12 @@
   <div class="cards-detail">
     <div class="card-container">
       <div class="left-box">
-        <div class="name">{{ !isJp ? cardInfo?.name : jurisprudence?.name_jp_k }}</div>
-        <div class="effect">{{ !isJp ? cardInfo?.effect  : jurisprudence?.effect_jp }}</div>
+        <div class="name">
+          {{ !isJp ? cardInfo?.name : jurisprudence?.name_jp_k }}
+        </div>
+        <div class="effect">
+          {{ !isJp ? cardInfo?.effect : jurisprudence?.effect_jp }}
+        </div>
         <div class="info-box">
           <div class="info-title">
             <div>{{ t('card.id') }}</div>
@@ -45,11 +49,14 @@
       </div>
       <div class="right-box">
         <el-switch
-            v-if="jurisprudence?.name_jp_k"
-            v-model="isJp"
-            :active-text="t('card.jp')"
-            :inactive-text="t('card.zh')"
-            style="--el-switch-on-color: lightgray;--el-switch-off-color: #1f2c5d;"
+          v-if="jurisprudence?.name_jp_k"
+          v-model="isJp"
+          :active-text="t('card.jp')"
+          :inactive-text="t('card.zh')"
+          style="
+            --el-switch-on-color: lightgray;
+            --el-switch-off-color: #1f2c5d;
+          "
         />
         <img
           v-if="cardInfo"
@@ -59,8 +66,18 @@
       </div>
     </div>
     <div class="tab-box">
-      <button :class="{'active': currentType==='chart'}" @click="currentType='chart'">{{ t('card.price_select') }}</button>
-      <button :class="{'active': currentType==='qa'}" @click="currentType='qa'">{{ t('card.qa') }}</button>
+      <button
+        :class="{ active: currentType === 'chart' }"
+        @click="currentType = 'chart'"
+      >
+        {{ t('card.price_select') }}
+      </button>
+      <button
+        :class="{ active: currentType === 'qa' }"
+        @click="currentType = 'qa'"
+      >
+        {{ t('card.qa') }}
+      </button>
     </div>
     <div v-if="currentType === 'qa'" class="qa-box">
       <div class="qa-item" v-for="(item, index) in qaList" :key="item._id">
@@ -73,9 +90,11 @@
           </div>
         </div>
         <div class="content-box" v-if="item.isShow">
-          <div>Question:</div><div>{{ item.q }}</div>
-          <br>
-          <div>Answer:</div><div>{{ item.a }}</div>
+          <div>Question:</div>
+          <div>{{ item.q }}</div>
+          <br />
+          <div>Answer:</div>
+          <div>{{ item.a }}</div>
         </div>
       </div>
     </div>
@@ -143,7 +162,7 @@ const { t } = i18n.global;
 const route = useRoute();
 const router = useRouter();
 const cardInfo = ref<Cards | undefined>();
-const jurisprudence = ref<Jurisprudence | []>([]);
+const jurisprudence = ref<Jurisprudence>();
 const priceType = ref('avg');
 const colors = ref([
   'rgba(255, 0, 0, 1)', // 紅色
@@ -160,40 +179,46 @@ const colors = ref([
 const isJp = ref<boolean>(false);
 const currentType = ref<string>('chart');
 
-
 // qa
-const qaList = ref<Qa[]>()
+const qaList = ref<Qa[]>();
 const showContent = (index: number) => {
-  qaList.value[index].isShow = !qaList.value[index].isShow
-}
+  qaList.value[index].isShow = !qaList.value[index].isShow;
+};
 
 onMounted(async () => {
   if (account_id.value && account_token.value) priceType.value = 'lowest';
   if (!route.query.number) {
-    await router.push('/cards')
+    await router.push('/cards');
   } else {
     cardInfo.value = decode<HasTotalRes<CardsList>>(
-        (
-            await callApi<CardListType>(
-                { page: 0, limit: 1, filter: { id: route.params.id as string, number: route.query.number as string } },
-                'cards',
-                'list',
-                false
-            )
-        ).data
+      (
+        await callApi<CardListType>(
+          {
+            page: 0,
+            limit: 1,
+            filter: {
+              id: route.params.id as string,
+              number: route.query.number as string,
+            },
+          },
+          'cards',
+          'list',
+          false
+        )
+      ).data
     ).list[0];
 
     jurisprudence.value = decode<HasTotalRes<Jurisprudence>>(
-        (
-            await callApi<JurisprudenceListType>(
-                { number: (route.query.number as string).substring(0, 8) },
-                'jurisprudence',
-                'list',
-                false
-            )
-        ).data
+      (
+        await callApi<JurisprudenceListType>(
+          { number: (route.query.number as string).substring(0, 8) },
+          'jurisprudence',
+          'list',
+          false
+        )
+      ).data
     ).list[0];
-    qaList.value = jurisprudence.value.qa.reverse()
+    qaList.value = jurisprudence.value.qa.reverse();
   }
 });
 </script>
