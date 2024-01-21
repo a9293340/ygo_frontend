@@ -7,16 +7,12 @@
 </template>
 
 <script setup lang="ts">
-import Cookies from 'js-cookie';
 import { useCommon } from '@/stores/common';
-
-const { account_token, account_id } = storeToRefs(useCommon());
+const commonStore = useCommon()
 
 onMounted(() => {
-  account_token.value = Cookies.get('card-time-frontend-token');
-  account_id.value = Cookies.get('card-time-frontend-account');
-
-  console.log(account_token.value);
+  console.log(commonStore.account_token);
+  console.log(commonStore.account_id);
 });
 </script>
 

@@ -45,6 +45,7 @@
       </div>
       <div class="right-box">
         <el-switch
+            v-if="jurisprudence?.name_jp_k"
             v-model="isJp"
             :active-text="t('card.jp')"
             :inactive-text="t('card.zh')"

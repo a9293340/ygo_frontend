@@ -37,7 +37,9 @@
     "verify_10004": "修改錯誤(10004)",
     "show_password": "顯示密碼",
     "captcha": "驗證碼",
-    "error_captcha": "驗證碼輸入錯誤"
+    "error_captcha": "驗證碼輸入錯誤",
+    "logout": "登出",
+    "logout_notice": "即將登出帳號"
   },
   "deck": {
     "reset": "重置",
