@@ -1,6 +1,7 @@
 <template>
   <div class="deck-list">
     <div class="list-container">
+      <h1 class="list-title">{{ t('menu.my_deck') }}</h1>
       <div class="deck-info-box">
         <div class="deck-info-title">
           <div class="lg-item">{{ t('deck.deck_name') }}</div>
@@ -183,57 +184,10 @@ onMounted(async () => {
 <style lang="scss" scoped>
 .deck-list {
   min-height: calc(100vh - 104px);
-  padding: 0 0 30px;
-  & .search-bar {
-    @apply flex justify-center;
-    width: 1150px;
-    margin: 0 auto;
-    padding: 40px 0 20px;
-    & .item-box {
-      font-size: 16px;
-      margin: 0 5px 10px;
-      & .item-title {
-        color: lightgray;
-        margin: 0 0 3px;
-      }
-      & input {
-        @apply bg-white;
-        color: #606266;
-        padding: 6px 11px;
-        border-radius: 5px;
-        width: 200px;
-        &::placeholder {
-          color: #ababb2;
-        }
-      }
-    }
-    :deep(.el-date-editor) {
-      height: 36px;
-      border-radius: 5px;
-      box-shadow: none;
-      .el-range-input {
-        font-size: 16px;
-      }
-    }
-    & .search-btn {
-      @apply self-end;
-      color: lightgray;
-      border: 1px solid lightgray;
-      border-radius: 5px;
-      width: 120px;
-      height: 36px;
-      margin: 10px 5px 10px;
-      transition-duration: 0.2s;
-      &:hover {
-        @apply text-white;
-        border: 1px solid white;
-      }
-    }
-  }
   & .list-container {
     width: 80vw;
     min-width: 1150px;
-    margin: 10px auto 30px;
+    margin: 24px auto;
     overflow-x: scroll;
     overscroll-behavior-x: contain;
     &::-webkit-scrollbar {
@@ -251,8 +205,15 @@ onMounted(async () => {
     & .deck-info-box {
       min-width: 800px;
     }
+    & .list-title {
+      @apply text-white inline-block;
+      font-size: 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+      padding: 0 5px;
+    }
     & .deck-info-box {
       @apply w-full flex flex-col;
+      margin: 20px 0 0;
       & .deck-info-title,
       & .deck-info {
         @apply flex w-full;
@@ -341,22 +302,8 @@ onMounted(async () => {
 @media (max-width: 768px) {
   .deck-list {
     min-height: calc(100vh - 101px);
-    & .search-bar {
-      @apply w-full flex flex-wrap justify-center;
-      padding: 40px 0 20px;
-      & .item-box {
-        & input {
-          width: 45vw;
-        }
-      }
-      :deep(.el-date-editor) {
-        width: 70vw;
-      }
-      & .search-btn {
-        width: 20vw;
-      }
-    }
     & .list-container {
+      margin: 4vw auto;
       & .deck-info-box {
         & .deck-info-title,
         & .deck-info {

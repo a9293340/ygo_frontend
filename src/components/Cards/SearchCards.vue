@@ -329,7 +329,6 @@ const getCards = async (page: number) => {
 			)
 		).data
 	);
-  console.log(cards)
 	emit("get:data", {
 		cards,
 		listQuery: listQuery.value,
@@ -408,6 +407,7 @@ onMounted(async () => {
     }
 	}
 	.el-input__inner {
+    color: #1e40af;
 		height: 35px;
 		border-color: transparent;
 		box-shadow: none;
@@ -457,7 +457,7 @@ onMounted(async () => {
 			& input,
 			& select {
 				@apply bg-white;
-				color: #606266;
+        color: #1e40af;
 				padding: 6px 11px;
 				border-radius: 5px;
 				width: 150px;
