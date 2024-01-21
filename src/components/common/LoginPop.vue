@@ -191,10 +191,9 @@ import { callApi } from '@/util/api';
 import type { Token } from 'module-types';
 import type { CreateMemberToken } from 'response-data-types';
 import { decode, validatePassword } from '@/util';
-import Cookies from 'js-cookie';
 import { useCommon } from '@/stores/common';
+const commonStore = useCommon();
 
-const { account_token, account_id } = storeToRefs(useCommon());
 const type = ref<number>(0); // 0=會員登入 1=忘記密碼, 2=建立帳號, 3=填寫新密碼
 const changeType = (num: number) => {
   type.value = num;
@@ -255,13 +254,8 @@ const handleLogin = async () => {
       alert(t('user.login_good'));
       // 顯示登入圖示，及登入內容
       const token = decode<Token>(res.data);
-      account_token.value = token.token;
-      account_id.value = loginForm.value.account;
-      Cookies.set('card-time-frontend-token', token.token, { expires: 3 });
-      Cookies.set('card-time-frontend-account', loginForm.value.account, {
-        expires: 3,
-      });
-      // console.log(account_token.value);
+      commonStore.setAccount(token.token, loginForm.value.account, token.name);
+      closeLogin();
     } else {
       alert(
         t(`user.verify_${res.error_code === 10004 ? '11001' : res.error_code}`)
@@ -361,7 +355,6 @@ const confirmNewPsd = ref<string>('');
 const handleResetPsd = async () => {
   newPsdForm.value.tokenReq = forgetForm.value.account;
   newPsdForm.value.new_password = confirmNewPsd.value;
-  console.log(newPsdForm.value);
 
   // check
   if (
@@ -412,7 +405,7 @@ const closeLogin = () => {
 
 .login-pop-wrapper {
   @apply fixed left-0 top-0 z-50 w-full h-full flex justify-center items-center;
-  background-color: rgba(0, 0, 0, 0.85);
+  background-color: rgba(0, 0, 0, 0.9);
   & .cross {
     @apply absolute right-0 top-0 text-white cursor-pointer;
     font-size: 35px;
