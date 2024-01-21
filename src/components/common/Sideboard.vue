@@ -15,9 +15,8 @@
 						:index="`${index}-${childIndex}`"
 						@click="routerGo(childItem.link)"
 						:class="[
-							{
-								'is-rwd': childItem.check,
-							},
+							{ 'pc': childItem.onlyPc },
+							{ 'no-login': childItem.checkLogin && !isLogin },
 						]"
 					>
 						{{ childItem.title }}
@@ -32,10 +31,16 @@
 </template>
 
 <script setup lang="ts">
-// import { defineEmits } from 'vue';
 import i18n from "@/i18n/index";
 import { useRouter } from "vue-router";
 import type { MenuItem } from "component-types";
+import { useCommon } from '@/stores/common';
+const commonStore = useCommon();
+
+const isLogin = ref<string>(commonStore.account_id)
+watch(() => commonStore.account_id, () => {
+  isLogin.value = commonStore.account_id;
+});
 
 const { t } = i18n.global;
 const router = useRouter();
@@ -98,9 +103,9 @@ const menu = ref<MenuItem[]>([
 	{
 		title: t("menu.deck"),
 		children: [
-			{ title: t("menu.deck_add"), link: "/deck/add", check: true },
+			{ title: t("menu.deck_add"), link: "/deck/add", onlyPc: true },
 			{ title: t("menu.deck_list"), link: "/deck" },
-      { title: t("menu.my_deck"), link: "/deck/mydeck" },
+      { title: t("menu.my_deck"), link: "/deck/mydeck", checkLogin: true },
 		],
 	},
   // 日曆
@@ -141,14 +146,14 @@ const closeSideboard = () => {
 	:deep(.el-menu--inline) {
 		padding: 0 0 0 25px;
 	}
+  .no-login {
+    @apply hidden;
+  }
 }
 
 @media (max-width: 768px) {
 	.sideboard-wrapper {
 		@apply w-full;
-	}
-	.is-rwd {
-		display: none;
 	}
 }
 </style>
