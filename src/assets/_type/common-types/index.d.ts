@@ -37,7 +37,8 @@ declare module 'component-types' {
     title: string;
     link?: string;
     children?: MenuItemList;
-    check?: boolean;
+    onlyPc?: boolean;
+    checkLogin?: boolean;
   }
 
   interface Page {
