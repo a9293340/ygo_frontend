@@ -66,21 +66,23 @@ const checkPrice = (i: number) => {
         <span>{{ item.card_rarity }}</span>
       </div>
     </template>
-    <img
-      v-if="
-        forbiddenCardList.find(x => x.number === item?.card_number) &&
-        props.showForbidden
-      "
-      :src="
-        imgs[forbiddenCardList.find(x => x.number === item?.card_number).type]
-      "
-      class="forbidden-card"
-    />
-    <img
-      @click="openCardInfo(i, props.deckType)"
-      :src="`/api/card-image/cards/${item?.card_number}.webp`"
-      alt=""
-    />
+    <div class="img-box">
+      <img
+        v-if="
+          forbiddenCardList.find(x => x.number === item?.card_number) &&
+          props.showForbidden
+        "
+        :src="
+          imgs[forbiddenCardList.find(x => x.number === item?.card_number).type]
+        "
+        class="forbidden-card"
+      />
+      <img
+        @click="openCardInfo(i, props.deckType)"
+        :src="`/api/card-image/cards/${item?.card_number}.webp`"
+        alt=""
+      />
+    </div>
     <template v-if="props.showMoney">
       <div class="item-desc item-money">
         <div class="money-format">
@@ -123,13 +125,16 @@ input[type='number'] {
       }
     }
   }
-  img {
-    @apply cursor-pointer;
-    margin: 2px 0 0;
-  }
-  img.forbidden-card {
-    @apply absolute w-1/6;
-    top: 14%;
+  .img-box {
+    @apply relative;
+    img {
+      @apply cursor-pointer;
+      margin: 2px 0 0;
+    }
+    img.forbidden-card {
+      @apply absolute w-1/6;
+      top: 0%;
+    }
   }
 }
 

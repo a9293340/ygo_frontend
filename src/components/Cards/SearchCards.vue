@@ -32,7 +32,7 @@
           type="text"
           @input="
             () => {
-              forbiddenType = '4';
+              forbiddenType = null;
               if (typeof listQuery.filter.number === 'string')
                 listQuery.filter.number = listQuery.filter.number?.replace(
                   /[^\d]/g,
