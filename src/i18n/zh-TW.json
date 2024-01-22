@@ -145,7 +145,8 @@
     "not_use": "禁卡",
     "only_one": "限1",
     "only_two": "限2",
-    "forbidden_all": "全部"
+    "forbidden_all": "全部",
+    "please_choose": "請選擇"
   },
   "calendar": {
     "title": "活動行事曆",

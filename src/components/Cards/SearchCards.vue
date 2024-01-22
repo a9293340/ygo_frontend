@@ -52,7 +52,7 @@
           filterable
           clearable
           class="search-cards-select"
-          placeholder="請選擇"
+          :placeholder="t('card.please_choose')"
           @keyup.enter.native="searchNewData"
         >
           <el-option
@@ -72,7 +72,7 @@
           filterable
           clearable
           class="search-cards-select"
-          placeholder="請選擇"
+          :placeholder="t('card.please_choose')"
           @keyup.enter.native="searchNewData"
         >
           <el-option
@@ -92,7 +92,7 @@
           filterable
           clearable
           class="search-cards-select"
-          placeholder="請選擇"
+          :placeholder="t('card.please_choose')"
           @keyup.enter.native="searchNewData"
         >
           <el-option
@@ -112,7 +112,7 @@
           filterable
           clearable
           class="search-cards-select"
-          placeholder="請選擇"
+          :placeholder="t('card.please_choose')"
           @keyup.enter.native="searchNewData"
         >
           <el-option
@@ -132,7 +132,7 @@
           filterable
           clearable
           class="search-cards-select"
-          placeholder="請選擇"
+          :placeholder="t('card.please_choose')"
           @keyup.enter.native="searchNewData"
         >
           <el-option
@@ -154,7 +154,7 @@
           filterable
           clearable
           class="search-cards-select"
-          placeholder="請選擇"
+          :placeholder="t('card.please_choose')"
           @keyup.enter.native="searchNewData"
         >
           <el-option
@@ -176,7 +176,7 @@
           filterable
           clearable
           class="search-cards-select"
-          placeholder="請選擇"
+          :placeholder="t('card.please_choose')"
           @change="
             () => {
               listQuery.filter.number = '';
