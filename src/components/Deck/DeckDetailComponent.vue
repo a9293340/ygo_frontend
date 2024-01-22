@@ -75,9 +75,10 @@ const checkPrice = (i: number) => {
         :src="
           imgs[forbiddenCardList.find(x => x.number === item?.card_number).type]
         "
-        class="forbidden-card"
+        class="forbidden-img"
       />
       <img
+        class="card-img"
         @click="openCardInfo(i, props.deckType)"
         :src="`/api/card-image/cards/${item?.card_number}.webp`"
         alt=""
@@ -127,13 +128,15 @@ input[type='number'] {
   }
   .img-box {
     @apply relative;
-    img {
+    .card-img {
       @apply cursor-pointer;
       margin: 2px 0 0;
     }
-    img.forbidden-card {
-      @apply absolute w-1/6;
-      top: 0%;
+    .forbidden-img {
+      @apply absolute;
+      top: -5px;
+      left: -5px;
+      width: 20px;
     }
   }
 }
@@ -166,6 +169,11 @@ input[type='number'] {
         input {
           height: 24px;
         }
+      }
+    }
+    .img-box {
+      .forbidden-img {
+        width: 15px;
       }
     }
   }
