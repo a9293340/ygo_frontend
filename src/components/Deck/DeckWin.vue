@@ -490,10 +490,8 @@ const orderSort = () => {
 };
 
 onMounted(async () => {
-  console.log(imgs.value);
-
   if (!account_id.value) {
-    router.push('/');
+    await router.push('/');
     return;
   }
   intersectionObserver(loadingRef.value?.$el);
@@ -634,20 +632,23 @@ onMounted(async () => {
                 <CloseBold />
               </el-icon>
             </div>
-            <img
-              v-if="forbiddenCardList.find(x => x.number === item?.card_number)"
-              :src="
+            <div class="img-box">
+              <img
+                  v-if="forbiddenCardList.find(x => x.number === item?.card_number)"
+                  :src="
                 imgs[
                   forbiddenCardList.find(x => x.number === item?.card_number)
                     .type
                 ]
               "
-              class="forbidden-card"
-            />
-            <img
-              :src="`/api/card-image/cards/${item?.card_number}.webp`"
-              alt=""
-            />
+                  class="forbidden-img"
+              />
+              <img
+                  class="card-img"
+                  :src="`/api/card-image/cards/${item?.card_number}.webp`"
+                  alt=""
+              />
+            </div>
           </div>
         </VueDraggable>
       </div>
@@ -836,8 +837,10 @@ onMounted(async () => {
         width: 100px;
       }
       .forbidden-card {
-        width: 30px;
-        @apply absolute top-0 left-0;
+        @apply absolute;
+        width: 25px;
+        top: -5px;
+        left: -5px;
       }
       .card-info {
         @apply flex flex-col pl-2;
@@ -930,7 +933,7 @@ onMounted(async () => {
         .main-drag-item,
         .extra-drag-item,
         .side-drag-item {
-          @apply inline-block align-bottom relative;
+          @apply inline-block align-bottom;
           padding: 5px;
           width: 10%;
           .item-desc {
@@ -939,11 +942,18 @@ onMounted(async () => {
               @apply cursor-help;
             }
           }
-          img {
-            @apply w-full cursor-move;
-          }
-          img.forbidden-card {
-            @apply absolute top-6 left-1 w-4;
+          .img-box {
+            @apply relative;
+            .card-img {
+              @apply cursor-move;
+              margin: 2px 0 0;
+            }
+            .forbidden-img {
+              @apply absolute;
+              top: -2px;
+              left: -5px;
+              width: 20px;
+            }
           }
         }
       }
