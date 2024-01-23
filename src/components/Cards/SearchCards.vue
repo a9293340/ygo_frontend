@@ -474,7 +474,7 @@ onMounted(async () => {
   }
   listQuery.value.filter = { ...listQuery.value.filter, ...query };
   // listQuery.value.filter.number = '';
-  await getCards(0);
+  await getCards(listQuery.value.page);
 });
 </script>
 
