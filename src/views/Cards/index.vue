@@ -29,7 +29,11 @@
           @click.stop="chosenCard = item.id ? item.id : ''"
         >
           <div>
-            <img class="w-1/2" :src="`/api/card-image/cards/${item?.number}.webp`" alt="" />
+            <img
+              class="w-1/2"
+              :src="`/api/card-image/cards/${item?.number}.webp`"
+              alt=""
+            />
           </div>
           <div>{{ item.id }}</div>
           <div class="lg-item">{{ item.name }}</div>
@@ -39,17 +43,24 @@
           <div class="sm-item">{{ item.race }}</div>
           <div class="lg-item">
             <div class="rarity-list">
-              <template v-for="(rarity, rarityIndex) in item.rarity" :key="rarityIndex">
-              {{ `${rarity}${item.rarity.length - 1 === rarityIndex ? '' : '、'}` }}
-            </template>
+              <template
+                v-for="(rarity, rarityIndex) in item.rarity"
+                :key="rarityIndex"
+              >
+                {{
+                  `${rarity}${item.rarity.length - 1 === rarityIndex ? '' : '、'}`
+                }}
+              </template>
             </div>
           </div>
           <div class="sm-item">{{ item.atk }}</div>
           <div class="sm-item">{{ item.def }}</div>
           <div>{{ item.number.substring(0, 8) }}</div>
-          <router-link class="detail sm-item" :to="`/cards/${item.id}?number=${item.number}`">{{
-            t('card.detail')
-          }}</router-link>
+          <router-link
+            class="detail sm-item"
+            :to="`/cards/${item.id}?number=${item.number}`"
+            >{{ t('card.detail') }}</router-link
+          >
         </div>
       </div>
     </div>
@@ -103,13 +114,17 @@ const getList = async (val: PaginationGetList) => {
   listQuery.value.page = val.page;
 };
 
-const getCards = async (data: { cards: HasTotalRes<CardsList>; listQuery: CardListType }) => {
+const getCards = async (data: {
+  cards: HasTotalRes<CardsList>;
+  listQuery: CardListType;
+}) => {
   list.value = data.cards.list;
   total.value = data.cards.total;
   listQuery.value = data.listQuery;
   await router.replace({
     query: removeNullAndEmptyString(listQuery.value.filter),
   });
+  console.log(data.listQuery.page);
 };
 
 const chosenCard = ref<string>('');
