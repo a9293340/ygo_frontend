@@ -395,11 +395,9 @@ const getCards = async (page: number) => {
   }
 
   // 紀錄router query
-  router.replace({
+  await router.replace({
     query,
   });
-
-  console.log(2, route.query);
 
   const cards = decode<HasTotalRes<CardsList>>(
     (await callApi<CardListType>(filter, 'cards', 'list', false)).data

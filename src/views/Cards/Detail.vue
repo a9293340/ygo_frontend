@@ -80,6 +80,9 @@
       </button>
     </div>
     <div v-if="currentType === 'qa'" class="qa-box">
+      <div class="ref-link">
+        <a :href="jurisprudence?.jud_link" target="_blank">{{ t('card.qa_ref') }}</a>
+      </div>
       <div class="qa-item" v-for="(item, index) in qaList" :key="item._id">
         <div class="title-box" @click="showContent(index as number)">
           <div class="date">{{ item.date }}</div>
@@ -100,10 +103,10 @@
     </div>
     <div v-if="currentType === 'chart'" class="chart-box">
       <div class="select-box" v-if="account_id && account_token">
-        <p>露天價格 :</p>
-        <el-select v-model="priceType">
-          <el-option value="avg" label="露天均價" />
-          <el-option value="lowest" label="露天最低價" />
+        <p>{{ t('card.ruten_price') }} :</p>
+        <el-select class="price-select" v-model="priceType">
+          <el-option value="avg" :label="t('card.ruten_average')" style="font-size: 16px; color: #333333" />
+          <el-option value="lowest" :label="t('card.ruten_low')" style="font-size: 16px; color: #333333" />
         </el-select>
       </div>
       <PriceChart
@@ -223,6 +226,37 @@ onMounted(async () => {
 });
 </script>
 
+<style lang="scss">
+.price-select.el-select {
+  width: 150px;
+  .el-input__wrapper {
+    overflow: hidden;
+    padding: 0 11px 1px;
+    box-shadow: none;
+    border-radius: 5px;
+    &:hover {
+      box-shadow: none;
+    }
+    &:focus-within {
+      box-shadow: none !important;
+    }
+  }
+  .el-input__inner {
+    color: #1e40af;
+    height: 35px;
+    border-color: transparent;
+    box-shadow: none;
+    font-size: 16px;
+  }
+  .el-input__placeholder {
+    @apply text-black;
+  }
+}
+:deep(.el-input) {
+  font-size: 16px;
+}
+</style>
+
 <style lang="scss" scoped>
 .cards-detail {
   min-height: calc(100vh - 104px);
@@ -311,6 +345,11 @@ onMounted(async () => {
     font-size: 18px;
     width: 1200px;
     margin: 0 auto;
+    & .ref-link {
+      @apply text-white underline;
+      font-size: 16px;
+      margin: 0 0 5px;
+    }
     & .qa-item {
       @apply text-justify overflow-hidden;
       margin: 0 0 10px;
@@ -348,9 +387,11 @@ onMounted(async () => {
     margin: 0 auto;
     border-radius: 10px;
     .select-box {
-      @apply mb-2 flex flex-row;
+      @apply mb-3 flex items-center;
       p {
-        @apply text-white text-2xl mr-2;
+        @apply text-white;
+        margin: 0 15px 0 5px;
+        font-size: 16px;
       }
     }
   }
@@ -491,6 +532,9 @@ onMounted(async () => {
     }
     & .chart-box {
       width: 95vw;
+      .select-box {
+        @apply mb-3 flex justify-center items-center;
+      }
     }
   }
 }
