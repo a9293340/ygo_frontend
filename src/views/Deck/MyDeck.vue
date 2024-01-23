@@ -159,6 +159,8 @@ onMounted(async () => {
       route.query.end_date as string,
     ];
   }
+  if (typeof route.query.page === 'string')
+    listQuery.value.page = parseInt(route.query.page);
   await getList({ limit: listQuery.value.limit, page: 0 });
 });
 </script>

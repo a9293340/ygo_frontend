@@ -52,7 +52,7 @@
           filterable
           clearable
           class="search-cards-select"
-          placeholder="請選擇"
+          :placeholder="t('card.please_choose')"
           @keyup.enter.native="searchNewData"
         >
           <el-option
@@ -72,7 +72,7 @@
           filterable
           clearable
           class="search-cards-select"
-          placeholder="請選擇"
+          :placeholder="t('card.please_choose')"
           @keyup.enter.native="searchNewData"
         >
           <el-option
@@ -92,7 +92,7 @@
           filterable
           clearable
           class="search-cards-select"
-          placeholder="請選擇"
+          :placeholder="t('card.please_choose')"
           @keyup.enter.native="searchNewData"
         >
           <el-option
@@ -112,7 +112,7 @@
           filterable
           clearable
           class="search-cards-select"
-          placeholder="請選擇"
+          :placeholder="t('card.please_choose')"
           @keyup.enter.native="searchNewData"
         >
           <el-option
@@ -132,7 +132,7 @@
           filterable
           clearable
           class="search-cards-select"
-          placeholder="請選擇"
+          :placeholder="t('card.please_choose')"
           @keyup.enter.native="searchNewData"
         >
           <el-option
@@ -154,7 +154,7 @@
           filterable
           clearable
           class="search-cards-select"
-          placeholder="請選擇"
+          :placeholder="t('card.please_choose')"
           @keyup.enter.native="searchNewData"
         >
           <el-option
@@ -176,7 +176,7 @@
           filterable
           clearable
           class="search-cards-select"
-          placeholder="請選擇"
+          :placeholder="t('card.please_choose')"
           @change="
             () => {
               listQuery.filter.number = '';
@@ -279,6 +279,7 @@ interface SearchCardsProps {
 }
 
 const route = useRoute();
+const router = useRouter();
 const emit = defineEmits(['get:data']);
 
 const props = withDefaults(defineProps<SearchCardsProps>(), {
@@ -361,8 +362,16 @@ const getCards = async (page: number) => {
   listQuery.value.limit = props.limit;
 
   let forbidden_numbers: string[] = [];
+  // route query
+  let query = {
+    ...removeNullAndEmptyString(listQuery.value.filter),
+  };
+  // 僅卡片搜尋需要紀錄page
+  if (route.path.indexOf('deck') === -1) query['page'] = page;
 
+  // 禁卡表紀錄
   if (forbiddenType.value) {
+    query['forbidden'] = forbiddenType.value;
     const forbidden_filter =
       forbiddenType.value === '3'
         ? {}
@@ -379,13 +388,16 @@ const getCards = async (page: number) => {
     ).list;
     forbidden_numbers = forbiddenList.map(x => x.number);
   }
-  // console.log(forbidden_numbers);
 
   let filter = removeNullAndEmptyString(listQuery.value);
   if (forbidden_numbers.length) {
     filter.filter.number = forbidden_numbers;
   }
-  // console.log(filter);
+
+  // 紀錄router query
+  await router.replace({
+    query,
+  });
 
   const cards = decode<HasTotalRes<CardsList>>(
     (await callApi<CardListType>(filter, 'cards', 'list', false)).data
@@ -448,9 +460,19 @@ onMounted(async () => {
   // 避免吃到deck的query
   let query = JSON.parse(JSON.stringify(route.query));
   if (query.deck_admin_id) delete query.deck_admin_id;
+  // page
+  if (query.page) {
+    listQuery.value.page = parseInt(query.page);
+    delete query.page;
+  }
+  // forbidden
+  if (query.forbidden) {
+    forbiddenType.value = query.forbidden;
+    delete query.forbidden;
+  }
   listQuery.value.filter = { ...listQuery.value.filter, ...query };
   // listQuery.value.filter.number = '';
-  await getCards(0);
+  await getCards(listQuery.value.page);
 });
 </script>
 
