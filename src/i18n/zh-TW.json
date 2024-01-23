@@ -146,7 +146,10 @@
     "only_one": "限1",
     "only_two": "限2",
     "forbidden_all": "全部",
-    "please_choose": "請選擇"
+    "please_choose": "請選擇",
+    "ruten_price": "露天價格",
+    "ruten_average": "露天均價",
+    "ruten_low": "露天最低價"
   },
   "calendar": {
     "title": "活動行事曆",
