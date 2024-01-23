@@ -80,6 +80,9 @@
       </button>
     </div>
     <div v-if="currentType === 'qa'" class="qa-box">
+      <div class="ref-link">
+        <a :href="jurisprudence?.jud_link" target="_blank">{{ t('card.qa_ref') }}</a>
+      </div>
       <div class="qa-item" v-for="(item, index) in qaList" :key="item._id">
         <div class="title-box" @click="showContent(index as number)">
           <div class="date">{{ item.date }}</div>
@@ -342,6 +345,11 @@ onMounted(async () => {
     font-size: 18px;
     width: 1200px;
     margin: 0 auto;
+    & .ref-link {
+      @apply text-white underline;
+      font-size: 16px;
+      margin: 0 0 5px;
+    }
     & .qa-item {
       @apply text-justify overflow-hidden;
       margin: 0 0 10px;
