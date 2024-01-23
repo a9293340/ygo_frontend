@@ -279,6 +279,7 @@ interface SearchCardsProps {
 }
 
 const route = useRoute();
+const router = useRouter();
 const emit = defineEmits(['get:data']);
 
 const props = withDefaults(defineProps<SearchCardsProps>(), {
@@ -363,6 +364,11 @@ const getCards = async (page: number) => {
   let forbidden_numbers: string[] = [];
 
   if (forbiddenType.value) {
+    router.replace({
+      query: {
+        forbidden: forbiddenType.value,
+      },
+    });
     const forbidden_filter =
       forbiddenType.value === '3'
         ? {}
@@ -448,6 +454,16 @@ onMounted(async () => {
   // 避免吃到deck的query
   let query = JSON.parse(JSON.stringify(route.query));
   if (query.deck_admin_id) delete query.deck_admin_id;
+  // page
+  if (query.page) {
+    listQuery.value.page = parseInt(query.page);
+    delete query.page;
+  }
+  // forbidden
+  if (query.forbidden) {
+    forbiddenType.value = query.forbidden;
+    delete query.forbidden;
+  }
   listQuery.value.filter = { ...listQuery.value.filter, ...query };
   // listQuery.value.filter.number = '';
   await getCards(0);

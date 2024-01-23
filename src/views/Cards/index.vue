@@ -122,16 +122,15 @@ const getCards = async (data: {
   total.value = data.cards.total;
   listQuery.value = data.listQuery;
   await router.replace({
-    query: removeNullAndEmptyString(listQuery.value.filter),
+    query: {
+      ...removeNullAndEmptyString(listQuery.value.filter),
+      ...route.query,
+      page: data.listQuery.page,
+    },
   });
-  console.log(data.listQuery.page);
 };
 
 const chosenCard = ref<string>('');
-
-onMounted(async () => {
-  listQuery.value.filter = { ...listQuery.value.filter, ...route.query };
-});
 </script>
 
 <style lang="scss" scoped>
