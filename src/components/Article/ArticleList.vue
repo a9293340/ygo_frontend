@@ -108,11 +108,6 @@ const total = ref<number>(0);
 
 const getList = async (val: PaginationGetList) => {
   listQuery.value.page = val.page;
-  router.replace({
-    query: {
-      page: listQuery.value.page,
-    },
-  });
   await getArticle();
 };
 
