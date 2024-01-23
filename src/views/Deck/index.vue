@@ -88,7 +88,6 @@ import { useDeckStore } from '@/stores/deck';
 const { t } = i18n.global;
 const route = useRoute();
 const router = useRouter();
-const { pick_deck_id } = storeToRefs(useDeckStore());
 
 const deckList = ref<DeckList>([]);
 const chosenCard = ref('');
@@ -96,10 +95,7 @@ const total = ref(0);
 const date = ref<any>('');
 const removeVisible = ref(false);
 const editVisible = ref(false);
-const dialogTitle = ref('');
 const dialogVisible = ref(false);
-const nowPickTarget = ref(0);
-const deck_check_id = ref('');
 
 const listQuery = ref<DeckListType>({
   page: 0,
@@ -158,6 +154,8 @@ onMounted(async () => {
       route.query.end_date as string,
     ];
   }
+  if (typeof route.query.page === 'string')
+    listQuery.value.page = parseInt(route.query.page);
   await getList({ limit: listQuery.value.limit, page: 0 });
 });
 </script>

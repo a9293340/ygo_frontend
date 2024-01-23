@@ -80,7 +80,6 @@ import type { CardListType } from 'request-data-types';
 import type { CardsList } from 'module-types';
 import type { PaginationGetList } from 'common-types';
 import type { HasTotalRes } from 'response-data-types';
-import { onMounted } from 'vue';
 import { removeNullAndEmptyString } from '@/util';
 import { useRoute, useRouter } from 'vue-router';
 import i18n from '@/i18n/index';
@@ -121,13 +120,6 @@ const getCards = async (data: {
   list.value = data.cards.list;
   total.value = data.cards.total;
   listQuery.value = data.listQuery;
-  await router.replace({
-    query: {
-      ...removeNullAndEmptyString(listQuery.value.filter),
-      ...route.query,
-      page: data.listQuery.page,
-    },
-  });
 };
 
 const chosenCard = ref<string>('');

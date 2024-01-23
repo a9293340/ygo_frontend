@@ -362,13 +362,16 @@ const getCards = async (page: number) => {
   listQuery.value.limit = props.limit;
 
   let forbidden_numbers: string[] = [];
+  // route query
+  let query = {
+    ...removeNullAndEmptyString(listQuery.value.filter),
+  };
+  // 僅卡片搜尋需要紀錄page
+  if (route.path.indexOf('deck') === -1) query['page'] = page;
 
+  // 禁卡表紀錄
   if (forbiddenType.value) {
-    router.replace({
-      query: {
-        forbidden: forbiddenType.value,
-      },
-    });
+    query['forbidden'] = forbiddenType.value;
     const forbidden_filter =
       forbiddenType.value === '3'
         ? {}
@@ -385,13 +388,18 @@ const getCards = async (page: number) => {
     ).list;
     forbidden_numbers = forbiddenList.map(x => x.number);
   }
-  // console.log(forbidden_numbers);
 
   let filter = removeNullAndEmptyString(listQuery.value);
   if (forbidden_numbers.length) {
     filter.filter.number = forbidden_numbers;
   }
-  // console.log(filter);
+
+  // 紀錄router query
+  router.replace({
+    query,
+  });
+
+  console.log(2, route.query);
 
   const cards = decode<HasTotalRes<CardsList>>(
     (await callApi<CardListType>(filter, 'cards', 'list', false)).data

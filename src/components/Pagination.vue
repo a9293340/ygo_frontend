@@ -7,13 +7,15 @@
       layout="total, prev, pager, next"
       :total="props.total"
       @current-change="handleCurrentChange"
-      :current-page="props.page+1"
+      :current-page="props.page + 1"
       :small="browserWidth < 450"
     />
   </div>
 </template>
 
 <script setup lang="ts">
+const router = useRouter();
+const route = useRoute();
 const props = defineProps({
   hidden: {
     type: Boolean,
@@ -34,6 +36,12 @@ const props = defineProps({
 });
 const emit = defineEmits(['update:page', 'update:limit', 'pagination']);
 const handleCurrentChange = (val: number) => {
+  router.replace({
+    query: {
+      page: `${val - 1}`,
+      ...route.query,
+    },
+  });
   emit('pagination', { page: val - 1, limit: props.limit });
   window.scrollTo({
     top: 0,
@@ -41,7 +49,7 @@ const handleCurrentChange = (val: number) => {
   });
 };
 
-const browserWidth = window.innerWidth
+const browserWidth = window.innerWidth;
 </script>
 
 <style lang="scss" scoped>
