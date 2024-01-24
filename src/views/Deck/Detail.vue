@@ -365,7 +365,7 @@ onMounted(async () => {
   <div class="deck-detail">
     <div class="btn-box">
       <button v-if="account_id" @click="copyDeck">{{ t('deck.copy') }}</button>
-      <button @click="getImage">{{ t('deck.download_img') }}</button>
+      <button class="pc" @click="getImage">{{ t('deck.download_img') }}</button>
       <button @click="changeForbidden">
         {{
           showForbidden
