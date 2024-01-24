@@ -95,13 +95,22 @@ watch(isIntersection, newVal => {
 
 watch(
   () => route.query,
-  async newVal => {
+  async (newVal, oldVal) => {
     if (newVal.deck_admin_id) {
       pick_deck_id.value = route.query.deck_admin_id as string;
       await getDeckDetail();
-    } else {
+    } else if (oldVal.deck_admin_id && !newVal.deck_admin_id) {
       pick_deck_id.value = '';
-      deckDetail.value = null;
+      deckDetail.value = {
+        _id: '',
+        admin_id: account_id.value,
+        title: deckDetail.value.title,
+        create_date: new Date().toLocaleDateString(),
+        last_edit_date: new Date().toLocaleDateString(),
+        main_deck: [],
+        extra_deck: [],
+        side_deck: [],
+      };
       reset();
     }
   }
@@ -634,19 +643,21 @@ onMounted(async () => {
             </div>
             <div class="img-box">
               <img
-                  v-if="forbiddenCardList.find(x => x.number === item?.card_number)"
-                  :src="
-                imgs[
+                v-if="
                   forbiddenCardList.find(x => x.number === item?.card_number)
-                    .type
-                ]
-              "
-                  class="forbidden-img"
+                "
+                :src="
+                  imgs[
+                    forbiddenCardList.find(x => x.number === item?.card_number)
+                      .type
+                  ]
+                "
+                class="forbidden-img"
               />
               <img
-                  class="card-img"
-                  :src="`/api/card-image/cards/${item?.card_number}.webp`"
-                  alt=""
+                class="card-img"
+                :src="`/api/card-image/cards/${item?.card_number}.webp`"
+                alt=""
               />
             </div>
           </div>
