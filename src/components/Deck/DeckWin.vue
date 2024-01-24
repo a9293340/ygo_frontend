@@ -700,20 +700,25 @@ onMounted(async () => {
                 <CloseBold />
               </el-icon>
             </div>
-            <img
-              v-if="forbiddenCardList.find(x => x.number === item?.card_number)"
-              :src="
-                imgs[
+            <div class="img-box">
+              <img
+                v-if="
                   forbiddenCardList.find(x => x.number === item?.card_number)
-                    .type
-                ]
-              "
-              class="forbidden-card"
-            />
-            <img
-              :src="`/api/card-image/cards/${item?.card_number}.webp`"
-              alt=""
-            />
+                "
+                :src="
+                  imgs[
+                    forbiddenCardList.find(x => x.number === item?.card_number)
+                      .type
+                  ]
+                "
+                class="forbidden-img"
+              />
+              <img
+                class="card-img"
+                :src="`/api/card-image/cards/${item?.card_number}.webp`"
+                alt=""
+              />
+            </div>
           </div>
         </VueDraggable>
       </div>
@@ -754,20 +759,25 @@ onMounted(async () => {
                 <CloseBold />
               </el-icon>
             </div>
-            <img
-              v-if="forbiddenCardList.find(x => x.number === item?.card_number)"
-              :src="
-                imgs[
+            <div class="img-box">
+              <img
+                v-if="
                   forbiddenCardList.find(x => x.number === item?.card_number)
-                    .type
-                ]
-              "
-              class="forbidden-card"
-            />
-            <img
-              :src="`/api/card-image/cards/${item?.card_number}.webp`"
-              alt=""
-            />
+                "
+                :src="
+                  imgs[
+                    forbiddenCardList.find(x => x.number === item?.card_number)
+                      .type
+                  ]
+                "
+                class="forbidden-img"
+              />
+              <img
+                class="card-img"
+                :src="`/api/card-image/cards/${item?.card_number}.webp`"
+                alt=""
+              />
+            </div>
           </div>
         </VueDraggable>
       </div>
