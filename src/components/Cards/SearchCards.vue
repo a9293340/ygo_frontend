@@ -368,6 +368,8 @@ const getCards = async (page: number) => {
   };
   // 僅卡片搜尋需要紀錄page
   if (route.path.indexOf('deck') === -1) query['page'] = page;
+  else if (route.query.deck_admin_id && route.path.indexOf('deck') !== -1)
+    query['deck_admin_id'] = route.query.deck_admin_id;
 
   // 禁卡表紀錄
   if (forbiddenType.value) {
