@@ -96,9 +96,9 @@ watch(isIntersection, newVal => {
 watch(
   () => route.query,
   async (newVal, oldVal) => {
-    console.log(newVal.deck_admin_id, oldVal.deck_admin_id);
-
     if (newVal.deck_admin_id) {
+      if (oldVal.deck_admin_id && oldVal.deck_admin_id === newVal.deck_admin_id)
+        return;
       pick_deck_id.value = route.query.deck_admin_id as string;
       await getDeckDetail();
     } else if (oldVal.deck_admin_id && !newVal.deck_admin_id) {
