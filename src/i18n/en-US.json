@@ -81,7 +81,8 @@
     "copy": "複製",
     "admin_name": "作者",
     "show_forbidden": "顯示禁卡符號",
-    "not_show_forbidden": "不顯示禁卡符號"
+    "not_show_forbidden": "不顯示禁卡符號",
+    "show_detail_notice": "點擊卡片以查看詳情"
   },
   "menu": {
     "home": "首頁",

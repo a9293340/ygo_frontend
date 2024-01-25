@@ -386,8 +386,11 @@ onMounted(async () => {
     </div>
     <div id="deck-list" ref="deckList">
       <div class="deck-title">{{ deck?.title }}</div>
-      <div class="title">
-        {{ t('deck.main_deck') }}({{ deck?.main_deck.length }})
+      <div class="main-title-box">
+        <div class="title">
+          {{ t('deck.main_deck') }}({{ deck?.main_deck.length }})
+        </div>
+        <div class="detail-notice">{{ '*' + t('deck.show_detail_notice') }}</div>
       </div>
       <div class="main-deck">
         <deck-detail-component
@@ -513,6 +516,14 @@ onMounted(async () => {
     .deck-title {
       @apply text-white text-2xl font-extrabold;
       margin: 0 0 10px;
+    }
+    .main-title-box {
+      @apply flex justify-between items-end;
+      .detail-notice {
+        @apply mr-1;
+        font-size: 12px;
+        color: lightgray;
+      }
     }
     .title {
       @apply text-lg font-extrabold;
