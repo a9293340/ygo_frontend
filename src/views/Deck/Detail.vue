@@ -458,7 +458,8 @@ onMounted(async () => {
           <span class="pc">({{ onLargeTarget?.card_num_id }})</span>
         </div>
         <div class="name mobile">({{ onLargeTarget?.card_num_id }})</div>
-        <div>{{ t('card.rarity') }} : {{ onLargeTarget?.card_rarity }}</div>
+        <div v-if="!showRarity">{{ t('card.rarity') }} : {{ onLargeTarget?.card_rarity }}</div>
+        <div class="effect">{{ onLargeTarget?.card_effect }}</div>
       </div>
     </div>
   </el-dialog>
@@ -566,6 +567,9 @@ onMounted(async () => {
     .name {
       @apply font-bold text-black mb-2;
       font-size: 20px;
+    }
+    .effect {
+      @apply whitespace-pre-wrap text-justify mt-4;
     }
   }
 }

@@ -655,6 +655,7 @@ onMounted(async () => {
                   ]
                 "
                 class="forbidden-img"
+                alt=""
               />
               <img
                 class="card-img"
@@ -714,6 +715,7 @@ onMounted(async () => {
                   ]
                 "
                 class="forbidden-img"
+                alt=""
               />
               <img
                 class="card-img"
@@ -773,6 +775,7 @@ onMounted(async () => {
                   ]
                 "
                 class="forbidden-img"
+                alt=""
               />
               <img
                 class="card-img"

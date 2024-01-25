@@ -7,6 +7,7 @@ type DeckContent = {
   card_name?: string;
   card_star?: string;
   card_type?: string;
+  card_effect?: string;
 };
 
 type CardsPriceType = {

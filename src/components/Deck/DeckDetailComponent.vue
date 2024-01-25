@@ -76,6 +76,7 @@ const checkPrice = (i: number) => {
           imgs[forbiddenCardList.find(x => x.number === item?.card_number).type]
         "
         class="forbidden-img"
+        alt=""
       />
       <img
         class="card-img"

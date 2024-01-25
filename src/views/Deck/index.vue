@@ -307,7 +307,7 @@ onMounted(async () => {
             width: 120px;
           }
           & .action-item {
-            width: 230px;
+            width: 120px;
           }
         }
       }
