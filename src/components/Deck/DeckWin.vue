@@ -239,6 +239,7 @@ const deckEnd = (evt: any) => {
 
 const onEnd = (evt: any) => {
   evt.item.style.width = '100%';
+  evt.item.children[0].children[0].style.display = 'block';
   evt.item.children[1].style.display = 'flex';
   evt.item.style.display = 'flex';
   const toClass = evt.to.classList[0] as string;
@@ -307,6 +308,7 @@ const onDeckStart = (evt: any) => {
 
 const onStart = (evt: any) => {
   evt.dragged.style.width = '80px';
+  evt.dragged.children[0].children[0].style.display = 'none';
   evt.dragged.children[1].style.display = 'none';
   evt.dragged.style.display = 'inline-block';
 };
@@ -546,18 +548,22 @@ onMounted(async () => {
           :key="item._id"
           @dblclick="addCardToDeck(i)"
         >
-          <img
-            v-if="forbiddenCardList.find(x => x.number === item?.number)"
-            :src="
-              imgs[forbiddenCardList.find(x => x.number === item?.number).type]
-            "
-            class="forbidden-card"
-          />
-          <img
-            class="card-img"
-            :src="`/api/card-image/cards/${item?.number}.webp`"
-            alt=""
-          />
+          <div class="relative">
+            <img
+              v-if="forbiddenCardList.find(x => x.number === item?.number)"
+              :src="
+                imgs[
+                  forbiddenCardList.find(x => x.number === item?.number).type
+                ]
+              "
+              class="forbidden-card"
+            />
+            <img
+              class="card-img"
+              :src="`/api/card-image/cards/${item?.number}.webp`"
+              alt=""
+            />
+          </div>
           <div class="card-info">
             <div class="name">{{ item.name }}</div>
             <div>{{ item.id }}</div>
