@@ -40,7 +40,7 @@ type DeckType = {
 
 const route = useRoute();
 const router = useRouter();
-const emit = defineEmits(['call:api', 'get:info']);
+const emit = defineEmits(['call:api']);
 const drag = ref<UseDraggableReturn>();
 const mainDeckLens = ref(60);
 const pickIndex = ref(0);
@@ -697,6 +697,7 @@ onMounted(async () => {
             v-for="(item, i) in extraDeck"
             :key="item.card_id + i"
             class="extra-drag-item text-white"
+            @dblclick="getCardInfo(item)"
           >
             <div class="item-desc">
               <el-tooltip
@@ -757,6 +758,7 @@ onMounted(async () => {
             v-for="(item, i) in sideDeck"
             :key="item.card_id + i"
             class="side-drag-item text-white"
+            @dblclick="getCardInfo(item)"
           >
             <div class="item-desc">
               <el-tooltip
