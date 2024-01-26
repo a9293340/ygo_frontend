@@ -271,6 +271,7 @@ import type { HasTotalRes, NotHasTotalRes } from 'response-data-types';
 import { decode, removeNullAndEmptyString } from '@/util';
 import { callApi } from '@/util/api';
 import i18n from '@/i18n/index';
+import { useDeckStore } from '@/stores/deck';
 
 const { t } = i18n.global;
 interface SearchCardsProps {
@@ -281,7 +282,7 @@ interface SearchCardsProps {
 const route = useRoute();
 const router = useRouter();
 const emit = defineEmits(['get:data']);
-
+const { searchCardsId } = storeToRefs(useDeckStore());
 const props = withDefaults(defineProps<SearchCardsProps>(), {
   limit: 20,
   page: 1,
@@ -321,6 +322,29 @@ watch(page, newVal => {
     limit: props.limit,
     page: props.page,
   });
+});
+
+watch(searchCardsId, newVal => {
+  if (!newVal) return;
+
+  listQuery.value.filter = {
+    id: newVal,
+    number: '',
+    name: '',
+    type: '',
+    star: '',
+    race: '',
+    attribute: '',
+    rarity: '',
+    atk_t: '',
+    atk_l: '',
+    def_t: '',
+    def_l: '',
+    product_information_type: '',
+  };
+  forbiddenType.value = '';
+
+  searchNewData();
 });
 
 const searchNewData = () => {

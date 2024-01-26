@@ -18,7 +18,7 @@ import forbidden_1 from '@/assets/img/forbiddenCardList_1.png';
 import forbidden_2 from '@/assets/img/forbiddenCardList_2.png';
 
 const { t } = i18n.global;
-const { pick_deck_id, isCopy } = storeToRefs(useDeckStore());
+const { pick_deck_id, isCopy, searchCardsId } = storeToRefs(useDeckStore());
 const { account_id } = storeToRefs(useCommon());
 
 interface DeckCardsListProps {
@@ -40,7 +40,7 @@ type DeckType = {
 
 const route = useRoute();
 const router = useRouter();
-const emit = defineEmits(['call:api']);
+const emit = defineEmits(['call:api', 'get:info']);
 const drag = ref<UseDraggableReturn>();
 const mainDeckLens = ref(60);
 const pickIndex = ref(0);
@@ -502,6 +502,10 @@ const orderSort = () => {
   extraDeck.value = mackExtraSort([...extraDeck.value]);
 };
 
+const getCardInfo = (item: DeckContent) => {
+  searchCardsId.value = item.card_num_id;
+};
+
 onMounted(async () => {
   if (!account_id.value) {
     await router.push('/');
@@ -632,6 +636,7 @@ onMounted(async () => {
             v-for="(item, i) in mainDeck"
             :key="item.card_id + i"
             class="main-drag-item text-white"
+            @dblclick="getCardInfo(item)"
           >
             <div class="item-desc">
               <el-tooltip
