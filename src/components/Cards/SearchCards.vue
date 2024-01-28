@@ -1,9 +1,6 @@
 <template>
   <div class="search-cards">
-    <div class="form-container" :class="{ 'close-form': !isShowForm }">
-      <div v-if="!isShowForm" class="mask mobile">
-        {{ t('card.show_form') }}
-      </div>
+    <div class="form-container">
       <!-- 卡號 -->
       <div class="item-box">
         <div class="item-title">{{ t('card.id') + '：' }}</div>
@@ -44,8 +41,29 @@
           @keyup.enter.native="searchNewData"
         />
       </div>
-      <!-- 種類 -->
+      <!-- 包裝分類 -->
       <div class="item-box">
+        <div class="item-title">
+          {{ t('card.product_information_type') + '：' }}
+        </div>
+        <el-select
+            v-model="listQuery.filter.product_information_type"
+            filterable
+            clearable
+            class="search-cards-select"
+            :placeholder="t('card.please_choose')"
+            @keyup.enter.native="searchNewData"
+        >
+          <el-option
+              v-for="(item, index) in packTypeList"
+              :key="index"
+              :label="item.name"
+              :value="item.packType"
+          />
+        </el-select>
+      </div>
+      <!-- 種類 -->
+      <div v-if="isShowAdvance" class="item-box">
         <div class="item-title">{{ t('card.type') + '：' }}</div>
         <el-select
           v-model="listQuery.filter.type"
@@ -65,7 +83,7 @@
         </el-select>
       </div>
       <!-- 星數 -->
-      <div class="item-box">
+      <div v-if="isShowAdvance" class="item-box">
         <div class="item-title">{{ t('card.star') + '：' }}</div>
         <el-select
           v-model="listQuery.filter.star"
@@ -85,7 +103,7 @@
         </el-select>
       </div>
       <!-- 屬性 -->
-      <div class="item-box">
+      <div v-if="isShowAdvance" class="item-box">
         <div class="item-title">{{ t('card.attribute') + '：' }}</div>
         <el-select
           v-model="listQuery.filter.attribute"
@@ -105,7 +123,7 @@
         </el-select>
       </div>
       <!-- 種族 -->
-      <div class="item-box">
+      <div v-if="isShowAdvance" class="item-box">
         <div class="item-title">{{ t('card.race') + '：' }}</div>
         <el-select
           v-model="listQuery.filter.race"
@@ -125,7 +143,7 @@
         </el-select>
       </div>
       <!-- 稀有度 -->
-      <div class="item-box">
+      <div v-if="isShowAdvance" class="item-box">
         <div class="item-title">{{ t('card.rarity') + '：' }}</div>
         <el-select
           v-model="listQuery.filter.rarity"
@@ -144,30 +162,8 @@
           />
         </el-select>
       </div>
-      <!-- 包裝分類 -->
-      <div class="item-box">
-        <div class="item-title">
-          {{ t('card.product_information_type') + '：' }}
-        </div>
-        <el-select
-          v-model="listQuery.filter.product_information_type"
-          filterable
-          clearable
-          class="search-cards-select"
-          :placeholder="t('card.please_choose')"
-          @keyup.enter.native="searchNewData"
-        >
-          <el-option
-            v-for="(item, index) in packTypeList"
-            :key="index"
-            :label="item.name"
-            :value="item.packType"
-            style="font-size: 16px; color: #333333"
-          />
-        </el-select>
-      </div>
       <!-- 禁卡表 -->
-      <div class="item-box">
+      <div v-if="isShowAdvance" class="item-box">
         <div class="item-title">
           {{ t('card.forbidden') + '：' }}
         </div>
@@ -194,7 +190,7 @@
         </el-select>
       </div>
       <!-- 攻擊力 -->
-      <div class="item-box">
+      <div v-if="isShowAdvance" class="item-box">
         <div class="item-title">{{ t('card.atk') + '：' }}</div>
         <input
           v-model="listQuery.filter.atk_l"
@@ -221,7 +217,7 @@
         />
       </div>
       <!-- 守備力 -->
-      <div class="item-box">
+      <div v-if="isShowAdvance" class="item-box">
         <div class="item-title">{{ t('card.def') + '：' }}</div>
         <input
           v-model="listQuery.filter.def_l"
@@ -251,9 +247,12 @@
         {{ t('card.search') }}
       </button>
     </div>
-    <div class="toggle-btn mobile" @click="isShowForm = !isShowForm">
-      <el-icon v-if="isShowForm"><CaretTop /></el-icon>
-      <el-icon v-else><CaretBottom /></el-icon>
+    <div class="toggle-btn mobile" @click="isShowAdvance = !isShowAdvance">
+      <div class="flex justify-center items-center">
+        <div>{{ t('card.advance_search') }}</div>
+        <el-icon v-if="isShowAdvance"><CaretTop /></el-icon>
+        <el-icon v-else><CaretBottom /></el-icon>
+      </div>
     </div>
   </div>
 </template>
@@ -314,7 +313,7 @@ const forbiddenTypeList = ref({
   3: t('card.forbidden_all'),
 });
 
-const isShowForm = ref<Boolean>(true);
+const isShowAdvance = ref<Boolean>(false);
 const packTypeList = ref<PackTypeList | []>([]);
 const page = computed(() => props.page);
 watch(page, newVal => {
@@ -352,11 +351,9 @@ const searchNewData = () => {
 };
 
 const getList = async (val: PaginationGetList) => {
-  isShowForm.value = false;
   await getCards(val.page);
 };
 const getCards = async (page: number) => {
-  console.log(listQuery.value);
   if (
     listQuery.value.filter.atk_l !== '' &&
     typeof listQuery.value.filter.atk_l === 'string'
@@ -466,6 +463,16 @@ const getPackType = async () => {
 };
 
 onMounted(async () => {
+  // 是否展開進階搜尋
+  if (window.innerWidth > 768) {
+    isShowAdvance.value = true
+  } else {
+    // 手機版檢查query是否只有page、id、number、name或product_information_type參數
+    // 若有其他參數則展開進階搜尋
+    const allowedProps = new Set(['page', 'id', 'number', 'name', 'product_information_type']);
+    const keys = Object.keys(route.query);
+    isShowAdvance.value = keys.some(key => !allowedProps.has(key));
+  }
   if (!packTypeList.value.length) {
     const localPack = localStorage.getItem('ygo-pack');
 
@@ -502,50 +509,11 @@ onMounted(async () => {
 });
 </script>
 
-<style lang="scss">
-.search-cards-select.el-select {
-  width: 150px;
-  .el-input__wrapper {
-    overflow: hidden;
-    padding: 0 11px 1px;
-    box-shadow: none;
-    border-radius: 5px;
-    &:hover {
-      box-shadow: none;
-    }
-    &:focus-within {
-      box-shadow: none !important;
-    }
-  }
-  .el-input__inner {
-    color: #1e40af;
-    height: 35px;
-    border-color: transparent;
-    box-shadow: none;
-    font-size: 16px;
-  }
-  .el-input__placeholder {
-    @apply text-black;
-  }
-}
-:deep(.el-input) {
+<style lang="scss" scoped>
+.el-select-dropdown__item {
+  color: #333333;
   font-size: 16px;
 }
-
-@media (max-width: 900px) {
-  .search-cards-select.el-select {
-    width: 140px;
-  }
-}
-
-@media (max-width: 768px) {
-  .search-cards-select.el-select {
-    width: 45vw;
-  }
-}
-</style>
-
-<style lang="scss" scoped>
 .search-cards {
   & .form-container {
     @apply flex flex-wrap justify-center relative overflow-hidden;
@@ -565,8 +533,32 @@ onMounted(async () => {
         color: lightgray;
         margin: 0 0 3px;
       }
-      & input,
-      & select {
+      & .search-cards-select {
+        width: 150px;
+        :deep(.el-input) {
+          font-size: 16px;
+        }
+        :deep(.el-input__wrapper) {
+          overflow: hidden;
+          padding: 0 11px 1px;
+          box-shadow: none;
+          border-radius: 5px;
+          &:hover {
+            box-shadow: none;
+          }
+          &:focus-within {
+            box-shadow: none !important;
+          }
+        }
+        :deep(.el-input__inner) {
+          color: #1e40af;
+          height: 35px;
+          border-color: transparent;
+          box-shadow: none;
+          font-size: 16px;
+        }
+      }
+      & input {
         @apply bg-white;
         color: #1e40af;
         padding: 6px 11px;
@@ -597,11 +589,11 @@ onMounted(async () => {
     }
   }
   & .toggle-btn {
-    @apply cursor-pointer text-center;
+    @apply cursor-pointer;
     color: lightgray;
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-top: transparent;
-    width: 80px;
+    width: 120px;
     margin: 0 auto 20px;
     padding: 2px 0;
     border-radius: 0 0 5px 5px;
@@ -616,7 +608,7 @@ onMounted(async () => {
 @media (max-width: 1200px) {
   .search-cards {
     & .form-container {
-      width: 900px;
+      width: 900px ;
     }
     & .list-container {
       width: 95vw;
@@ -634,8 +626,10 @@ onMounted(async () => {
     & .form-container {
       width: 760px;
       & .item-box {
-        & input,
-        & select {
+        & .search-cards-select {
+          width: 140px;
+        }
+        & input {
           width: 140px;
         }
       }
@@ -645,9 +639,6 @@ onMounted(async () => {
 
 @media (max-width: 768px) {
   .search-cards {
-    & .close-form {
-      height: 55px;
-    }
     & .form-container {
       @apply w-full;
       & .item-box {
@@ -657,8 +648,10 @@ onMounted(async () => {
           color: lightgray;
           margin: 0 0 3px;
         }
-        & input,
-        & select {
+        & .search-cards-select {
+          width: 45vw;
+        }
+        & input {
           padding: 6px 8px;
           border-radius: 5px;
           width: 45vw;
