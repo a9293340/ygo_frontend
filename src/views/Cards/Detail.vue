@@ -226,37 +226,6 @@ onMounted(async () => {
 });
 </script>
 
-<style lang="scss">
-.price-select.el-select {
-  width: 150px;
-  .el-input__wrapper {
-    overflow: hidden;
-    padding: 0 11px 1px;
-    box-shadow: none;
-    border-radius: 5px;
-    &:hover {
-      box-shadow: none;
-    }
-    &:focus-within {
-      box-shadow: none !important;
-    }
-  }
-  .el-input__inner {
-    color: #1e40af;
-    height: 35px;
-    border-color: transparent;
-    box-shadow: none;
-    font-size: 16px;
-  }
-  .el-input__placeholder {
-    @apply text-black;
-  }
-}
-:deep(.el-input) {
-  font-size: 16px;
-}
-</style>
-
 <style lang="scss" scoped>
 .cards-detail {
   min-height: calc(100vh - 104px);
@@ -348,7 +317,7 @@ onMounted(async () => {
     & .ref-link {
       @apply text-white underline;
       font-size: 16px;
-      margin: 0 0 5px;
+      margin: 0 0 5px 5px;
     }
     & .qa-item {
       @apply text-justify overflow-hidden;
@@ -392,6 +361,16 @@ onMounted(async () => {
         @apply text-white;
         margin: 0 15px 0 5px;
         font-size: 16px;
+      }
+      & .price-select {
+        width: 150px;
+        :deep(.el-select__wrapper) {
+          font-size: 16px;
+          overflow: hidden;
+          box-shadow: none;
+          border-radius: 5px;
+          height: 32px;
+        }
       }
     }
   }
