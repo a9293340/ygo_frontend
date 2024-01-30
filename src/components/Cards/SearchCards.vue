@@ -535,27 +535,19 @@ onMounted(async () => {
       }
       & .search-cards-select {
         width: 150px;
-        :deep(.el-input) {
+        :deep(.el-select__wrapper) {
           font-size: 16px;
-        }
-        :deep(.el-input__wrapper) {
           overflow: hidden;
-          padding: 0 11px 1px;
+          padding: 0 11px;
           box-shadow: none;
           border-radius: 5px;
-          &:hover {
-            box-shadow: none;
-          }
-          &:focus-within {
-            box-shadow: none !important;
-          }
+          height: 36px;
         }
-        :deep(.el-input__inner) {
+        :deep(.el-select__selected-item) {
           color: #1e40af;
-          height: 35px;
-          border-color: transparent;
-          box-shadow: none;
-          font-size: 16px;
+        }
+        :deep(.el-select__selected-item).is-transparent {
+          color: #ababb2;
         }
       }
       & input {
