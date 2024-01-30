@@ -258,8 +258,21 @@ onMounted(async () => {
     & .article-container {
       @apply w-full;
       padding: 4vw;
-      & .list-title {
-        font-size: 20px;
+      & .title-box {
+        @apply flex flex-col justify-between items-end;
+        & .list-title {
+          @apply self-start;
+          font-size: 20px;
+          margin: 0 0 5px;
+        }
+        & .search {
+          & input {
+            font-size: 16px;
+          }
+          & .search-icon {
+            font-size: 18px;
+          }
+        }
       }
       & .list-container {
         margin: 4vw 0;
