@@ -263,7 +263,7 @@ onMounted(async () => {
         & .list-title {
           @apply self-start;
           font-size: 20px;
-          margin: 0 0 10px;
+          margin: 0 0 5px;
         }
         & .search {
           & input {
