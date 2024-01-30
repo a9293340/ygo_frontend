@@ -84,7 +84,6 @@ const menu = ref<MenuItem[]>([
 		children: [
 			{ title: t("menu.p_pack"), link: "/product_information/pack" },
 			{ title: t("menu.p_deck"), link: "/product_information/deck" },
-			{ title: t("menu.p_rd"), link: "/product_information/rd" },
 			{ title: t("menu.p_box"), link: "/product_information/box" },
 			{ title: t("menu.p_other"), link: "/product_information/other" },
 		],
