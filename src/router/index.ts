@@ -147,16 +147,6 @@ const router = createRouter({
           component: () => import('../views/Article/Detail.vue'),
         },
         {
-          path: 'rd',
-          name: 'rd',
-          component: () => import('../views/ProductionInformation/RdList.vue'),
-        },
-        {
-          path: 'rd/:id',
-          name: 'rd_detail',
-          component: () => import('../views/Article/Detail.vue'),
-        },
-        {
           path: 'box',
           name: 'box',
           component: () => import('../views/ProductionInformation/BoxList.vue'),
@@ -220,7 +210,7 @@ const router = createRouter({
     // 組牌
     {
       path: '/deck',
-      name: 'deck',
+      name: 'decks',
       redirect: '/deck',
       children: [
         {
