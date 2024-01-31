@@ -49,6 +49,7 @@
         <el-select
           v-model="listQuery.filter.product_information_type"
           filterable
+          clearable
           class="search-cards-select"
           :placeholder="t('card.please_choose')"
           :filter-method="changePackType"
