@@ -55,8 +55,8 @@
           :filter-method="changePackType"
         >
           <el-option
-            v-for="item in packTypeShow"
-            :key="item.packType"
+            v-for="(item, index) in packTypeShow"
+            :key="index"
             :label="item.name"
             :value="item.packType"
           />
