@@ -47,18 +47,19 @@
           {{ t('card.product_information_type') + '：' }}
         </div>
         <el-select
-            v-model="listQuery.filter.product_information_type"
-            filterable
-            clearable
-            class="search-cards-select"
-            :placeholder="t('card.please_choose')"
-            @keyup.enter.native="searchNewData"
+          v-model="listQuery.filter.product_information_type"
+          filterable
+          clearable
+          class="search-cards-select"
+          :placeholder="t('card.please_choose')"
+          @keyup.enter.native="searchNewData"
+          :filter-method="changePackType"
         >
           <el-option
-              v-for="(item, index) in packTypeList"
-              :key="index"
-              :label="item.name"
-              :value="item.packType"
+            v-for="(item, index) in packTypeList"
+            :key="index"
+            :label="item.name"
+            :value="item.packType"
           />
         </el-select>
       </div>
@@ -265,7 +266,12 @@ import type {
   forbiddenCardListType,
 } from 'request-data-types';
 import type { PaginationGetList } from 'common-types';
-import type { CardsList, PackTypeList, forbiddenCardList } from 'module-types';
+import type {
+  CardsList,
+  PackType,
+  PackTypeList,
+  forbiddenCardList,
+} from 'module-types';
 import type { HasTotalRes, NotHasTotalRes } from 'response-data-types';
 import { decode, removeNullAndEmptyString } from '@/util';
 import { callApi } from '@/util/api';
@@ -315,6 +321,7 @@ const forbiddenTypeList = ref({
 
 const isShowAdvance = ref<Boolean>(false);
 const packTypeList = ref<PackTypeList | []>([]);
+const packTypeSave = ref<PackTypeList | []>([]);
 const page = computed(() => props.page);
 watch(page, newVal => {
   getList({
@@ -348,6 +355,14 @@ watch(searchCardsId, newVal => {
 
 const searchNewData = () => {
   getList({ page: 0, limit: listQuery.value.limit });
+};
+
+const changePackType = (val: string) => {
+  if (val) {
+    packTypeList.value = packTypeSave.value.filter(
+      (x: PackType) => x.packType.indexOf(val) !== -1
+    );
+  } else packTypeList.value = JSON.parse(JSON.stringify(packTypeSave.value));
 };
 
 const getList = async (val: PaginationGetList) => {
@@ -465,11 +480,17 @@ const getPackType = async () => {
 onMounted(async () => {
   // 是否展開進階搜尋
   if (window.innerWidth > 768) {
-    isShowAdvance.value = true
+    isShowAdvance.value = true;
   } else {
     // 手機版檢查query是否只有page、id、number、name或product_information_type參數
     // 若有其他參數則展開進階搜尋
-    const allowedProps = new Set(['page', 'id', 'number', 'name', 'product_information_type']);
+    const allowedProps = new Set([
+      'page',
+      'id',
+      'number',
+      'name',
+      'product_information_type',
+    ]);
     const keys = Object.keys(route.query);
     isShowAdvance.value = keys.some(key => !allowedProps.has(key));
   }
@@ -490,6 +511,8 @@ onMounted(async () => {
       else packTypeList.value = pack.list;
     } else await getPackType();
   }
+  // 備存 pack type
+  packTypeSave.value = JSON.parse(JSON.stringify(packTypeList.value));
   // 避免吃到deck的query
   let query = JSON.parse(JSON.stringify(route.query));
   if (query.deck_admin_id) delete query.deck_admin_id;
@@ -600,7 +623,7 @@ onMounted(async () => {
 @media (max-width: 1200px) {
   .search-cards {
     & .form-container {
-      width: 900px ;
+      width: 900px;
     }
     & .list-container {
       width: 95vw;

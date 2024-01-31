@@ -292,12 +292,15 @@ const externalTooltipHandler = (context: any) => {
     tableRoot.appendChild(tableBody);
   }
 
-  const { offsetLeft: positionX, offsetTop: positionY } = chart.canvas;
-
+  const {
+    offsetLeft: positionX,
+    offsetTop: positionY,
+    width: cWidth,
+  } = chart.canvas;
   // Display, position, and set styles for font
   tooltipEl.style.opacity = 1;
-  tooltipEl.style.left = positionX + tooltip.caretX + 'px';
-  tooltipEl.style.top = positionY + tooltip.caretY + 'px';
+  tooltipEl.style.left = positionX + cWidth / 5 + 'px';
+  tooltipEl.style.top = positionY + 'px';
   tooltipEl.style.font = tooltip.options.bodyFont.string;
   tooltipEl.style.padding =
     tooltip.options.padding + 'px ' + tooltip.options.padding + 'px';
