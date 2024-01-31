@@ -360,7 +360,7 @@ const searchNewData = () => {
 const changePackType = (val: string) => {
   if (val) {
     packTypeList.value = packTypeSave.value.filter(
-      (x: PackType) => x.packType.indexOf(val) !== -1
+      (x: PackType) => x.packType.indexOf(val.toUpperCase()) !== -1
     );
   } else packTypeList.value = JSON.parse(JSON.stringify(packTypeSave.value));
 };
