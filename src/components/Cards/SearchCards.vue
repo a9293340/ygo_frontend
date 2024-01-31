@@ -49,14 +49,13 @@
         <el-select
           v-model="listQuery.filter.product_information_type"
           filterable
-          clearable
           class="search-cards-select"
           :placeholder="t('card.please_choose')"
           :filter-method="changePackType"
         >
           <el-option
-            v-for="(item, index) in packTypeShow"
-            :key="index"
+            v-for="item in packTypeShow"
+            :key="item.packType"
             :label="item.name"
             :value="item.packType"
           />
