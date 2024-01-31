@@ -56,7 +56,7 @@
           :filter-method="changePackType"
         >
           <el-option
-            v-for="(item, index) in packTypeList"
+            v-for="(item, index) in packTypeShow"
             :key="index"
             :label="item.name"
             :value="item.packType"
@@ -321,7 +321,7 @@ const forbiddenTypeList = ref({
 
 const isShowAdvance = ref<Boolean>(false);
 const packTypeList = ref<PackTypeList | []>([]);
-const packTypeSave = ref<PackTypeList | []>([]);
+const packTypeShow = ref<PackTypeList | []>([]);
 const page = computed(() => props.page);
 watch(page, newVal => {
   getList({
@@ -359,10 +359,10 @@ const searchNewData = () => {
 
 const changePackType = (val: string) => {
   if (val) {
-    packTypeList.value = packTypeSave.value.filter(
-      (x: PackType) => x.packType.indexOf(val.toUpperCase()) !== -1
+    packTypeShow.value = packTypeList.value.filter(
+      (x: PackType) => x.name.indexOf(val.toUpperCase()) !== -1
     );
-  } else packTypeList.value = JSON.parse(JSON.stringify(packTypeSave.value));
+  } else packTypeShow.value = JSON.parse(JSON.stringify(packTypeList.value));
 };
 
 const getList = async (val: PaginationGetList) => {
@@ -512,7 +512,7 @@ onMounted(async () => {
     } else await getPackType();
   }
   // 備存 pack type
-  packTypeSave.value = JSON.parse(JSON.stringify(packTypeList.value));
+  packTypeShow.value = JSON.parse(JSON.stringify(packTypeList.value));
   // 避免吃到deck的query
   let query = JSON.parse(JSON.stringify(route.query));
   if (query.deck_admin_id) delete query.deck_admin_id;
