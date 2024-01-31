@@ -52,7 +52,6 @@
           clearable
           class="search-cards-select"
           :placeholder="t('card.please_choose')"
-          @keyup.enter.native="searchNewData"
           :filter-method="changePackType"
         >
           <el-option
@@ -72,14 +71,12 @@
           clearable
           class="search-cards-select"
           :placeholder="t('card.please_choose')"
-          @keyup.enter.native="searchNewData"
         >
           <el-option
             v-for="(item, index) in ygoOptions.type"
             :key="index"
             :label="item"
             :value="item"
-            style="font-size: 16px; color: #333333"
           />
         </el-select>
       </div>
@@ -92,14 +89,12 @@
           clearable
           class="search-cards-select"
           :placeholder="t('card.please_choose')"
-          @keyup.enter.native="searchNewData"
         >
           <el-option
             v-for="(item, index) in ygoOptions.star"
             :key="index"
             :label="item"
             :value="item"
-            style="font-size: 16px; color: #333333"
           />
         </el-select>
       </div>
@@ -112,14 +107,12 @@
           clearable
           class="search-cards-select"
           :placeholder="t('card.please_choose')"
-          @keyup.enter.native="searchNewData"
         >
           <el-option
             v-for="(item, index) in ygoOptions.attribute"
             :key="index"
             :label="item"
             :value="item"
-            style="font-size: 16px; color: #333333"
           />
         </el-select>
       </div>
@@ -132,14 +125,12 @@
           clearable
           class="search-cards-select"
           :placeholder="t('card.please_choose')"
-          @keyup.enter.native="searchNewData"
         >
           <el-option
             v-for="(item, index) in ygoOptions.race"
             :key="index"
             :label="item"
             :value="item"
-            style="font-size: 16px; color: #333333"
           />
         </el-select>
       </div>
@@ -152,14 +143,12 @@
           clearable
           class="search-cards-select"
           :placeholder="t('card.please_choose')"
-          @keyup.enter.native="searchNewData"
         >
           <el-option
             v-for="(item, index) in ygoOptions.rare"
             :key="index"
             :label="item"
             :value="item"
-            style="font-size: 16px; color: #333333"
           />
         </el-select>
       </div>
@@ -179,14 +168,12 @@
               listQuery.filter.number = '';
             }
           "
-          @keyup.enter.native="searchNewData"
         >
           <el-option
             v-for="(item, index) in forbiddenTypeList"
             :key="index"
             :label="item"
             :value="index"
-            style="font-size: 16px; color: #333333"
           />
         </el-select>
       </div>
@@ -357,10 +344,10 @@ const searchNewData = () => {
   getList({ page: 0, limit: listQuery.value.limit });
 };
 
-const changePackType = (val: string) => {
+const changePackType = (val: string):void => {
   if (val) {
     packTypeShow.value = packTypeList.value.filter(
-      (x: PackType) => x.name.indexOf(val.toUpperCase()) !== -1
+      (x: PackType) => x.name.indexOf(val.toUpperCase()) > -1
     );
   } else packTypeShow.value = JSON.parse(JSON.stringify(packTypeList.value));
 };
@@ -653,6 +640,9 @@ onMounted(async () => {
 }
 
 @media (max-width: 768px) {
+  .el-select-dropdown__item {
+    min-width: 55vw;
+  }
   .search-cards {
     & .form-container {
       @apply w-full;
