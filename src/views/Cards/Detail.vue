@@ -81,7 +81,9 @@
     </div>
     <div v-if="currentType === 'qa'" class="qa-box">
       <div class="ref-link">
-        <a :href="jurisprudence?.jud_link" target="_blank">{{ t('card.qa_ref') }}</a>
+        <a :href="jurisprudence?.jud_link" target="_blank">{{
+          t('card.qa_ref')
+        }}</a>
       </div>
       <div class="qa-item" v-for="(item, index) in qaList" :key="item._id">
         <div class="title-box" @click="showContent(index as number)">
@@ -105,13 +107,22 @@
       <div class="select-box" v-if="account_id && account_token">
         <p>{{ t('card.ruten_price') }} :</p>
         <el-select class="price-select" v-model="priceType">
-          <el-option value="avg" :label="t('card.ruten_average')" style="font-size: 16px; color: #333333" />
-          <el-option value="lowest" :label="t('card.ruten_low')" style="font-size: 16px; color: #333333" />
+          <el-option
+            value="avg"
+            :label="t('card.ruten_average')"
+            style="font-size: 16px; color: #333333"
+          />
+          <el-option
+            value="lowest"
+            :label="t('card.ruten_low')"
+            style="font-size: 16px; color: #333333"
+          />
         </el-select>
       </div>
       <PriceChart
         v-if="cardInfo && Array.isArray(cardInfo?.price_info)"
         :type="priceType"
+        :rarity="cardInfo?.rarity"
         :price="cardInfo?.price_info"
         :colors="colors"
         :y-axis-set-size="5"
