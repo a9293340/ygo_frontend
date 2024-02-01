@@ -17,6 +17,7 @@ import type { GridTickSet, Legends, ToolTip } from 'component-types';
 import 'chartjs-adapter-date-fns';
 
 interface PriceChartProps {
+  rarity: string[];
   price: CardsPriceType[];
   colors: string[];
   yAxisSetSize: number;
@@ -37,6 +38,7 @@ interface PriceChartProps {
 const props = withDefaults(defineProps<PriceChartProps>(), {
   type: 'avg',
   price: () => [{ time: '', price_avg: 0, price_lowest: 0, rarity: '' }],
+  rarity: () => [],
   colors: () => [
     'rgba(255, 0, 0, 1)', // 紅色
     'rgba(0, 255, 0, 1)', // 綠色
@@ -311,7 +313,9 @@ const externalTooltipHandler = (context: any) => {
 const makePriceChart = () => {
   priceX.value = [];
   priceY.value = [];
-  const rarity = [...new Set(props.price.map(el => el.rarity))];
+  const rarity = [...new Set(props.price.map(el => el.rarity))].filter(x =>
+    props.rarity.includes(x)
+  );
   for (let i = 0; i < rarity.length; i++) {
     const rar = rarity[i];
     const date = props.price.filter(el => el.rarity === rar);
