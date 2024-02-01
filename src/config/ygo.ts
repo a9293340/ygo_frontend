@@ -29,7 +29,7 @@ export const ygoOptions: {
     '儀式魔法',
     '通常陷阱',
     '永續陷阱',
-    '反擊陷阱'
+    '反擊陷阱',
   ],
   star: [
     '等級0',
@@ -133,6 +133,8 @@ export const ygoOptions: {
     '異圖-金亮全鑽',
     '異圖-半鑽',
     '異圖-半鑽全鑽',
+    '異圖-雕鑽',
+    '異圖-黃金',
     '異圖-白鑽',
     '異圖-金鑽',
     '金普',
@@ -166,11 +168,16 @@ export const ygoOptions: {
     '亮面方鑽',
     '金亮方鑽',
     '半鑽方鑽',
-    '隱普方鑽'
+    '隱普方鑽',
   ],
 };
 
-export const extraType: string[] = ['融合怪獸', '同步怪獸', '超量怪獸', '連結怪獸'];
+export const extraType: string[] = [
+  '融合怪獸',
+  '同步怪獸',
+  '超量怪獸',
+  '連結怪獸',
+];
 
 export const ceremony: string = '儀式怪獸';
 
