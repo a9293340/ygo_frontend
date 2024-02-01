@@ -52,11 +52,10 @@
           clearable
           class="search-cards-select"
           :placeholder="t('card.please_choose')"
-          @keyup.enter.native="searchNewData"
           :filter-method="changePackType"
         >
           <el-option
-            v-for="(item, index) in packTypeList"
+            v-for="(item, index) in packTypeShow"
             :key="index"
             :label="item.name"
             :value="item.packType"
@@ -72,14 +71,12 @@
           clearable
           class="search-cards-select"
           :placeholder="t('card.please_choose')"
-          @keyup.enter.native="searchNewData"
         >
           <el-option
             v-for="(item, index) in ygoOptions.type"
             :key="index"
             :label="item"
             :value="item"
-            style="font-size: 16px; color: #333333"
           />
         </el-select>
       </div>
@@ -92,14 +89,12 @@
           clearable
           class="search-cards-select"
           :placeholder="t('card.please_choose')"
-          @keyup.enter.native="searchNewData"
         >
           <el-option
             v-for="(item, index) in ygoOptions.star"
             :key="index"
             :label="item"
             :value="item"
-            style="font-size: 16px; color: #333333"
           />
         </el-select>
       </div>
@@ -112,14 +107,12 @@
           clearable
           class="search-cards-select"
           :placeholder="t('card.please_choose')"
-          @keyup.enter.native="searchNewData"
         >
           <el-option
             v-for="(item, index) in ygoOptions.attribute"
             :key="index"
             :label="item"
             :value="item"
-            style="font-size: 16px; color: #333333"
           />
         </el-select>
       </div>
@@ -132,14 +125,12 @@
           clearable
           class="search-cards-select"
           :placeholder="t('card.please_choose')"
-          @keyup.enter.native="searchNewData"
         >
           <el-option
             v-for="(item, index) in ygoOptions.race"
             :key="index"
             :label="item"
             :value="item"
-            style="font-size: 16px; color: #333333"
           />
         </el-select>
       </div>
@@ -152,14 +143,12 @@
           clearable
           class="search-cards-select"
           :placeholder="t('card.please_choose')"
-          @keyup.enter.native="searchNewData"
         >
           <el-option
             v-for="(item, index) in ygoOptions.rare"
             :key="index"
             :label="item"
             :value="item"
-            style="font-size: 16px; color: #333333"
           />
         </el-select>
       </div>
@@ -179,14 +168,12 @@
               listQuery.filter.number = '';
             }
           "
-          @keyup.enter.native="searchNewData"
         >
           <el-option
             v-for="(item, index) in forbiddenTypeList"
             :key="index"
             :label="item"
             :value="index"
-            style="font-size: 16px; color: #333333"
           />
         </el-select>
       </div>
@@ -321,7 +308,7 @@ const forbiddenTypeList = ref({
 
 const isShowAdvance = ref<Boolean>(false);
 const packTypeList = ref<PackTypeList | []>([]);
-const packTypeSave = ref<PackTypeList | []>([]);
+const packTypeShow = ref<PackTypeList | []>([]);
 const page = computed(() => props.page);
 watch(page, newVal => {
   getList({
@@ -357,12 +344,12 @@ const searchNewData = () => {
   getList({ page: 0, limit: listQuery.value.limit });
 };
 
-const changePackType = (val: string) => {
+const changePackType = (val: string):void => {
   if (val) {
-    packTypeList.value = packTypeSave.value.filter(
-      (x: PackType) => x.packType.indexOf(val.toUpperCase()) !== -1
+    packTypeShow.value = packTypeList.value.filter(
+      (x: PackType) => x.name.indexOf(val.toUpperCase()) > -1
     );
-  } else packTypeList.value = JSON.parse(JSON.stringify(packTypeSave.value));
+  } else packTypeShow.value = JSON.parse(JSON.stringify(packTypeList.value));
 };
 
 const getList = async (val: PaginationGetList) => {
@@ -512,7 +499,7 @@ onMounted(async () => {
     } else await getPackType();
   }
   // 備存 pack type
-  packTypeSave.value = JSON.parse(JSON.stringify(packTypeList.value));
+  packTypeShow.value = JSON.parse(JSON.stringify(packTypeList.value));
   // 避免吃到deck的query
   let query = JSON.parse(JSON.stringify(route.query));
   if (query.deck_admin_id) delete query.deck_admin_id;
@@ -653,6 +640,9 @@ onMounted(async () => {
 }
 
 @media (max-width: 768px) {
+  .el-select-dropdown__item {
+    min-width: 55vw;
+  }
   .search-cards {
     & .form-container {
       @apply w-full;
