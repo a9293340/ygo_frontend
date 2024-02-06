@@ -75,7 +75,7 @@ onMounted(async () => {
 		& .arrow {
 			@apply text-white cursor-pointer;
 			font-size: 3vw;
-			transition-duration: 0.2s;
+			transition-duration: 0.1s;
 			margin: 1vw;
 			&:hover {
 				color: rgba(255, 255, 255, 0.8);
