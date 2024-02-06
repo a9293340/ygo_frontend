@@ -316,28 +316,52 @@ const makePriceChart = () => {
   const rarity = [...new Set(props.price.map(el => el.rarity))].filter(x =>
     props.rarity.includes(x)
   );
+  // 找priceX
   for (let i = 0; i < rarity.length; i++) {
     const rar = rarity[i];
     const date = props.price.filter(el => el.rarity === rar);
-    priceX.value = date.map(el => el.time.split(' ')[0]);
+    priceX.value =
+      priceX.value.length > date.map(el => el.time.split(' ')[0]).length
+        ? priceX.value
+        : date.map(el => el.time.split(' ')[0]);
+  }
+  // 找priceY
+  for (let i = 0; i < rarity.length; i++) {
+    const rar = rarity[i];
+    let data = props.price.filter(el => el.rarity === rar);
+
+    for (let i = 0; i < priceX.value.length; i++) {
+      const date = priceX.value[i];
+      if (!data.find(el => el.time.indexOf(date) !== -1))
+        data.push({
+          time: date,
+          price_avg: null,
+          price_lowest: null,
+          rarity: rar,
+        });
+    }
+    data.sort(
+      (a, b) => new Date(a.time).getTime() - new Date(b.time).getTime()
+    );
+
     priceY.value.push({
       label: `${rar} 露天${priceType.value === 'avg' ? '均價' : '最低價'}`,
       data:
         priceType.value === 'avg'
-          ? date.map(el => el.price_avg)
-          : date.map(el => el.price_lowest),
+          ? data.map(el => el.price_avg)
+          : data.map(el => el.price_lowest),
       backgroundColor: props.colors[i % 7],
       borderColor: props.colors[i % 7], // 设置线的颜色
       tension: 0.1,
       borderWidth: 1,
     });
     max.value =
-      Math.max(...date.map(el => el.price_avg)) > max.value
-        ? Math.max(...date.map(el => el.price_avg))
+      Math.max(...data.map(el => el.price_avg)) > max.value
+        ? Math.max(...data.map(el => el.price_avg))
         : max.value;
     min.value =
-      Math.min(...date.map(el => el.price_avg)) < min.value
-        ? Math.min(...date.map(el => el.price_avg))
+      Math.min(...data.map(el => el.price_avg)) < min.value
+        ? Math.min(...data.map(el => el.price_avg))
         : min.value;
   }
 };

@@ -12,8 +12,8 @@ type DeckContent = {
 
 type CardsPriceType = {
   time: string;
-  price_lowest: number;
-  price_avg: number;
+  price_lowest: number | null;
+  price_avg: number | null;
   rarity: string;
 };
 
