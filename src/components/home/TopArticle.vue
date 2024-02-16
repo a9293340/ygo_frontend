@@ -100,10 +100,11 @@ onMounted(async () => {
     & .list-item {
       @apply bg-white overflow-hidden;
       border-radius: 10px;
-      background-image: linear-gradient(to top, #ffffff 20%, black);
+      background-image: linear-gradient(to top, #ffffff 70%, black);
       & .img {
         @apply w-full bg-no-repeat bg-cover bg-center;
         height: 201.48px;
+        background-color: #e1e1e1;
       }
       & .content {
         padding: 10px 15px;
