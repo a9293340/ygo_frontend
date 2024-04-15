@@ -68,15 +68,9 @@
     "vite": "^3.0.1",
     "vue-tsc": "^0.38.8"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "tsc --noEmit && lint-staged"
-    }
-  },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,json,css,scss,md,vue}": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ]
   },
   "license": "MIT"
