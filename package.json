@@ -8,7 +8,7 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit",
     "lang": "node GoogleSheetToJson.js",
-    "prepare": "node prepare-husky.js"
+    "prepare": "node .husky/prepare-husky.js"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.1.0",
