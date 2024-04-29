@@ -55,7 +55,7 @@
           </div>
           <div class="sm-item">{{ item.atk }}</div>
           <div class="sm-item">{{ item.def }}</div>
-          <div>{{ item.number.substring(0, 8) }}</div>
+          <div>{{ item.number?.substring(0, 8) }}</div>
           <router-link
             class="detail sm-item"
             :to="`/cards/${item.id}?number=${item.number}`"
