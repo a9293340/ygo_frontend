@@ -130,6 +130,15 @@
         <button class="btn" @click="handleRegister">
           {{ t('user.sign_up') }}
         </button>
+        <button v-if="isShowResend"
+                class="btn-resend"
+                :class="{'unable-to-click':isCounting}"
+                :disabled="isCounting"
+                @click="handleResendVerify"
+        >
+          {{ t('user.resend_mail') }}
+          <span v-if="isCounting">{{ `(${remainingTime}${t('user.second')})` }}</span>
+        </button>
       </template>
 
       <!-- 填寫新密碼 type=3 -->
@@ -219,6 +228,9 @@ function resetForm(type: number) {
         account: '',
         password: '',
       };
+      confirmPsd.value = '';
+      isShowResend.value = false;
+      stopCountDown();
       break;
     case 3:
       newPsdForm.value = { old_password: '', new_password: '', tokenReq: '' };
@@ -331,6 +343,10 @@ const registerForm = ref<MemberAddType>({
   account: '',
   password: '',
 });
+watch(registerForm, (newVal, oldVal) => {
+  isShowResend.value = false;
+  stopCountDown();
+}, { deep: true });
 const confirmPsd = ref<string>('');
 const handleRegister = async () => {
   // check
@@ -344,11 +360,15 @@ const handleRegister = async () => {
   );
   if (!response.error_code) {
     const res = decode<CreateMemberToken>(response.data);
-    if (res.token) alert(t('user.sign_up_good'));
-    else alert(t('user.sign_up_bug'));
+    if (res.token) {
+      alert(t('user.sign_up_good'));
+      isShowResend.value = true
+      startCountDown();
+    } else alert(t('user.sign_up_bug'));
   } else {
     alert(t(`user.verify_${response.error_code}`));
     if (response.error_code === 11007) {
+      // 帳號或 EMAIL 待驗證
       const userConfirmed = confirm(t('user.reSend_verify'));
       if (userConfirmed) {
         // call member/reSend
@@ -371,6 +391,49 @@ const handleRegister = async () => {
     }
   }
 };
+// 倒數計時器
+const isShowResend = ref<boolean>(false)
+const isCounting = ref<boolean>(false)
+const remainingTime = ref<number>(60)
+let intervalId: number | undefined;
+const startCountDown = () => {
+  isCounting.value = true
+  remainingTime.value = 60
+  intervalId = setInterval(() => {
+    if (remainingTime.value > 0) {
+      remainingTime.value--;
+    } else {
+      stopCountDown();
+    }
+  }, 1000);
+}
+const stopCountDown = () => {
+  if (intervalId !== undefined) {
+    clearInterval(intervalId);
+    intervalId = undefined;
+    isCounting.value = false
+  }
+}
+const handleResendVerify = async () => {
+  // call member/reSend
+  const { account, email } = registerForm.value;
+  const response = await callApi<ReSendVerifyType>(
+      { account, email },
+      'member',
+      'reSend',
+      false
+  );
+  if (!response.error_code) {
+    alert(t('user.reSend_success'));
+  } else {
+    alert(t(`user.verify_${response.error_code}`));
+  }
+  startCountDown();
+}
+onBeforeUnmount(() => {
+  stopCountDown();
+})
+
 
 // 填寫新密碼
 const newPsdForm = ref<ResetPWDType>({
@@ -474,9 +537,9 @@ const closeLogin = () => {
       }
     }
     & .btn {
-      @apply w-full text-white font-bold;
+      @apply w-full text-white;
       height: 50px;
-      margin: 20px 0 0;
+      margin: 15px 0 0;
       border-radius: 8px;
       font-size: 18px;
       background-color: #1f2c5d;
@@ -484,6 +547,22 @@ const closeLogin = () => {
       &:hover {
         background-color: #2a3d83;
       }
+    }
+    & .btn-resend {
+      @apply w-full bg-white;
+      height: 50px;
+      margin: 10px 0 0;
+      border-radius: 8px;
+      font-size: 16px;
+      border: 2px solid #1f2c5d;
+      color: #1f2c5d;
+      transition-duration: 0.1s;
+      &:hover {
+        color: #2a3d83;
+      }
+    }
+    & .unable-to-click {
+      opacity: 0.5;
     }
     & .other-box {
       @apply flex justify-center underline;
@@ -519,9 +598,14 @@ const closeLogin = () => {
       }
       & .btn {
         height: 40px;
-        margin: 15px 0 0;
         border-radius: 4px;
         font-size: 16px;
+      }
+      & .btn-resend {
+        height: 40px;
+        margin: 10px 0 0;
+        border-radius: 4px;
+        font-size: 14px;
       }
     }
   }
