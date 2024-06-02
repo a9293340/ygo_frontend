@@ -237,6 +237,11 @@ declare module 'request-data-types' {
     email?: string;
   };
 
+  type ReSendVerifyType = {
+    account: string;
+    email: string;
+  }
+
   type MemberAddType = {
     name: string;
     email: string;
