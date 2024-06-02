@@ -181,6 +181,7 @@
 import type {
   LoginType,
   VerifyType,
+  ReSendVerifyType,
   MemberAddType,
   ResetPWDType,
 } from 'request-data-types';
@@ -229,6 +230,11 @@ const isShowPsd = ref<boolean>(false);
 const captchaRef = ref(null);
 const captcha = ref<string>('');
 const captchaCode = ref<string>('');
+// 重置驗證碼
+const refreshCaptcha = () => {
+  captchaRef.value.refreshCode();
+  captcha.value = '';
+}
 // 會員登入
 const loginForm = ref<LoginType>({
   account: '',
@@ -238,8 +244,7 @@ const handleLogin = async () => {
   if (checkObjNotEmpty(loginForm.value)) {
     // 檢查驗證碼
     if (captcha.value.toUpperCase() !== captchaCode.value) {
-      captchaRef.value.refreshCode();
-      captcha.value = '';
+      refreshCaptcha();
       alert(t('user.error_captcha'));
       return;
     }
@@ -260,6 +265,7 @@ const handleLogin = async () => {
       alert(
         t(`user.verify_${res.error_code === 10004 ? '11001' : res.error_code}`)
       );
+      refreshCaptcha();
     }
   } else {
     alert(t('user.blank_notice'));
@@ -275,8 +281,7 @@ const forgetForm = ref<VerifyType>({
 const handleVerify = async () => {
   // 檢查驗證碼
   if (captcha.value.toUpperCase() !== captchaCode.value) {
-    captchaRef.value.refreshCode();
-    captcha.value = '';
+    refreshCaptcha()
     alert(t('user.error_captcha'));
     return;
   }
@@ -288,9 +293,10 @@ const handleVerify = async () => {
       'verify',
       false
     );
-    !res.error_code ? changeType(3) : alert(t(`user.verify_${res.error_code}`));
+    !res.error_code ? changeType(3) : alert(t(`user.verify_${res.error_code}`));refreshCaptcha();
   } else {
     alert(t('user.blank_notice'));
+    refreshCaptcha();
   }
 };
 
@@ -341,7 +347,28 @@ const handleRegister = async () => {
     if (res.token) alert(t('user.sign_up_good'));
     else alert(t('user.sign_up_bug'));
   } else {
-    alert(t('user.sign_up_bad'));
+    alert(t(`user.verify_${response.error_code}`));
+    if (response.error_code === 11007) {
+      const userConfirmed = confirm(t('user.reSend_verify'));
+      if (userConfirmed) {
+        // call member/reSend
+        const { account, email } = registerForm.value;
+        const response = await callApi<ReSendVerifyType>(
+            { account, email },
+            'member',
+            'reSend',
+            false
+        );
+        if (!response.error_code) {
+          alert(t('user.reSend_success'));
+          closeLogin();
+        } else {
+          alert(t(`user.verify_${response.error_code}`));
+        }
+      } else {
+        // 執行取消操作
+      }
+    }
   }
 };
 
@@ -418,7 +445,7 @@ const closeLogin = () => {
     width: 400px;
     & .title {
       @apply font-bold text-center;
-      font-size: 30px;
+      font-size: 28px;
       color: #1f2c5d;
     }
     & .input {
@@ -427,7 +454,7 @@ const closeLogin = () => {
       margin: 15px 0 0;
       padding: 0 16px;
       border-radius: 8px;
-      border: 3px solid #1f2c5d;
+      border: 2px solid #1f2c5d;
       font-size: 18px;
     }
     & .checkbox {
@@ -453,7 +480,7 @@ const closeLogin = () => {
       border-radius: 8px;
       font-size: 18px;
       background-color: #1f2c5d;
-      transition-duration: 0.2s;
+      transition-duration: 0.1s;
       &:hover {
         background-color: #2a3d83;
       }
@@ -465,7 +492,7 @@ const closeLogin = () => {
         margin: 15px 30px 0;
         color: #1f2c5d;
         font-size: 16px;
-        transition-duration: 0.2s;
+        transition-duration: 0.1s;
         &:hover {
           color: #2a3d83;
         }
@@ -478,26 +505,23 @@ const closeLogin = () => {
   .login-pop-wrapper {
     & .form-container {
       width: 90vw;
-      padding: 25px 30px 30px;
+      padding: 20px 25px 25px;
       & .title {
-        font-size: 26px;
+        font-size: 22px;
       }
       & .input {
-        height: 45px;
+        height: 40px;
         margin: 12px 0 0;
         padding: 0 10px;
+        border-radius: 4px;
         border: 2px solid #1f2c5d;
         font-size: 16px;
       }
       & .btn {
-        height: 45px;
-        margin: 20px 0 0;
+        height: 40px;
+        margin: 15px 0 0;
+        border-radius: 4px;
         font-size: 16px;
-      }
-      & .other-box {
-        & div {
-          margin: 15px 30px 0;
-        }
       }
     }
   }
