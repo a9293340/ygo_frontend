@@ -127,8 +127,13 @@
           />
           <Captcha ref="captchaRef" @getCaptcha="captchaCode = $event" />
         </div>
-        <button class="btn" @click="handleRegister">
-          {{ t('user.sign_up') }}
+        <button class="btn"
+                :class="{'unable-to-click':isCounting || registerLoading}"
+                :disabled="isCounting"
+                @click="handleRegister"
+        >
+          <span v-if="registerLoading" class="loader"></span>
+          <span v-else>{{ t('user.sign_up') }}</span>
         </button>
         <button v-if="isShowResend"
                 class="btn-resend"
@@ -348,7 +353,9 @@ watch(registerForm, (newVal, oldVal) => {
   stopCountDown();
 }, { deep: true });
 const confirmPsd = ref<string>('');
+const registerLoading = ref<boolean>(false);
 const handleRegister = async () => {
+  registerLoading.value = true
   // check
   if (!checkFormat<MemberAddType>(registerForm.value, confirmPsd.value)) return;
   // call member/add
@@ -358,6 +365,7 @@ const handleRegister = async () => {
     'add',
     false
   );
+  registerLoading.value = false
   if (!response.error_code) {
     const res = decode<CreateMemberToken>(response.data);
     if (res.token) {
@@ -537,7 +545,7 @@ const closeLogin = () => {
       }
     }
     & .btn {
-      @apply w-full text-white;
+      @apply flex justify-center items-center w-full text-white;
       height: 50px;
       margin: 15px 0 0;
       border-radius: 8px;
@@ -546,6 +554,18 @@ const closeLogin = () => {
       transition-duration: 0.1s;
       &:hover {
         background-color: #2a3d83;
+      }
+      & .loader {
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #5aa8b0;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        animation: spin 2s linear infinite;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
       }
     }
     & .btn-resend {
@@ -562,7 +582,18 @@ const closeLogin = () => {
       }
     }
     & .unable-to-click {
+      @apply cursor-no-drop;
       opacity: 0.5;
+    }
+    & .unable-to-click.btn {
+      &:hover {
+        background-color: #1f2c5d;
+      }
+    }
+    & .btn-resend.btn-resend {
+      &:hover {
+        color: #1f2c5d;
+      }
     }
     & .other-box {
       @apply flex justify-center underline;
