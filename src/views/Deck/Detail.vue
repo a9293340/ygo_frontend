@@ -386,13 +386,13 @@ onMounted(async () => {
     </div>
     <div id="deck-list" ref="deckList">
       <div class="deck-title">{{ deck?.title }}</div>
-      <div class="main-title-box">
+      <div v-if="deck?.main_deck.length" class="main-title-box">
         <div class="title">
           {{ t('deck.main_deck') }}({{ deck?.main_deck.length }})
         </div>
         <div class="detail-notice">{{ '*' + t('deck.show_detail_notice') }}</div>
       </div>
-      <div class="main-deck">
+      <div v-if="deck?.main_deck.length" class="main-deck">
         <deck-detail-component
           deck-type="main_deck"
           :deck="deck"
@@ -403,10 +403,10 @@ onMounted(async () => {
           @card-info="openCardInfo"
         />
       </div>
-      <div class="title">
+      <div v-if="deck?.extra_deck.length" class="title">
         {{ t('deck.extra_deck') }}({{ deck?.extra_deck.length }})
       </div>
-      <div class="extra-deck">
+      <div v-if="deck?.extra_deck.length" class="extra-deck">
         <deck-detail-component
           deck-type="extra_deck"
           :deck="deck"
@@ -417,10 +417,10 @@ onMounted(async () => {
           @card-info="openCardInfo"
         />
       </div>
-      <div class="title">
+      <div v-if="deck?.side_deck.length" class="title">
         {{ t('deck.side_deck') }}({{ deck?.side_deck.length }})
       </div>
-      <div class="side-deck">
+      <div v-if="deck?.side_deck.length" class="side-deck">
         <deck-detail-component
           deck-type="side_deck"
           :deck="deck"
